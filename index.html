@@ -1,0 +1,849 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Was blüht hier? — Pflanzensammlung von Michael Baur</title>
+<link rel="stylesheet" href="assets/style.css">
+<meta name="description" content="Die digitale Pflanzensammlung von Michael Baur. Heimische Flora im modernen Online-Format mit Fotos, Lehrtafeln und Steckbriefen.">
+</head>
+<body>
+<header class="top">
+  <div class="wrap top-inner">
+    <div class="titelblock">
+      <h1><a href="index.html">Was blüht hier?</a></h1>
+      <div class="untertitel">Die digitale Pflanzensammlung von Michael Baur</div>
+      <div class="autor">Heimische Flora im modernen Online-Format.</div>
+    </div>
+    <label class="schnellsuche" for="schnellsuche-input">
+      <svg class="lupe" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <circle cx="11" cy="11" r="7"></circle>
+        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+      </svg>
+      <input id="schnellsuche-input" type="search" placeholder="Pflanze suchen…" autocomplete="off" />
+    </label>
+  </div>
+</header>
+
+<section class="einleitung">
+  <div class="wrap">
+    <ul class="merkmale">
+      <li><b>Erkennen:</b> Meine Fotos direkt aus der Region</li>
+      <li><b>Sehen:</b> Detailreiche Lehrtafeln (KI-unterstützt)</li>
+      <li><b>Wissen:</b> Steckbriefe mit allen Fakten</li>
+    </ul>
+    <p class="filter-einleitung">Wähle hier deine Filter zur Bestimmung:</p>
+  </div>
+</section>
+
+<main class="wrap">
+  <section class="filter">
+    <div class="filter-group">
+      <span class="filter-label">Farbe:</span>
+      <span class="chip farbe" data-farbe="weiß">weiß</span>
+      <span class="chip farbe" data-farbe="gelb">gelb</span>
+      <span class="chip farbe" data-farbe="blau">blau</span>
+      <span class="chip farbe" data-farbe="violett">violett</span>
+      <span class="chip farbe" data-farbe="rot">rot</span>
+      <span class="chip farbe" data-farbe="grün">grün</span>
+    </div>
+    <div class="filter-group">
+      <span class="filter-label">Blühzeit:</span>
+      <span class="chip monat" data-monat="1">Jan</span>
+      <span class="chip monat" data-monat="2">Feb</span>
+      <span class="chip monat" data-monat="3">Mär</span>
+      <span class="chip monat" data-monat="4">Apr</span>
+      <span class="chip monat" data-monat="5">Mai</span>
+      <span class="chip monat" data-monat="6">Jun</span>
+      <span class="chip monat" data-monat="7">Jul</span>
+      <span class="chip monat" data-monat="8">Aug</span>
+      <span class="chip monat" data-monat="9">Sep</span>
+      <span class="chip monat" data-monat="10">Okt</span>
+      <span class="chip monat" data-monat="11">Nov</span>
+      <span class="chip monat" data-monat="12">Dez</span>
+    </div>
+    <div class="filter-group">
+      <span class="filter-label">Lebensraum:</span>
+      <span class="chip bereich" data-bereich="Wald">Wald</span>
+      <span class="chip bereich" data-bereich="Wiese">Wiese</span>
+    </div>
+
+    <details class="erweitert">
+      <summary>Erweiterte Suche: Familie · Blütenaufbau</summary>
+
+      <div class="filter-group" style="align-items:flex-start;">
+        <span class="filter-label">Familie:</span>
+        <div style="flex:1; min-width:0;">
+          <div class="familie-suche">
+            <input id="familie-suche" type="search" placeholder="Familie suchen (deutsch oder lateinisch)…" autocomplete="off" />
+          </div>
+          <div class="familie-liste" id="familie-liste">
+        <span class="chip familie" data-familie="Amaryllisgewächse" data-familie-lat="Amaryllidaceae">Amaryllisgewächse <span class="lat">Amaryllidaceae</span></span>
+        <span class="chip familie" data-familie="Hahnenfußgewächse" data-familie-lat="Ranunculaceae">Hahnenfußgewächse <span class="lat">Ranunculaceae</span></span>
+        <span class="chip familie" data-familie="Korbblütler" data-familie-lat="Asteraceae">Korbblütler <span class="lat">Asteraceae</span></span>
+        <span class="chip familie" data-familie="Kreuzblütler" data-familie-lat="Brassicaceae">Kreuzblütler <span class="lat">Brassicaceae</span></span>
+        <span class="chip familie" data-familie="Liliengewächse" data-familie-lat="Liliaceae">Liliengewächse <span class="lat">Liliaceae</span></span>
+        <span class="chip familie" data-familie="Lippenblütler" data-familie-lat="Lamiaceae">Lippenblütler <span class="lat">Lamiaceae</span></span>
+        <span class="chip familie" data-familie="Mohngewächse" data-familie-lat="Papaveraceae">Mohngewächse <span class="lat">Papaveraceae</span></span>
+        <span class="chip familie" data-familie="Nelkengewächse" data-familie-lat="Caryophyllaceae">Nelkengewächse <span class="lat">Caryophyllaceae</span></span>
+        <span class="chip familie" data-familie="Primelgewächse" data-familie-lat="Primulaceae">Primelgewächse <span class="lat">Primulaceae</span></span>
+        <span class="chip familie" data-familie="Raublattgewächse" data-familie-lat="Boraginaceae">Raublattgewächse <span class="lat">Boraginaceae</span></span>
+        <span class="chip familie" data-familie="Rosengewächse" data-familie-lat="Rosaceae">Rosengewächse <span class="lat">Rosaceae</span></span>
+        <span class="chip familie" data-familie="Sauerkleegewächse" data-familie-lat="Oxalidaceae">Sauerkleegewächse <span class="lat">Oxalidaceae</span></span>
+        <span class="chip familie" data-familie="Schmetterlingsblütler" data-familie-lat="Fabaceae">Schmetterlingsblütler <span class="lat">Fabaceae</span></span>
+        <span class="chip familie" data-familie="Spargelgewächse" data-familie-lat="Asparagaceae">Spargelgewächse <span class="lat">Asparagaceae</span></span>
+        <span class="chip familie" data-familie="Veilchengewächse" data-familie-lat="Violaceae">Veilchengewächse <span class="lat">Violaceae</span></span>
+        <span class="chip familie" data-familie="Wegerichgewächse" data-familie-lat="Plantaginaceae">Wegerichgewächse <span class="lat">Plantaginaceae</span></span>
+          </div>
+        </div>
+      </div>
+
+      <div class="filter-group">
+        <span class="filter-label">Blütenaufbau:</span>
+        <span class="chip aufbau" data-aufbau="sternförmig" title="sternförmig (radiärsymmetrisch)">
+          <svg class="symbol" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <circle cx="12" cy="12" r="2.4" fill="currentColor" stroke="none"></circle>
+            <path d="M12 2.5 L13.4 9.4 L12 11.6 L10.6 9.4 Z" fill="currentColor" stroke="none"></path>
+            <path d="M21.5 12 L14.6 13.4 L12.4 12 L14.6 10.6 Z" fill="currentColor" stroke="none"></path>
+            <path d="M12 21.5 L10.6 14.6 L12 12.4 L13.4 14.6 Z" fill="currentColor" stroke="none"></path>
+            <path d="M2.5 12 L9.4 10.6 L11.6 12 L9.4 13.4 Z" fill="currentColor" stroke="none"></path>
+            <path d="M5.3 5.3 L10 9.5 L10.5 10 L9.5 10 Z" fill="currentColor" stroke="none"></path>
+            <path d="M18.7 5.3 L14 9.5 L13.5 10 L14.5 10 Z" fill="currentColor" stroke="none"></path>
+            <path d="M5.3 18.7 L10 14.5 L10.5 14 L9.5 14 Z" fill="currentColor" stroke="none"></path>
+            <path d="M18.7 18.7 L14 14.5 L13.5 14 L14.5 14 Z" fill="currentColor" stroke="none"></path>
+          </svg>
+          sternförmig
+        </span>
+        <span class="chip aufbau" data-aufbau="lippenförmig" title="lippenförmig (asymmetrisch)">
+          <svg class="symbol" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M3 11 Q12 3 21 11 Q17 12 12 12 Q7 12 3 11 Z" fill="currentColor" stroke="none" opacity="0.85"></path>
+            <path d="M3 13 Q5 19 12 20 Q19 19 21 13 Q15 14 12 14 Q9 14 3 13 Z" fill="currentColor" stroke="none"></path>
+          </svg>
+          lippenförmig
+        </span>
+        <span class="chip aufbau" data-aufbau="vier_blueten" title="vier Blütenblätter">
+          <svg class="symbol" viewBox="0 0 24 24" aria-hidden="true">
+            <ellipse cx="12" cy="6" rx="3" ry="5" fill="currentColor"></ellipse>
+            <ellipse cx="18" cy="12" rx="5" ry="3" fill="currentColor"></ellipse>
+            <ellipse cx="12" cy="18" rx="3" ry="5" fill="currentColor"></ellipse>
+            <ellipse cx="6" cy="12" rx="5" ry="3" fill="currentColor"></ellipse>
+            <circle cx="12" cy="12" r="2" fill="#fff"></circle>
+          </svg>
+          vier Blütenblätter
+        </span>
+        <span class="chip aufbau" data-aufbau="fuenf_blueten" title="fünf Blütenblätter">
+          <svg class="symbol" viewBox="0 0 24 24" aria-hidden="true">
+            <ellipse cx="12" cy="5" rx="2.6" ry="4.5" fill="currentColor"></ellipse>
+            <ellipse cx="18.6" cy="9.8" rx="2.6" ry="4.5" fill="currentColor" transform="rotate(72 18.6 9.8)"></ellipse>
+            <ellipse cx="16.1" cy="17.6" rx="2.6" ry="4.5" fill="currentColor" transform="rotate(144 16.1 17.6)"></ellipse>
+            <ellipse cx="7.9" cy="17.6" rx="2.6" ry="4.5" fill="currentColor" transform="rotate(216 7.9 17.6)"></ellipse>
+            <ellipse cx="5.4" cy="9.8" rx="2.6" ry="4.5" fill="currentColor" transform="rotate(288 5.4 9.8)"></ellipse>
+            <circle cx="12" cy="12" r="2" fill="#fff"></circle>
+          </svg>
+          fünf Blütenblätter
+        </span>
+      </div>
+    </details>
+
+    <div class="zaehler">
+      <span id="zaehler">Alle 40 Arten angezeigt</span>
+      <button type="button" class="reset" id="reset">Filter zurücksetzen</button>
+    </div>
+  </section>
+
+  <section class="grid">
+
+    <a class="card" href="arten/galanthus-nivalis.html" data-art='{&quot;slug&quot;: &quot;galanthus-nivalis&quot;, &quot;farben&quot;: [&quot;weiß&quot;], &quot;habitat&quot;: &quot;Wald&quot;, &quot;monate&quot;: [1, 2, 3], &quot;familie_de&quot;: &quot;Amaryllisgewächse&quot;, &quot;familie_lat&quot;: &quot;Amaryllidaceae&quot;, &quot;bluetenaufbau&quot;: [&quot;sternförmig&quot;]}'>
+  <div class="tafel-wrap">
+    <span class="ecke-farbpunkt" data-farbe="weiß"></span>
+    <img src="images/tafeln/galanthus-nivalis.jpg" alt="Tafel Schneeglöckchen" loading="lazy">
+  </div>
+  <div class="card-body">
+    <div class="deutsch">Schneeglöckchen</div>
+    <div class="wiss">Galanthus nivalis</div>
+    <div class="familie">Amaryllisgewächse · <span style="font-style:italic">Amaryllidaceae</span></div>
+    <div class="meta">
+      <span class="bluehzeit">Jan–Mär</span>
+      <span class="farbenpunkte"><span class="farb-punkt" data-farbe="weiß" title="weiß"></span></span>
+      <span style="margin-left:6px; color:var(--text-leise);">Wald</span>
+    </div>
+  </div>
+</a>
+
+    <a class="card" href="arten/anemone-nemorosa.html" data-art='{&quot;slug&quot;: &quot;anemone-nemorosa&quot;, &quot;farben&quot;: [&quot;weiß&quot;], &quot;habitat&quot;: &quot;Wald&quot;, &quot;monate&quot;: [3, 4], &quot;familie_de&quot;: &quot;Hahnenfußgewächse&quot;, &quot;familie_lat&quot;: &quot;Ranunculaceae&quot;, &quot;bluetenaufbau&quot;: [&quot;sternförmig&quot;]}'>
+  <div class="tafel-wrap">
+    <span class="ecke-farbpunkt" data-farbe="weiß"></span>
+    <img src="images/tafeln/anemone-nemorosa.jpg" alt="Tafel Buschwindröschen" loading="lazy">
+  </div>
+  <div class="card-body">
+    <div class="deutsch">Buschwindröschen</div>
+    <div class="wiss">Anemone nemorosa</div>
+    <div class="familie">Hahnenfußgewächse · <span style="font-style:italic">Ranunculaceae</span></div>
+    <div class="meta">
+      <span class="bluehzeit">Mär–Apr</span>
+      <span class="farbenpunkte"><span class="farb-punkt" data-farbe="weiß" title="weiß"></span></span>
+      <span style="margin-left:6px; color:var(--text-leise);">Wald</span>
+    </div>
+  </div>
+</a>
+
+    <a class="card" href="arten/ficaria-verna.html" data-art='{&quot;slug&quot;: &quot;ficaria-verna&quot;, &quot;farben&quot;: [&quot;gelb&quot;], &quot;habitat&quot;: &quot;Wald&quot;, &quot;monate&quot;: [2, 3, 4], &quot;familie_de&quot;: &quot;Hahnenfußgewächse&quot;, &quot;familie_lat&quot;: &quot;Ranunculaceae&quot;, &quot;bluetenaufbau&quot;: [&quot;sternförmig&quot;]}'>
+  <div class="tafel-wrap">
+    <span class="ecke-farbpunkt" data-farbe="gelb"></span>
+    <img src="images/tafeln/ficaria-verna.jpg" alt="Tafel Scharbockskraut" loading="lazy">
+  </div>
+  <div class="card-body">
+    <div class="deutsch">Scharbockskraut</div>
+    <div class="wiss">Ficaria verna</div>
+    <div class="familie">Hahnenfußgewächse · <span style="font-style:italic">Ranunculaceae</span></div>
+    <div class="meta">
+      <span class="bluehzeit">Feb–Apr</span>
+      <span class="farbenpunkte"><span class="farb-punkt" data-farbe="gelb" title="gelb"></span></span>
+      <span style="margin-left:6px; color:var(--text-leise);">Wald</span>
+    </div>
+  </div>
+</a>
+
+    <a class="card" href="arten/allium-ursinum.html" data-art='{&quot;slug&quot;: &quot;allium-ursinum&quot;, &quot;farben&quot;: [&quot;weiß&quot;], &quot;habitat&quot;: &quot;Wald&quot;, &quot;monate&quot;: [4, 5], &quot;familie_de&quot;: &quot;Amaryllisgewächse&quot;, &quot;familie_lat&quot;: &quot;Amaryllidaceae&quot;, &quot;bluetenaufbau&quot;: [&quot;sternförmig&quot;]}'>
+  <div class="tafel-wrap">
+    <span class="ecke-farbpunkt" data-farbe="weiß"></span>
+    <img src="images/tafeln/allium-ursinum.jpg" alt="Tafel Bärlauch" loading="lazy">
+  </div>
+  <div class="card-body">
+    <div class="deutsch">Bärlauch</div>
+    <div class="wiss">Allium ursinum</div>
+    <div class="familie">Amaryllisgewächse · <span style="font-style:italic">Amaryllidaceae</span></div>
+    <div class="meta">
+      <span class="bluehzeit">Apr–Mai</span>
+      <span class="farbenpunkte"><span class="farb-punkt" data-farbe="weiß" title="weiß"></span></span>
+      <span style="margin-left:6px; color:var(--text-leise);">Wald</span>
+    </div>
+  </div>
+</a>
+
+    <a class="card" href="arten/corydalis-cava.html" data-art='{&quot;slug&quot;: &quot;corydalis-cava&quot;, &quot;farben&quot;: [&quot;violett&quot;, &quot;rosa&quot;], &quot;habitat&quot;: &quot;Wald&quot;, &quot;monate&quot;: [3, 4], &quot;familie_de&quot;: &quot;Mohngewächse&quot;, &quot;familie_lat&quot;: &quot;Papaveraceae&quot;, &quot;bluetenaufbau&quot;: [&quot;lippenförmig&quot;]}'>
+  <div class="tafel-wrap">
+    <span class="ecke-farbpunkt" data-farbe="violett"></span>
+    <img src="images/tafeln/corydalis-cava.jpg" alt="Tafel Hohler Lerchensporn" loading="lazy">
+  </div>
+  <div class="card-body">
+    <div class="deutsch">Hohler Lerchensporn</div>
+    <div class="wiss">Corydalis cava</div>
+    <div class="familie">Mohngewächse · <span style="font-style:italic">Papaveraceae</span></div>
+    <div class="meta">
+      <span class="bluehzeit">Mär–Apr</span>
+      <span class="farbenpunkte"><span class="farb-punkt" data-farbe="violett" title="violett"></span><span class="farb-punkt" data-farbe="rosa" title="rosa"></span></span>
+      <span style="margin-left:6px; color:var(--text-leise);">Wald</span>
+    </div>
+  </div>
+</a>
+
+    <a class="card" href="arten/corydalis-solida.html" data-art='{&quot;slug&quot;: &quot;corydalis-solida&quot;, &quot;farben&quot;: [&quot;violett&quot;, &quot;rosa&quot;], &quot;habitat&quot;: &quot;Wald&quot;, &quot;monate&quot;: [3, 4], &quot;familie_de&quot;: &quot;Mohngewächse&quot;, &quot;familie_lat&quot;: &quot;Papaveraceae&quot;, &quot;bluetenaufbau&quot;: [&quot;lippenförmig&quot;]}'>
+  <div class="tafel-wrap">
+    <span class="ecke-farbpunkt" data-farbe="violett"></span>
+    <img src="images/tafeln/corydalis-solida.jpg" alt="Tafel Gefingerter Lerchensporn" loading="lazy">
+  </div>
+  <div class="card-body">
+    <div class="deutsch">Gefingerter Lerchensporn</div>
+    <div class="wiss">Corydalis solida</div>
+    <div class="familie">Mohngewächse · <span style="font-style:italic">Papaveraceae</span></div>
+    <div class="meta">
+      <span class="bluehzeit">Mär–Apr</span>
+      <span class="farbenpunkte"><span class="farb-punkt" data-farbe="violett" title="violett"></span><span class="farb-punkt" data-farbe="rosa" title="rosa"></span></span>
+      <span style="margin-left:6px; color:var(--text-leise);">Wald</span>
+    </div>
+  </div>
+</a>
+
+    <a class="card" href="arten/gagea-lutea.html" data-art='{&quot;slug&quot;: &quot;gagea-lutea&quot;, &quot;farben&quot;: [&quot;gelb&quot;], &quot;habitat&quot;: &quot;Wald&quot;, &quot;monate&quot;: [3, 4], &quot;familie_de&quot;: &quot;Liliengewächse&quot;, &quot;familie_lat&quot;: &quot;Liliaceae&quot;, &quot;bluetenaufbau&quot;: [&quot;sternförmig&quot;]}'>
+  <div class="tafel-wrap">
+    <span class="ecke-farbpunkt" data-farbe="gelb"></span>
+    <img src="images/tafeln/gagea-lutea.jpg" alt="Tafel Wald-Gelbstern" loading="lazy">
+  </div>
+  <div class="card-body">
+    <div class="deutsch">Wald-Gelbstern</div>
+    <div class="wiss">Gagea lutea</div>
+    <div class="familie">Liliengewächse · <span style="font-style:italic">Liliaceae</span></div>
+    <div class="meta">
+      <span class="bluehzeit">Mär–Apr</span>
+      <span class="farbenpunkte"><span class="farb-punkt" data-farbe="gelb" title="gelb"></span></span>
+      <span style="margin-left:6px; color:var(--text-leise);">Wald</span>
+    </div>
+  </div>
+</a>
+
+    <a class="card" href="arten/anemone-ranunculoides.html" data-art='{&quot;slug&quot;: &quot;anemone-ranunculoides&quot;, &quot;farben&quot;: [&quot;gelb&quot;], &quot;habitat&quot;: &quot;Wald&quot;, &quot;monate&quot;: [3, 4], &quot;familie_de&quot;: &quot;Hahnenfußgewächse&quot;, &quot;familie_lat&quot;: &quot;Ranunculaceae&quot;, &quot;bluetenaufbau&quot;: [&quot;sternförmig&quot;]}'>
+  <div class="tafel-wrap">
+    <span class="ecke-farbpunkt" data-farbe="gelb"></span>
+    <img src="images/tafeln/anemone-ranunculoides.jpg" alt="Tafel Gelbes Windröschen" loading="lazy">
+  </div>
+  <div class="card-body">
+    <div class="deutsch">Gelbes Windröschen</div>
+    <div class="wiss">Anemone ranunculoides</div>
+    <div class="familie">Hahnenfußgewächse · <span style="font-style:italic">Ranunculaceae</span></div>
+    <div class="meta">
+      <span class="bluehzeit">Mär–Apr</span>
+      <span class="farbenpunkte"><span class="farb-punkt" data-farbe="gelb" title="gelb"></span></span>
+      <span style="margin-left:6px; color:var(--text-leise);">Wald</span>
+    </div>
+  </div>
+</a>
+
+    <a class="card" href="arten/oxalis-acetosella.html" data-art='{&quot;slug&quot;: &quot;oxalis-acetosella&quot;, &quot;farben&quot;: [&quot;weiß&quot;], &quot;habitat&quot;: &quot;Wald&quot;, &quot;monate&quot;: [4, 5], &quot;familie_de&quot;: &quot;Sauerkleegewächse&quot;, &quot;familie_lat&quot;: &quot;Oxalidaceae&quot;, &quot;bluetenaufbau&quot;: [&quot;fuenf_blueten&quot;]}'>
+  <div class="tafel-wrap">
+    <span class="ecke-farbpunkt" data-farbe="weiß"></span>
+    <img src="images/tafeln/oxalis-acetosella.jpg" alt="Tafel Wald-Sauerklee" loading="lazy">
+  </div>
+  <div class="card-body">
+    <div class="deutsch">Wald-Sauerklee</div>
+    <div class="wiss">Oxalis acetosella</div>
+    <div class="familie">Sauerkleegewächse · <span style="font-style:italic">Oxalidaceae</span></div>
+    <div class="meta">
+      <span class="bluehzeit">Apr–Mai</span>
+      <span class="farbenpunkte"><span class="farb-punkt" data-farbe="weiß" title="weiß"></span></span>
+      <span style="margin-left:6px; color:var(--text-leise);">Wald</span>
+    </div>
+  </div>
+</a>
+
+    <a class="card" href="arten/pulmonaria-officinalis.html" data-art='{&quot;slug&quot;: &quot;pulmonaria-officinalis&quot;, &quot;farben&quot;: [&quot;rosa&quot;, &quot;blau&quot;], &quot;habitat&quot;: &quot;Wald&quot;, &quot;monate&quot;: [3, 4], &quot;familie_de&quot;: &quot;Raublattgewächse&quot;, &quot;familie_lat&quot;: &quot;Boraginaceae&quot;, &quot;bluetenaufbau&quot;: [&quot;fuenf_blueten&quot;]}'>
+  <div class="tafel-wrap">
+    <span class="ecke-farbpunkt" data-farbe="rosa"></span>
+    <img src="images/tafeln/pulmonaria-officinalis.jpg" alt="Tafel Lungenkraut" loading="lazy">
+  </div>
+  <div class="card-body">
+    <div class="deutsch">Lungenkraut</div>
+    <div class="wiss">Pulmonaria officinalis</div>
+    <div class="familie">Raublattgewächse · <span style="font-style:italic">Boraginaceae</span></div>
+    <div class="meta">
+      <span class="bluehzeit">Mär–Apr</span>
+      <span class="farbenpunkte"><span class="farb-punkt" data-farbe="rosa" title="rosa"></span><span class="farb-punkt" data-farbe="blau" title="blau"></span></span>
+      <span style="margin-left:6px; color:var(--text-leise);">Wald</span>
+    </div>
+  </div>
+</a>
+
+    <a class="card" href="arten/hepatica-nobilis.html" data-art='{&quot;slug&quot;: &quot;hepatica-nobilis&quot;, &quot;farben&quot;: [&quot;blau&quot;, &quot;violett&quot;], &quot;habitat&quot;: &quot;Wald&quot;, &quot;monate&quot;: [2, 3], &quot;familie_de&quot;: &quot;Hahnenfußgewächse&quot;, &quot;familie_lat&quot;: &quot;Ranunculaceae&quot;, &quot;bluetenaufbau&quot;: [&quot;sternförmig&quot;]}'>
+  <div class="tafel-wrap">
+    <span class="ecke-farbpunkt" data-farbe="blau"></span>
+    <img src="images/tafeln/hepatica-nobilis.jpg" alt="Tafel Leberblümchen" loading="lazy">
+  </div>
+  <div class="card-body">
+    <div class="deutsch">Leberblümchen</div>
+    <div class="wiss">Hepatica nobilis</div>
+    <div class="familie">Hahnenfußgewächse · <span style="font-style:italic">Ranunculaceae</span></div>
+    <div class="meta">
+      <span class="bluehzeit">Feb–Mär</span>
+      <span class="farbenpunkte"><span class="farb-punkt" data-farbe="blau" title="blau"></span><span class="farb-punkt" data-farbe="violett" title="violett"></span></span>
+      <span style="margin-left:6px; color:var(--text-leise);">Wald</span>
+    </div>
+  </div>
+</a>
+
+    <a class="card" href="arten/leucojum-vernum.html" data-art='{&quot;slug&quot;: &quot;leucojum-vernum&quot;, &quot;farben&quot;: [&quot;weiß&quot;], &quot;habitat&quot;: &quot;Wald&quot;, &quot;monate&quot;: [2, 3], &quot;familie_de&quot;: &quot;Amaryllisgewächse&quot;, &quot;familie_lat&quot;: &quot;Amaryllidaceae&quot;, &quot;bluetenaufbau&quot;: [&quot;sternförmig&quot;]}'>
+  <div class="tafel-wrap">
+    <span class="ecke-farbpunkt" data-farbe="weiß"></span>
+    <img src="images/tafeln/leucojum-vernum.jpg" alt="Tafel Märzbecher" loading="lazy">
+  </div>
+  <div class="card-body">
+    <div class="deutsch">Märzbecher</div>
+    <div class="wiss">Leucojum vernum</div>
+    <div class="familie">Amaryllisgewächse · <span style="font-style:italic">Amaryllidaceae</span></div>
+    <div class="meta">
+      <span class="bluehzeit">Feb–Mär</span>
+      <span class="farbenpunkte"><span class="farb-punkt" data-farbe="weiß" title="weiß"></span></span>
+      <span style="margin-left:6px; color:var(--text-leise);">Wald</span>
+    </div>
+  </div>
+</a>
+
+    <a class="card" href="arten/lathyrus-vernus.html" data-art='{&quot;slug&quot;: &quot;lathyrus-vernus&quot;, &quot;farben&quot;: [&quot;violett&quot;, &quot;rosa&quot;], &quot;habitat&quot;: &quot;Wald&quot;, &quot;monate&quot;: [3, 4, 5], &quot;familie_de&quot;: &quot;Schmetterlingsblütler&quot;, &quot;familie_lat&quot;: &quot;Fabaceae&quot;, &quot;bluetenaufbau&quot;: [&quot;lippenförmig&quot;]}'>
+  <div class="tafel-wrap">
+    <span class="ecke-farbpunkt" data-farbe="violett"></span>
+    <img src="images/tafeln/lathyrus-vernus.jpg" alt="Tafel Frühlings-Platterbse" loading="lazy">
+  </div>
+  <div class="card-body">
+    <div class="deutsch">Frühlings-Platterbse</div>
+    <div class="wiss">Lathyrus vernus</div>
+    <div class="familie">Schmetterlingsblütler · <span style="font-style:italic">Fabaceae</span></div>
+    <div class="meta">
+      <span class="bluehzeit">Mär–Mai</span>
+      <span class="farbenpunkte"><span class="farb-punkt" data-farbe="violett" title="violett"></span><span class="farb-punkt" data-farbe="rosa" title="rosa"></span></span>
+      <span style="margin-left:6px; color:var(--text-leise);">Wald</span>
+    </div>
+  </div>
+</a>
+
+    <a class="card" href="arten/eranthis-hyemalis.html" data-art='{&quot;slug&quot;: &quot;eranthis-hyemalis&quot;, &quot;farben&quot;: [&quot;gelb&quot;], &quot;habitat&quot;: &quot;Wald&quot;, &quot;monate&quot;: [1, 2, 3], &quot;familie_de&quot;: &quot;Hahnenfußgewächse&quot;, &quot;familie_lat&quot;: &quot;Ranunculaceae&quot;, &quot;bluetenaufbau&quot;: [&quot;sternförmig&quot;]}'>
+  <div class="tafel-wrap">
+    <span class="ecke-farbpunkt" data-farbe="gelb"></span>
+    <img src="images/tafeln/eranthis-hyemalis.jpg" alt="Tafel Winterling" loading="lazy">
+  </div>
+  <div class="card-body">
+    <div class="deutsch">Winterling</div>
+    <div class="wiss">Eranthis hyemalis</div>
+    <div class="familie">Hahnenfußgewächse · <span style="font-style:italic">Ranunculaceae</span></div>
+    <div class="meta">
+      <span class="bluehzeit">Jan–Mär</span>
+      <span class="farbenpunkte"><span class="farb-punkt" data-farbe="gelb" title="gelb"></span></span>
+      <span style="margin-left:6px; color:var(--text-leise);">Wald</span>
+    </div>
+  </div>
+</a>
+
+    <a class="card" href="arten/lamium-galeobdolon.html" data-art='{&quot;slug&quot;: &quot;lamium-galeobdolon&quot;, &quot;farben&quot;: [&quot;gelb&quot;], &quot;habitat&quot;: &quot;Wald&quot;, &quot;monate&quot;: [4, 5, 6], &quot;familie_de&quot;: &quot;Lippenblütler&quot;, &quot;familie_lat&quot;: &quot;Lamiaceae&quot;, &quot;bluetenaufbau&quot;: [&quot;lippenförmig&quot;]}'>
+  <div class="tafel-wrap">
+    <span class="ecke-farbpunkt" data-farbe="gelb"></span>
+    <img src="images/tafeln/lamium-galeobdolon.jpg" alt="Tafel Goldnessel" loading="lazy">
+  </div>
+  <div class="card-body">
+    <div class="deutsch">Goldnessel</div>
+    <div class="wiss">Lamium galeobdolon</div>
+    <div class="familie">Lippenblütler · <span style="font-style:italic">Lamiaceae</span></div>
+    <div class="meta">
+      <span class="bluehzeit">Apr–Jun</span>
+      <span class="farbenpunkte"><span class="farb-punkt" data-farbe="gelb" title="gelb"></span></span>
+      <span style="margin-left:6px; color:var(--text-leise);">Wald</span>
+    </div>
+  </div>
+</a>
+
+    <a class="card" href="arten/scilla-bifolia.html" data-art='{&quot;slug&quot;: &quot;scilla-bifolia&quot;, &quot;farben&quot;: [&quot;violett&quot;, &quot;blau&quot;], &quot;habitat&quot;: &quot;Wald&quot;, &quot;monate&quot;: [2, 3, 4], &quot;familie_de&quot;: &quot;Spargelgewächse&quot;, &quot;familie_lat&quot;: &quot;Asparagaceae&quot;, &quot;bluetenaufbau&quot;: [&quot;sternförmig&quot;]}'>
+  <div class="tafel-wrap">
+    <span class="ecke-farbpunkt" data-farbe="violett"></span>
+    <img src="images/tafeln/scilla-bifolia.jpg" alt="Tafel Gewöhnliche Sternhyazinthe" loading="lazy">
+  </div>
+  <div class="card-body">
+    <div class="deutsch">Gewöhnliche Sternhyazinthe</div>
+    <div class="wiss">Scilla bifolia</div>
+    <div class="familie">Spargelgewächse · <span style="font-style:italic">Asparagaceae</span></div>
+    <div class="meta">
+      <span class="bluehzeit">Feb–Apr</span>
+      <span class="farbenpunkte"><span class="farb-punkt" data-farbe="violett" title="violett"></span><span class="farb-punkt" data-farbe="blau" title="blau"></span></span>
+      <span style="margin-left:6px; color:var(--text-leise);">Wald</span>
+    </div>
+  </div>
+</a>
+
+    <a class="card" href="arten/ranunculus-auricomus.html" data-art='{&quot;slug&quot;: &quot;ranunculus-auricomus&quot;, &quot;farben&quot;: [&quot;gelb&quot;], &quot;habitat&quot;: &quot;Wald&quot;, &quot;monate&quot;: [4, 5], &quot;familie_de&quot;: &quot;Hahnenfußgewächse&quot;, &quot;familie_lat&quot;: &quot;Ranunculaceae&quot;, &quot;bluetenaufbau&quot;: [&quot;fuenf_blueten&quot;]}'>
+  <div class="tafel-wrap">
+    <span class="ecke-farbpunkt" data-farbe="gelb"></span>
+    <img src="images/tafeln/ranunculus-auricomus.jpg" alt="Tafel Gold-Hahnenfuß" loading="lazy">
+  </div>
+  <div class="card-body">
+    <div class="deutsch">Gold-Hahnenfuß</div>
+    <div class="wiss">Ranunculus auricomus</div>
+    <div class="familie">Hahnenfußgewächse · <span style="font-style:italic">Ranunculaceae</span></div>
+    <div class="meta">
+      <span class="bluehzeit">Apr–Mai</span>
+      <span class="farbenpunkte"><span class="farb-punkt" data-farbe="gelb" title="gelb"></span></span>
+      <span style="margin-left:6px; color:var(--text-leise);">Wald</span>
+    </div>
+  </div>
+</a>
+
+    <a class="card" href="arten/ajuga-reptans.html" data-art='{&quot;slug&quot;: &quot;ajuga-reptans&quot;, &quot;farben&quot;: [&quot;blau&quot;], &quot;habitat&quot;: &quot;Wald&quot;, &quot;monate&quot;: [4, 5, 6], &quot;familie_de&quot;: &quot;Lippenblütler&quot;, &quot;familie_lat&quot;: &quot;Lamiaceae&quot;, &quot;bluetenaufbau&quot;: [&quot;lippenförmig&quot;]}'>
+  <div class="tafel-wrap">
+    <span class="ecke-farbpunkt" data-farbe="blau"></span>
+    <img src="images/tafeln/ajuga-reptans.jpg" alt="Tafel Kriechender Günsel" loading="lazy">
+  </div>
+  <div class="card-body">
+    <div class="deutsch">Kriechender Günsel</div>
+    <div class="wiss">Ajuga reptans</div>
+    <div class="familie">Lippenblütler · <span style="font-style:italic">Lamiaceae</span></div>
+    <div class="meta">
+      <span class="bluehzeit">Apr–Jun</span>
+      <span class="farbenpunkte"><span class="farb-punkt" data-farbe="blau" title="blau"></span></span>
+      <span style="margin-left:6px; color:var(--text-leise);">Wald</span>
+    </div>
+  </div>
+</a>
+
+    <a class="card" href="arten/viola-odorata.html" data-art='{&quot;slug&quot;: &quot;viola-odorata&quot;, &quot;farben&quot;: [&quot;weiß&quot;, &quot;violett&quot;], &quot;habitat&quot;: &quot;Wald&quot;, &quot;monate&quot;: [2, 3, 4], &quot;familie_de&quot;: &quot;Veilchengewächse&quot;, &quot;familie_lat&quot;: &quot;Violaceae&quot;, &quot;bluetenaufbau&quot;: [&quot;fuenf_blueten&quot;, &quot;lippenförmig&quot;]}'>
+  <div class="tafel-wrap">
+    <span class="ecke-farbpunkt" data-farbe="weiß"></span>
+    <img src="images/tafeln/viola-odorata.jpg" alt="Tafel Wohlriechendes Veilchen" loading="lazy">
+  </div>
+  <div class="card-body">
+    <div class="deutsch">Wohlriechendes Veilchen</div>
+    <div class="wiss">Viola odorata</div>
+    <div class="familie">Veilchengewächse · <span style="font-style:italic">Violaceae</span></div>
+    <div class="meta">
+      <span class="bluehzeit">Feb–Apr</span>
+      <span class="farbenpunkte"><span class="farb-punkt" data-farbe="weiß" title="weiß"></span><span class="farb-punkt" data-farbe="violett" title="violett"></span></span>
+      <span style="margin-left:6px; color:var(--text-leise);">Wald</span>
+    </div>
+  </div>
+</a>
+
+    <a class="card" href="arten/alliaria-petiolata.html" data-art='{&quot;slug&quot;: &quot;alliaria-petiolata&quot;, &quot;farben&quot;: [&quot;weiß&quot;], &quot;habitat&quot;: &quot;Wald&quot;, &quot;monate&quot;: [4, 5, 6], &quot;familie_de&quot;: &quot;Kreuzblütler&quot;, &quot;familie_lat&quot;: &quot;Brassicaceae&quot;, &quot;bluetenaufbau&quot;: [&quot;vier_blueten&quot;]}'>
+  <div class="tafel-wrap">
+    <span class="ecke-farbpunkt" data-farbe="weiß"></span>
+    <img src="images/tafeln/alliaria-petiolata.jpg" alt="Tafel Knoblauchsrauke" loading="lazy">
+  </div>
+  <div class="card-body">
+    <div class="deutsch">Knoblauchsrauke</div>
+    <div class="wiss">Alliaria petiolata</div>
+    <div class="familie">Kreuzblütler · <span style="font-style:italic">Brassicaceae</span></div>
+    <div class="meta">
+      <span class="bluehzeit">Apr–Jun</span>
+      <span class="farbenpunkte"><span class="farb-punkt" data-farbe="weiß" title="weiß"></span></span>
+      <span style="margin-left:6px; color:var(--text-leise);">Wald</span>
+    </div>
+  </div>
+</a>
+
+    <a class="card" href="arten/stellaria-holostea.html" data-art='{&quot;slug&quot;: &quot;stellaria-holostea&quot;, &quot;farben&quot;: [&quot;weiß&quot;], &quot;habitat&quot;: &quot;Wald&quot;, &quot;monate&quot;: [4, 5, 6], &quot;familie_de&quot;: &quot;Nelkengewächse&quot;, &quot;familie_lat&quot;: &quot;Caryophyllaceae&quot;, &quot;bluetenaufbau&quot;: [&quot;sternförmig&quot;, &quot;fuenf_blueten&quot;]}'>
+  <div class="tafel-wrap">
+    <span class="ecke-farbpunkt" data-farbe="weiß"></span>
+    <img src="images/tafeln/stellaria-holostea.jpg" alt="Tafel Große Sternmiere" loading="lazy">
+  </div>
+  <div class="card-body">
+    <div class="deutsch">Große Sternmiere</div>
+    <div class="wiss">Stellaria holostea</div>
+    <div class="familie">Nelkengewächse · <span style="font-style:italic">Caryophyllaceae</span></div>
+    <div class="meta">
+      <span class="bluehzeit">Apr–Jun</span>
+      <span class="farbenpunkte"><span class="farb-punkt" data-farbe="weiß" title="weiß"></span></span>
+      <span style="margin-left:6px; color:var(--text-leise);">Wald</span>
+    </div>
+  </div>
+</a>
+
+    <a class="card" href="arten/bellis-perennis.html" data-art='{&quot;slug&quot;: &quot;bellis-perennis&quot;, &quot;farben&quot;: [&quot;weiß&quot;, &quot;gelb&quot;], &quot;habitat&quot;: &quot;Wiese&quot;, &quot;monate&quot;: [2, 3, 4, 5, 6, 7, 8, 9, 10, 11], &quot;familie_de&quot;: &quot;Korbblütler&quot;, &quot;familie_lat&quot;: &quot;Asteraceae&quot;, &quot;bluetenaufbau&quot;: [&quot;sternförmig&quot;]}'>
+  <div class="tafel-wrap">
+    <span class="ecke-farbpunkt" data-farbe="weiß"></span>
+    <img src="images/tafeln/bellis-perennis.jpg" alt="Tafel Gänseblümchen" loading="lazy">
+  </div>
+  <div class="card-body">
+    <div class="deutsch">Gänseblümchen</div>
+    <div class="wiss">Bellis perennis</div>
+    <div class="familie">Korbblütler · <span style="font-style:italic">Asteraceae</span></div>
+    <div class="meta">
+      <span class="bluehzeit">Feb–Nov</span>
+      <span class="farbenpunkte"><span class="farb-punkt" data-farbe="weiß" title="weiß"></span><span class="farb-punkt" data-farbe="gelb" title="gelb"></span></span>
+      <span style="margin-left:6px; color:var(--text-leise);">Wiese</span>
+    </div>
+  </div>
+</a>
+
+    <a class="card" href="arten/cardamine-pratensis.html" data-art='{&quot;slug&quot;: &quot;cardamine-pratensis&quot;, &quot;farben&quot;: [&quot;weiß&quot;, &quot;rosa&quot;], &quot;habitat&quot;: &quot;Wiese&quot;, &quot;monate&quot;: [4, 5], &quot;familie_de&quot;: &quot;Kreuzblütler&quot;, &quot;familie_lat&quot;: &quot;Brassicaceae&quot;, &quot;bluetenaufbau&quot;: [&quot;vier_blueten&quot;]}'>
+  <div class="tafel-wrap">
+    <span class="ecke-farbpunkt" data-farbe="weiß"></span>
+    <img src="images/tafeln/cardamine-pratensis.jpg" alt="Tafel Wiesen-Schaumkraut" loading="lazy">
+  </div>
+  <div class="card-body">
+    <div class="deutsch">Wiesen-Schaumkraut</div>
+    <div class="wiss">Cardamine pratensis</div>
+    <div class="familie">Kreuzblütler · <span style="font-style:italic">Brassicaceae</span></div>
+    <div class="meta">
+      <span class="bluehzeit">Apr–Mai</span>
+      <span class="farbenpunkte"><span class="farb-punkt" data-farbe="weiß" title="weiß"></span><span class="farb-punkt" data-farbe="rosa" title="rosa"></span></span>
+      <span style="margin-left:6px; color:var(--text-leise);">Wiese</span>
+    </div>
+  </div>
+</a>
+
+    <a class="card" href="arten/taraxacum-officinale.html" data-art='{&quot;slug&quot;: &quot;taraxacum-officinale&quot;, &quot;farben&quot;: [&quot;gelb&quot;], &quot;habitat&quot;: &quot;Wiese&quot;, &quot;monate&quot;: [3, 4, 5, 6, 7, 8, 9, 10], &quot;familie_de&quot;: &quot;Korbblütler&quot;, &quot;familie_lat&quot;: &quot;Asteraceae&quot;, &quot;bluetenaufbau&quot;: [&quot;sternförmig&quot;]}'>
+  <div class="tafel-wrap">
+    <span class="ecke-farbpunkt" data-farbe="gelb"></span>
+    <img src="images/tafeln/taraxacum-officinale.jpg" alt="Tafel Löwenzahn" loading="lazy">
+  </div>
+  <div class="card-body">
+    <div class="deutsch">Löwenzahn</div>
+    <div class="wiss">Taraxacum officinale</div>
+    <div class="familie">Korbblütler · <span style="font-style:italic">Asteraceae</span></div>
+    <div class="meta">
+      <span class="bluehzeit">Mär–Okt</span>
+      <span class="farbenpunkte"><span class="farb-punkt" data-farbe="gelb" title="gelb"></span></span>
+      <span style="margin-left:6px; color:var(--text-leise);">Wiese</span>
+    </div>
+  </div>
+</a>
+
+    <a class="card" href="arten/veronica-chamaedrys.html" data-art='{&quot;slug&quot;: &quot;veronica-chamaedrys&quot;, &quot;farben&quot;: [&quot;weiß&quot;, &quot;blau&quot;], &quot;habitat&quot;: &quot;Wiese&quot;, &quot;monate&quot;: [3, 4, 5, 6, 7], &quot;familie_de&quot;: &quot;Wegerichgewächse&quot;, &quot;familie_lat&quot;: &quot;Plantaginaceae&quot;, &quot;bluetenaufbau&quot;: [&quot;vier_blueten&quot;]}'>
+  <div class="tafel-wrap">
+    <span class="ecke-farbpunkt" data-farbe="weiß"></span>
+    <img src="images/tafeln/veronica-chamaedrys.jpg" alt="Tafel Gamander-Ehrenpreis" loading="lazy">
+  </div>
+  <div class="card-body">
+    <div class="deutsch">Gamander-Ehrenpreis</div>
+    <div class="wiss">Veronica chamaedrys</div>
+    <div class="familie">Wegerichgewächse · <span style="font-style:italic">Plantaginaceae</span></div>
+    <div class="meta">
+      <span class="bluehzeit">Mär–Jul</span>
+      <span class="farbenpunkte"><span class="farb-punkt" data-farbe="weiß" title="weiß"></span><span class="farb-punkt" data-farbe="blau" title="blau"></span></span>
+      <span style="margin-left:6px; color:var(--text-leise);">Wiese</span>
+    </div>
+  </div>
+</a>
+
+    <a class="card" href="arten/viola-tricolor.html" data-art='{&quot;slug&quot;: &quot;viola-tricolor&quot;, &quot;farben&quot;: [&quot;weiß&quot;, &quot;gelb&quot;, &quot;violett&quot;], &quot;habitat&quot;: &quot;Wiese&quot;, &quot;monate&quot;: [3, 4, 5, 6, 7, 8, 9, 10], &quot;familie_de&quot;: &quot;Veilchengewächse&quot;, &quot;familie_lat&quot;: &quot;Violaceae&quot;, &quot;bluetenaufbau&quot;: [&quot;fuenf_blueten&quot;, &quot;lippenförmig&quot;]}'>
+  <div class="tafel-wrap">
+    <span class="ecke-farbpunkt" data-farbe="weiß"></span>
+    <img src="images/tafeln/viola-tricolor.jpg" alt="Tafel Wildes Stiefmütterchen" loading="lazy">
+  </div>
+  <div class="card-body">
+    <div class="deutsch">Wildes Stiefmütterchen</div>
+    <div class="wiss">Viola tricolor</div>
+    <div class="familie">Veilchengewächse · <span style="font-style:italic">Violaceae</span></div>
+    <div class="meta">
+      <span class="bluehzeit">Mär–Okt</span>
+      <span class="farbenpunkte"><span class="farb-punkt" data-farbe="weiß" title="weiß"></span><span class="farb-punkt" data-farbe="gelb" title="gelb"></span><span class="farb-punkt" data-farbe="violett" title="violett"></span></span>
+      <span style="margin-left:6px; color:var(--text-leise);">Wiese</span>
+    </div>
+  </div>
+</a>
+
+    <a class="card" href="arten/thlaspi-arvense.html" data-art='{&quot;slug&quot;: &quot;thlaspi-arvense&quot;, &quot;farben&quot;: [&quot;weiß&quot;], &quot;habitat&quot;: &quot;Wiese&quot;, &quot;monate&quot;: [3, 4, 5, 6, 7, 8, 9, 10], &quot;familie_de&quot;: &quot;Kreuzblütler&quot;, &quot;familie_lat&quot;: &quot;Brassicaceae&quot;, &quot;bluetenaufbau&quot;: [&quot;vier_blueten&quot;]}'>
+  <div class="tafel-wrap">
+    <span class="ecke-farbpunkt" data-farbe="weiß"></span>
+    <img src="images/tafeln/thlaspi-arvense.jpg" alt="Tafel Acker-Hellerkraut" loading="lazy">
+  </div>
+  <div class="card-body">
+    <div class="deutsch">Acker-Hellerkraut</div>
+    <div class="wiss">Thlaspi arvense</div>
+    <div class="familie">Kreuzblütler · <span style="font-style:italic">Brassicaceae</span></div>
+    <div class="meta">
+      <span class="bluehzeit">Mär–Okt</span>
+      <span class="farbenpunkte"><span class="farb-punkt" data-farbe="weiß" title="weiß"></span></span>
+      <span style="margin-left:6px; color:var(--text-leise);">Wiese</span>
+    </div>
+  </div>
+</a>
+
+    <a class="card" href="arten/stellaria-media.html" data-art='{&quot;slug&quot;: &quot;stellaria-media&quot;, &quot;farben&quot;: [&quot;weiß&quot;], &quot;habitat&quot;: &quot;Wiese&quot;, &quot;monate&quot;: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12], &quot;familie_de&quot;: &quot;Nelkengewächse&quot;, &quot;familie_lat&quot;: &quot;Caryophyllaceae&quot;, &quot;bluetenaufbau&quot;: [&quot;sternförmig&quot;, &quot;fuenf_blueten&quot;]}'>
+  <div class="tafel-wrap">
+    <span class="ecke-farbpunkt" data-farbe="weiß"></span>
+    <img src="images/tafeln/stellaria-media.jpg" alt="Tafel Vogelmiere" loading="lazy">
+  </div>
+  <div class="card-body">
+    <div class="deutsch">Vogelmiere</div>
+    <div class="wiss">Stellaria media</div>
+    <div class="familie">Nelkengewächse · <span style="font-style:italic">Caryophyllaceae</span></div>
+    <div class="meta">
+      <span class="bluehzeit">Jan–Dez</span>
+      <span class="farbenpunkte"><span class="farb-punkt" data-farbe="weiß" title="weiß"></span></span>
+      <span style="margin-left:6px; color:var(--text-leise);">Wiese</span>
+    </div>
+  </div>
+</a>
+
+    <a class="card" href="arten/lamium-purpureum.html" data-art='{&quot;slug&quot;: &quot;lamium-purpureum&quot;, &quot;farben&quot;: [&quot;rosa&quot;, &quot;rot&quot;], &quot;habitat&quot;: &quot;Wiese&quot;, &quot;monate&quot;: [3, 4, 5, 6, 7, 8, 9, 10], &quot;familie_de&quot;: &quot;Lippenblütler&quot;, &quot;familie_lat&quot;: &quot;Lamiaceae&quot;, &quot;bluetenaufbau&quot;: [&quot;lippenförmig&quot;]}'>
+  <div class="tafel-wrap">
+    <span class="ecke-farbpunkt" data-farbe="rosa"></span>
+    <img src="images/tafeln/lamium-purpureum.jpg" alt="Tafel Rote Taubnessel" loading="lazy">
+  </div>
+  <div class="card-body">
+    <div class="deutsch">Rote Taubnessel</div>
+    <div class="wiss">Lamium purpureum</div>
+    <div class="familie">Lippenblütler · <span style="font-style:italic">Lamiaceae</span></div>
+    <div class="meta">
+      <span class="bluehzeit">Mär–Okt</span>
+      <span class="farbenpunkte"><span class="farb-punkt" data-farbe="rosa" title="rosa"></span><span class="farb-punkt" data-farbe="rot" title="rot"></span></span>
+      <span style="margin-left:6px; color:var(--text-leise);">Wiese</span>
+    </div>
+  </div>
+</a>
+
+    <a class="card" href="arten/caltha-palustris.html" data-art='{&quot;slug&quot;: &quot;caltha-palustris&quot;, &quot;farben&quot;: [&quot;gelb&quot;], &quot;habitat&quot;: &quot;Wiese&quot;, &quot;monate&quot;: [3, 4, 5], &quot;familie_de&quot;: &quot;Hahnenfußgewächse&quot;, &quot;familie_lat&quot;: &quot;Ranunculaceae&quot;, &quot;bluetenaufbau&quot;: [&quot;fuenf_blueten&quot;]}'>
+  <div class="tafel-wrap">
+    <span class="ecke-farbpunkt" data-farbe="gelb"></span>
+    <img src="images/tafeln/caltha-palustris.jpg" alt="Tafel Sumpfdotterblume" loading="lazy">
+  </div>
+  <div class="card-body">
+    <div class="deutsch">Sumpfdotterblume</div>
+    <div class="wiss">Caltha palustris</div>
+    <div class="familie">Hahnenfußgewächse · <span style="font-style:italic">Ranunculaceae</span></div>
+    <div class="meta">
+      <span class="bluehzeit">Mär–Mai</span>
+      <span class="farbenpunkte"><span class="farb-punkt" data-farbe="gelb" title="gelb"></span></span>
+      <span style="margin-left:6px; color:var(--text-leise);">Wiese</span>
+    </div>
+  </div>
+</a>
+
+    <a class="card" href="arten/tussilago-farfara.html" data-art='{&quot;slug&quot;: &quot;tussilago-farfara&quot;, &quot;farben&quot;: [&quot;gelb&quot;], &quot;habitat&quot;: &quot;Wiese&quot;, &quot;monate&quot;: [2, 3, 4], &quot;familie_de&quot;: &quot;Korbblütler&quot;, &quot;familie_lat&quot;: &quot;Asteraceae&quot;, &quot;bluetenaufbau&quot;: [&quot;sternförmig&quot;]}'>
+  <div class="tafel-wrap">
+    <span class="ecke-farbpunkt" data-farbe="gelb"></span>
+    <img src="images/tafeln/tussilago-farfara.jpg" alt="Tafel Huflattich" loading="lazy">
+  </div>
+  <div class="card-body">
+    <div class="deutsch">Huflattich</div>
+    <div class="wiss">Tussilago farfara</div>
+    <div class="familie">Korbblütler · <span style="font-style:italic">Asteraceae</span></div>
+    <div class="meta">
+      <span class="bluehzeit">Feb–Apr</span>
+      <span class="farbenpunkte"><span class="farb-punkt" data-farbe="gelb" title="gelb"></span></span>
+      <span style="margin-left:6px; color:var(--text-leise);">Wiese</span>
+    </div>
+  </div>
+</a>
+
+    <a class="card" href="arten/primula-veris.html" data-art='{&quot;slug&quot;: &quot;primula-veris&quot;, &quot;farben&quot;: [&quot;gelb&quot;], &quot;habitat&quot;: &quot;Wiese&quot;, &quot;monate&quot;: [4, 5], &quot;familie_de&quot;: &quot;Primelgewächse&quot;, &quot;familie_lat&quot;: &quot;Primulaceae&quot;, &quot;bluetenaufbau&quot;: [&quot;fuenf_blueten&quot;]}'>
+  <div class="tafel-wrap">
+    <span class="ecke-farbpunkt" data-farbe="gelb"></span>
+    <img src="images/tafeln/primula-veris.jpg" alt="Tafel Schlüsselblume" loading="lazy">
+  </div>
+  <div class="card-body">
+    <div class="deutsch">Schlüsselblume</div>
+    <div class="wiss">Primula veris</div>
+    <div class="familie">Primelgewächse · <span style="font-style:italic">Primulaceae</span></div>
+    <div class="meta">
+      <span class="bluehzeit">Apr–Mai</span>
+      <span class="farbenpunkte"><span class="farb-punkt" data-farbe="gelb" title="gelb"></span></span>
+      <span style="margin-left:6px; color:var(--text-leise);">Wiese</span>
+    </div>
+  </div>
+</a>
+
+    <a class="card" href="arten/muscari-botryoides.html" data-art='{&quot;slug&quot;: &quot;muscari-botryoides&quot;, &quot;farben&quot;: [&quot;blau&quot;], &quot;habitat&quot;: &quot;Wiese&quot;, &quot;monate&quot;: [3, 4, 5], &quot;familie_de&quot;: &quot;Spargelgewächse&quot;, &quot;familie_lat&quot;: &quot;Asparagaceae&quot;, &quot;bluetenaufbau&quot;: [&quot;sternförmig&quot;]}'>
+  <div class="tafel-wrap">
+    <span class="ecke-farbpunkt" data-farbe="blau"></span>
+    <img src="images/tafeln/muscari-botryoides.jpg" alt="Tafel Traubenhyazinthe" loading="lazy">
+  </div>
+  <div class="card-body">
+    <div class="deutsch">Traubenhyazinthe</div>
+    <div class="wiss">Muscari botryoides</div>
+    <div class="familie">Spargelgewächse · <span style="font-style:italic">Asparagaceae</span></div>
+    <div class="meta">
+      <span class="bluehzeit">Mär–Mai</span>
+      <span class="farbenpunkte"><span class="farb-punkt" data-farbe="blau" title="blau"></span></span>
+      <span style="margin-left:6px; color:var(--text-leise);">Wiese</span>
+    </div>
+  </div>
+</a>
+
+    <a class="card" href="arten/scilla-siberica.html" data-art='{&quot;slug&quot;: &quot;scilla-siberica&quot;, &quot;farben&quot;: [&quot;blau&quot;], &quot;habitat&quot;: &quot;Wiese&quot;, &quot;monate&quot;: [2, 3, 4], &quot;familie_de&quot;: &quot;Spargelgewächse&quot;, &quot;familie_lat&quot;: &quot;Asparagaceae&quot;, &quot;bluetenaufbau&quot;: [&quot;sternförmig&quot;]}'>
+  <div class="tafel-wrap">
+    <span class="ecke-farbpunkt" data-farbe="blau"></span>
+    <img src="images/tafeln/scilla-siberica.jpg" alt="Tafel Blaustern" loading="lazy">
+  </div>
+  <div class="card-body">
+    <div class="deutsch">Blaustern</div>
+    <div class="wiss">Scilla siberica</div>
+    <div class="familie">Spargelgewächse · <span style="font-style:italic">Asparagaceae</span></div>
+    <div class="meta">
+      <span class="bluehzeit">Feb–Apr</span>
+      <span class="farbenpunkte"><span class="farb-punkt" data-farbe="blau" title="blau"></span></span>
+      <span style="margin-left:6px; color:var(--text-leise);">Wiese</span>
+    </div>
+  </div>
+</a>
+
+    <a class="card" href="arten/potentilla-neumanniana.html" data-art='{&quot;slug&quot;: &quot;potentilla-neumanniana&quot;, &quot;farben&quot;: [&quot;gelb&quot;], &quot;habitat&quot;: &quot;Wiese&quot;, &quot;monate&quot;: [3, 4, 5], &quot;familie_de&quot;: &quot;Rosengewächse&quot;, &quot;familie_lat&quot;: &quot;Rosaceae&quot;, &quot;bluetenaufbau&quot;: [&quot;fuenf_blueten&quot;]}'>
+  <div class="tafel-wrap">
+    <span class="ecke-farbpunkt" data-farbe="gelb"></span>
+    <img src="images/tafeln/potentilla-neumanniana.jpg" alt="Tafel Frühlings-Fingerkraut" loading="lazy">
+  </div>
+  <div class="card-body">
+    <div class="deutsch">Frühlings-Fingerkraut</div>
+    <div class="wiss">Potentilla neumanniana</div>
+    <div class="familie">Rosengewächse · <span style="font-style:italic">Rosaceae</span></div>
+    <div class="meta">
+      <span class="bluehzeit">Mär–Mai</span>
+      <span class="farbenpunkte"><span class="farb-punkt" data-farbe="gelb" title="gelb"></span></span>
+      <span style="margin-left:6px; color:var(--text-leise);">Wiese</span>
+    </div>
+  </div>
+</a>
+
+    <a class="card" href="arten/erophila-verna.html" data-art='{&quot;slug&quot;: &quot;erophila-verna&quot;, &quot;farben&quot;: [&quot;weiß&quot;], &quot;habitat&quot;: &quot;Wiese&quot;, &quot;monate&quot;: [2, 3, 4], &quot;familie_de&quot;: &quot;Kreuzblütler&quot;, &quot;familie_lat&quot;: &quot;Brassicaceae&quot;, &quot;bluetenaufbau&quot;: [&quot;vier_blueten&quot;]}'>
+  <div class="tafel-wrap">
+    <span class="ecke-farbpunkt" data-farbe="weiß"></span>
+    <img src="images/tafeln/erophila-verna.jpg" alt="Tafel Frühlings-Hungerblümchen" loading="lazy">
+  </div>
+  <div class="card-body">
+    <div class="deutsch">Frühlings-Hungerblümchen</div>
+    <div class="wiss">Erophila verna</div>
+    <div class="familie">Kreuzblütler · <span style="font-style:italic">Brassicaceae</span></div>
+    <div class="meta">
+      <span class="bluehzeit">Feb–Apr</span>
+      <span class="farbenpunkte"><span class="farb-punkt" data-farbe="weiß" title="weiß"></span></span>
+      <span style="margin-left:6px; color:var(--text-leise);">Wiese</span>
+    </div>
+  </div>
+</a>
+
+    <a class="card" href="arten/pulsatilla-vulgaris.html" data-art='{&quot;slug&quot;: &quot;pulsatilla-vulgaris&quot;, &quot;farben&quot;: [&quot;violett&quot;], &quot;habitat&quot;: &quot;Wiese&quot;, &quot;monate&quot;: [3, 4], &quot;familie_de&quot;: &quot;Hahnenfußgewächse&quot;, &quot;familie_lat&quot;: &quot;Ranunculaceae&quot;, &quot;bluetenaufbau&quot;: [&quot;sternförmig&quot;]}'>
+  <div class="tafel-wrap">
+    <span class="ecke-farbpunkt" data-farbe="violett"></span>
+    <img src="images/tafeln/pulsatilla-vulgaris.jpg" alt="Tafel Küchenschelle" loading="lazy">
+  </div>
+  <div class="card-body">
+    <div class="deutsch">Küchenschelle</div>
+    <div class="wiss">Pulsatilla vulgaris</div>
+    <div class="familie">Hahnenfußgewächse · <span style="font-style:italic">Ranunculaceae</span></div>
+    <div class="meta">
+      <span class="bluehzeit">Mär–Apr</span>
+      <span class="farbenpunkte"><span class="farb-punkt" data-farbe="violett" title="violett"></span></span>
+      <span style="margin-left:6px; color:var(--text-leise);">Wiese</span>
+    </div>
+  </div>
+</a>
+
+    <a class="card" href="arten/veronica-persica.html" data-art='{&quot;slug&quot;: &quot;veronica-persica&quot;, &quot;farben&quot;: [&quot;blau&quot;], &quot;habitat&quot;: &quot;Wiese&quot;, &quot;monate&quot;: [2, 3, 4, 5, 6, 7, 8, 9, 10], &quot;familie_de&quot;: &quot;Wegerichgewächse&quot;, &quot;familie_lat&quot;: &quot;Plantaginaceae&quot;, &quot;bluetenaufbau&quot;: [&quot;vier_blueten&quot;]}'>
+  <div class="tafel-wrap">
+    <span class="ecke-farbpunkt" data-farbe="blau"></span>
+    <img src="images/tafeln/veronica-persica.jpg" alt="Tafel Persischer Ehrenpreis" loading="lazy">
+  </div>
+  <div class="card-body">
+    <div class="deutsch">Persischer Ehrenpreis</div>
+    <div class="wiss">Veronica persica</div>
+    <div class="familie">Wegerichgewächse · <span style="font-style:italic">Plantaginaceae</span></div>
+    <div class="meta">
+      <span class="bluehzeit">Feb–Okt</span>
+      <span class="farbenpunkte"><span class="farb-punkt" data-farbe="blau" title="blau"></span></span>
+      <span style="margin-left:6px; color:var(--text-leise);">Wiese</span>
+    </div>
+  </div>
+</a>
+
+    <a class="card" href="arten/cardamine-hirsuta.html" data-art='{&quot;slug&quot;: &quot;cardamine-hirsuta&quot;, &quot;farben&quot;: [&quot;weiß&quot;], &quot;habitat&quot;: &quot;Wiese&quot;, &quot;monate&quot;: [2, 3, 4, 5], &quot;familie_de&quot;: &quot;Kreuzblütler&quot;, &quot;familie_lat&quot;: &quot;Brassicaceae&quot;, &quot;bluetenaufbau&quot;: [&quot;vier_blueten&quot;]}'>
+  <div class="tafel-wrap">
+    <span class="ecke-farbpunkt" data-farbe="weiß"></span>
+    <img src="images/tafeln/cardamine-hirsuta.jpg" alt="Tafel Viermänniges Schaumkraut" loading="lazy">
+  </div>
+  <div class="card-body">
+    <div class="deutsch">Viermänniges Schaumkraut</div>
+    <div class="wiss">Cardamine hirsuta</div>
+    <div class="familie">Kreuzblütler · <span style="font-style:italic">Brassicaceae</span></div>
+    <div class="meta">
+      <span class="bluehzeit">Feb–Mai</span>
+      <span class="farbenpunkte"><span class="farb-punkt" data-farbe="weiß" title="weiß"></span></span>
+      <span style="margin-left:6px; color:var(--text-leise);">Wiese</span>
+    </div>
+  </div>
+</a>
+
+    <a class="card" href="arten/lamium-album.html" data-art='{&quot;slug&quot;: &quot;lamium-album&quot;, &quot;farben&quot;: [&quot;weiß&quot;], &quot;habitat&quot;: &quot;Wiese&quot;, &quot;monate&quot;: [3, 4, 5, 6, 7, 8, 9, 10], &quot;familie_de&quot;: &quot;Lippenblütler&quot;, &quot;familie_lat&quot;: &quot;Lamiaceae&quot;, &quot;bluetenaufbau&quot;: [&quot;lippenförmig&quot;]}'>
+  <div class="tafel-wrap">
+    <span class="ecke-farbpunkt" data-farbe="weiß"></span>
+    <img src="images/tafeln/lamium-album.jpg" alt="Tafel Weiße Taubnessel" loading="lazy">
+  </div>
+  <div class="card-body">
+    <div class="deutsch">Weiße Taubnessel</div>
+    <div class="wiss">Lamium album</div>
+    <div class="familie">Lippenblütler · <span style="font-style:italic">Lamiaceae</span></div>
+    <div class="meta">
+      <span class="bluehzeit">Mär–Okt</span>
+      <span class="farbenpunkte"><span class="farb-punkt" data-farbe="weiß" title="weiß"></span></span>
+      <span style="margin-left:6px; color:var(--text-leise);">Wiese</span>
+    </div>
+  </div>
+</a>
+
+  </section>
+  <div class="leer" id="leer" style="display:none">Keine Art passt zu dieser Kombination — bitte Filter anpassen.</div>
+</main>
+<script src="assets/filter.js"></script>
+
+<footer class="bottom">
+  <div class="wrap footer-text">
+    <p>Diese Sammlung ist das Ergebnis langjähriger Beobachtungen und meiner Leidenschaft für die Pflanzenwelt unserer Region.</p>
+    <p>Hinweise, Korrekturen, eigene Beobachtungen → <a href="mailto:mibaur@me.com">mibaur@me.com</a></p>
+    <p class="lizenz">© 2026 Michael Baur · Meine Fotografien dürfen für private Zwecke gerne verwendet werden (Lizenz: CC BY-NC).</p>
+  </div>
+</footer>
+</body>
+</html>
