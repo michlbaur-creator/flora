@@ -11,9 +11,8 @@
 <header class="top">
   <div class="wrap top-inner">
     <div class="titelblock">
-      <h1><a href="index.html">Was blüht hier?</a></h1>
-      <div class="untertitel">Die digitale Pflanzensammlung von Michael Baur</div>
-      <div class="autor">Heimische Flora im modernen Online-Format.</div>
+      <h1><a href="index.html">Was blüht denn hier?</a></h1>
+      <div class="untertitel">Ein Online-Bestimmungsbuch von Michael Baur</div>
     </div>
     <label class="schnellsuche" for="schnellsuche-input">
       <svg class="lupe" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
@@ -27,16 +26,13 @@
 
 <section class="einleitung">
   <div class="wrap">
-    <ul class="merkmale">
-      <li><b>Erkennen:</b> Meine Fotos direkt aus der Region</li>
-      <li><b>Sehen:</b> Detailreiche Lehrtafeln (KI-unterstützt)</li>
-      <li><b>Wissen:</b> Steckbriefe mit allen Fakten</li>
-    </ul>
+    <p class="merkmale-zeile">Lehrtafeln (KI-unterstützt) <span class="trenner">|</span> Fotos <span class="trenner">|</span> Stories</p>
     <p class="filter-einleitung">Wähle hier deine Filter zur Bestimmung:</p>
   </div>
 </section>
 
 <main class="wrap">
+  <div class="aktive-filter" id="aktive-filter" aria-live="polite"></div>
   <section class="filter">
     <div class="filter-group">
       <span class="filter-label">Farbe:</span>
@@ -45,7 +41,6 @@
       <span class="chip farbe" data-farbe="blau">blau</span>
       <span class="chip farbe" data-farbe="violett">violett</span>
       <span class="chip farbe" data-farbe="rot">rot</span>
-      <span class="chip farbe" data-farbe="grün">grün</span>
     </div>
     <div class="filter-group">
       <span class="filter-label">Blühzeit:</span>
@@ -841,8 +836,9 @@
 <footer class="bottom">
   <div class="wrap footer-text">
     <p>Diese Sammlung ist das Ergebnis langjähriger Beobachtungen und meiner Leidenschaft für die Pflanzenwelt unserer Region.</p>
-    <p>Hinweise, Korrekturen, eigene Beobachtungen → <a href="mailto:mibaur@me.com">mibaur@me.com</a></p>
-    <p class="lizenz">© 2026 Michael Baur · Meine Fotografien dürfen für private Zwecke gerne verwendet werden (Lizenz: CC BY-NC).</p>
+    <p>Hinweise, Korrekturen → <a href="mailto:mibaur@me.com">mibaur@me.com</a></p>
+    <p>Meine Fotografien dürfen für private Zwecke gerne verwendet werden (Lizenz: CC BY-NC).</p>
+    <p class="lizenz">© 2026 Michael Baur</p>
   </div>
 </footer>
 </body>

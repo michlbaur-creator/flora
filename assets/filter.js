@@ -1,4 +1,4 @@
-/* Filter-Logik für das Pflanzenportal "Was blüht hier?".
+/* Filter-Logik für das Pflanzenportal "Was blüht denn hier?".
    Filter: Farbe, Blühzeit (Monat), Lebensraum,
            Familie (deutsch + lateinisch durchsuchbar),
            Blütenaufbau, Volltext-Schnellsuche.
@@ -12,6 +12,12 @@
     familien: new Set(),
     aufbau: new Set(),
     suche: '',
+  };
+
+  // Lesbare Monatskürzel für die aktiven Filter-Chips
+  const MONAT_LABEL = {
+    1: 'Jan', 2: 'Feb', 3: 'Mär', 4: 'Apr', 5: 'Mai', 6: 'Jun',
+    7: 'Jul', 8: 'Aug', 9: 'Sep', 10: 'Okt', 11: 'Nov', 12: 'Dez',
   };
 
   function toggleSet(set, value) {
@@ -63,6 +69,102 @@
     }
     const leer = document.getElementById('leer');
     if (leer) leer.style.display = shown === 0 ? '' : 'none';
+
+    rendereAktiveFilter();
+    aktualisiereResetButton();
+  }
+
+  // Prüft, ob irgendein Filter gesetzt ist (auch Schnellsuche)
+  function irgendeinFilterAktiv() {
+    return (
+      state.farben.size +
+      state.bereiche.size +
+      state.monate.size +
+      state.familien.size +
+      state.aufbau.size > 0
+    ) || state.suche.length > 0;
+  }
+
+  // Setzt den Reset-Button auf "aktiv" wenn mindestens ein Filter gesetzt ist
+  function aktualisiereResetButton() {
+    const btn = document.getElementById('reset');
+    if (!btn) return;
+    if (irgendeinFilterAktiv()) {
+      btn.classList.add('aktiv');
+      btn.removeAttribute('disabled');
+    } else {
+      btn.classList.remove('aktiv');
+      btn.setAttribute('disabled', 'disabled');
+    }
+  }
+
+  // Hilfsfunktion: einen einzelnen Filter abschalten
+  function entferneFilter(typ, wert) {
+    if (typ === 'farben')        state.farben.delete(wert);
+    else if (typ === 'bereiche') state.bereiche.delete(wert);
+    else if (typ === 'monate')   state.monate.delete(wert);
+    else if (typ === 'familien') state.familien.delete(wert);
+    else if (typ === 'aufbau')   state.aufbau.delete(wert);
+    else if (typ === 'suche')    state.suche = '';
+
+    // Visuell: zugehöriges Chip im Filter-Bereich entaktivieren
+    if (typ === 'farben') {
+      document.querySelectorAll(`.chip.farbe[data-farbe="${wert}"]`).forEach(c => c.classList.remove('aktiv'));
+    } else if (typ === 'bereiche') {
+      document.querySelectorAll(`.chip.bereich[data-bereich="${wert}"]`).forEach(c => c.classList.remove('aktiv'));
+    } else if (typ === 'monate') {
+      document.querySelectorAll(`.chip.monat[data-monat="${wert}"]`).forEach(c => c.classList.remove('aktiv'));
+    } else if (typ === 'familien') {
+      document.querySelectorAll(`.chip.familie[data-familie="${wert}"]`).forEach(c => c.classList.remove('aktiv'));
+    } else if (typ === 'aufbau') {
+      document.querySelectorAll(`.chip.aufbau[data-aufbau="${wert}"]`).forEach(c => c.classList.remove('aktiv'));
+    } else if (typ === 'suche') {
+      const sIn = document.getElementById('schnellsuche-input');
+      if (sIn) sIn.value = '';
+    }
+    refresh();
+  }
+
+  // Zeichnet die Tag-/Chip-Anzeige der aktiven Filter über der Filterleiste
+  function rendereAktiveFilter() {
+    const ziel = document.getElementById('aktive-filter');
+    if (!ziel) return;
+    ziel.innerHTML = '';
+
+    function chip(typ, wert, anzeige, label) {
+      const span = document.createElement('span');
+      span.className = 'aktiv-chip';
+      if (label) {
+        const lab = document.createElement('span');
+        lab.className = 'label';
+        lab.textContent = label + ':';
+        span.appendChild(lab);
+      }
+      const txt = document.createElement('span');
+      txt.textContent = anzeige;
+      span.appendChild(txt);
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'schliessen';
+      btn.setAttribute('aria-label', 'Filter "' + anzeige + '" entfernen');
+      btn.textContent = '✕';
+      btn.addEventListener('click', () => entferneFilter(typ, wert));
+      span.appendChild(btn);
+      ziel.appendChild(span);
+    }
+
+    // Farben (sind Strings)
+    state.farben.forEach(v => chip('farben', v, v, 'Farbe'));
+    // Lebensraum
+    state.bereiche.forEach(v => chip('bereiche', v, v, 'Lebensraum'));
+    // Monate (sind Zahlen)
+    state.monate.forEach(v => chip('monate', v, MONAT_LABEL[v] || v, 'Monat'));
+    // Familien
+    state.familien.forEach(v => chip('familien', v, v, 'Familie'));
+    // Blütenaufbau
+    state.aufbau.forEach(v => chip('aufbau', v, v, 'Blüte'));
+    // Schnellsuche
+    if (state.suche) chip('suche', null, '"' + state.suche + '"', 'Suche');
   }
 
   function bindChips(selector, set, valueAttr, typeAttr) {
@@ -109,7 +211,10 @@
     bindChips('.chip.aufbau',   state.aufbau,   'aufbau',   'string');
 
     const reset_btn = document.getElementById('reset');
-    if (reset_btn) reset_btn.addEventListener('click', reset);
+    if (reset_btn) reset_btn.addEventListener('click', () => {
+      // nur reagieren, wenn Filter aktiv sind
+      if (irgendeinFilterAktiv()) reset();
+    });
 
     const schnellsuche = document.getElementById('schnellsuche-input');
     if (schnellsuche) {
