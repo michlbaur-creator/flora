@@ -527,17 +527,25 @@ header.top a:hover { color: #fff; }
 }
 
 .fotos-galerie {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  display: flex;
+  flex-wrap: wrap;
   gap: 14px;
   margin: 24px 0;
 }
 .fotos-galerie img {
-  width: 100%;
-  height: auto;
+  height: 320px;
+  width: auto;
+  max-width: 100%;
   border: 1px solid var(--linie);
   border-radius: 4px;
   background: #fff;
+}
+/* Auf schmalen Bildschirmen die Fotos jeweils auf volle Breite */
+@media (max-width: 600px) {
+  .fotos-galerie img {
+    height: auto;
+    width: 100%;
+  }
 }
 
 .sektion {
