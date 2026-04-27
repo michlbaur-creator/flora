@@ -540,13 +540,7 @@ header.top a:hover { color: #fff; }
   border-radius: 4px;
   background: #fff;
 }
-/* iPad/Tablet: kleinere Fotohöhe, damit zwei Fotos nebeneinander Platz haben */
-@media (max-width: 1024px) {
-  .fotos-galerie img {
-    height: 240px;
-  }
-}
-/* Schmale Bildschirme (Handy): Fotos jeweils auf volle Breite */
+/* Auf schmalen Bildschirmen die Fotos jeweils auf volle Breite */
 @media (max-width: 600px) {
   .fotos-galerie img {
     height: auto;
