@@ -628,3 +628,22 @@ footer.bottom .lizenz {
 .ecke-farbpunkt[data-farbe="violett"] { background: #8c5aa3; }
 .ecke-farbpunkt[data-farbe="blau"]    { background: #3a6aa0; }
 .ecke-farbpunkt[data-farbe="grün"]    { background: #5a8a4d; }
+
+/* Monatsleiste: gleichmäßige 6er- bzw. 4er-Reihen statt unschönen Umbrüchen */
+.monate-grid {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 8px;
+  flex: 1;
+  min-width: 0;
+}
+.monate-grid .chip.monat {
+  text-align: center;
+  padding: 6px 6px;
+}
+@media (max-width: 720px) {
+  .monate-grid { grid-template-columns: repeat(4, 1fr); }
+}
+@media (max-width: 460px) {
+  .monate-grid { grid-template-columns: repeat(3, 1fr); }
+}
