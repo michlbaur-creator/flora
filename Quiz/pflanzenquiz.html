@@ -1,0 +1,632 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pflanzenquiz – Ebsdorfer Grund</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: Georgia, 'Times New Roman', serif;
+    background: #f8f5f0;
+    color: #2c2c2c;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+  }
+
+  header {
+    text-align: center;
+    margin-bottom: 24px;
+  }
+  header h1 {
+    font-size: 1.6rem;
+    color: #2d5a1b;
+    letter-spacing: 0.02em;
+  }
+  header p {
+    font-size: 0.9rem;
+    color: #666;
+    margin-top: 4px;
+    font-style: italic;
+  }
+
+  #quiz-box {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 2px 16px rgba(0,0,0,0.10);
+    max-width: 560px;
+    width: 100%;
+    overflow: hidden;
+  }
+
+  /* ── Startscreen ── */
+  #start-screen {
+    padding: 36px 32px;
+    text-align: center;
+  }
+  #start-screen h2 { color: #2d5a1b; margin-bottom: 12px; }
+  #start-screen p { color: #555; line-height: 1.6; margin-bottom: 24px; }
+  .setting-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    margin-bottom: 24px;
+    font-size: 0.95rem;
+    color: #444;
+  }
+  .setting-row select {
+    padding: 6px 10px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 0.95rem;
+    color: #333;
+    background: #fafafa;
+  }
+
+  /* ── Progress bar ── */
+  #progress-bar-wrap {
+    height: 6px;
+    background: #e8e8e8;
+  }
+  #progress-bar {
+    height: 100%;
+    background: #2d5a1b;
+    transition: width 0.4s ease;
+    width: 0%;
+  }
+
+  /* ── Question screen ── */
+  #question-screen { display: none; }
+
+  #question-header {
+    padding: 14px 20px 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #f0f0f0;
+  }
+  #question-counter { font-size: 0.85rem; color: #888; }
+  #score-display { font-size: 0.85rem; color: #2d5a1b; font-weight: bold; }
+
+  #photo-wrap {
+    background: #111;
+    position: relative;
+    min-height: 260px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  #plant-photo {
+    width: 100%;
+    max-height: 340px;
+    object-fit: cover;
+    display: block;
+    transition: opacity 0.3s;
+  }
+  #loading-spinner {
+    position: absolute;
+    color: #aaa;
+    font-size: 0.9rem;
+    font-style: italic;
+  }
+
+  #question-text {
+    padding: 16px 20px 8px;
+    font-size: 1.05rem;
+    color: #333;
+    text-align: center;
+  }
+
+  #answers {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    padding: 12px 20px 20px;
+  }
+
+  .answer-btn {
+    background: #f4f1eb;
+    border: 2px solid #ddd;
+    border-radius: 8px;
+    padding: 12px 10px;
+    font-size: 0.9rem;
+    font-family: Georgia, serif;
+    color: #333;
+    cursor: pointer;
+    text-align: center;
+    line-height: 1.3;
+    transition: background 0.15s, border-color 0.15s, transform 0.1s;
+  }
+  .answer-btn:hover:not(:disabled) {
+    background: #e8f0e0;
+    border-color: #2d5a1b;
+    transform: translateY(-1px);
+  }
+  .answer-btn.correct {
+    background: #d4edda;
+    border-color: #2d5a1b;
+    color: #155724;
+    font-weight: bold;
+  }
+  .answer-btn.wrong {
+    background: #f8d7da;
+    border-color: #c0392b;
+    color: #721c24;
+  }
+  .answer-btn:disabled { cursor: default; }
+
+  #feedback {
+    text-align: center;
+    padding: 0 20px 6px;
+    font-size: 0.95rem;
+    min-height: 24px;
+    color: #555;
+    font-style: italic;
+  }
+
+  #next-btn {
+    display: none;
+    margin: 8px 20px 20px;
+    width: calc(100% - 40px);
+    padding: 12px;
+    background: #2d5a1b;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-family: Georgia, serif;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+  #next-btn:hover { background: #3a7523; }
+
+  /* ── Result screen ── */
+  #result-screen {
+    display: none;
+    padding: 36px 32px;
+    text-align: center;
+  }
+  #result-screen h2 { color: #2d5a1b; font-size: 1.5rem; margin-bottom: 8px; }
+  #result-score { font-size: 3rem; font-weight: bold; color: #2d5a1b; margin: 12px 0; }
+  #result-msg { color: #555; margin-bottom: 8px; font-style: italic; line-height: 1.5; }
+  #result-detail { font-size: 0.85rem; color: #888; margin-bottom: 28px; }
+
+  #wrong-list {
+    text-align: left;
+    margin-bottom: 28px;
+    display: none;
+  }
+  #wrong-list h3 { color: #555; font-size: 0.9rem; margin-bottom: 10px; }
+  .wrong-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 8px;
+    font-size: 0.85rem;
+    padding: 6px 10px;
+    background: #fdf5f5;
+    border-radius: 6px;
+  }
+  .wrong-item img {
+    width: 48px;
+    height: 36px;
+    object-fit: cover;
+    border-radius: 4px;
+    flex-shrink: 0;
+  }
+  .wrong-item .wi-names { flex: 1; }
+  .wi-correct { color: #155724; font-weight: bold; }
+  .wi-given { color: #721c24; font-size: 0.8rem; }
+
+  .btn-primary {
+    display: inline-block;
+    padding: 12px 28px;
+    background: #2d5a1b;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-family: Georgia, serif;
+    cursor: pointer;
+    transition: background 0.2s;
+    text-decoration: none;
+  }
+  .btn-primary:hover { background: #3a7523; }
+
+  footer {
+    margin-top: 20px;
+    font-size: 0.75rem;
+    color: #aaa;
+    text-align: center;
+  }
+  footer a { color: #2d5a1b; text-decoration: none; }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>🌿 Pflanzenquiz</h1>
+  <p>Ebsdorfer Grund · Michael Baur</p>
+</header>
+
+<div id="quiz-box">
+
+  <!-- ══ STARTSCREEN ══ -->
+  <div id="start-screen">
+    <h2>Welche Pflanze ist das?</h2>
+    <p>Du siehst ein Foto aus der Region — erkennst du die Art?<br>
+       Tippe auf die richtige Antwort.</p>
+    <div class="setting-row">
+      <label for="num-q">Anzahl Fragen:</label>
+      <select id="num-q">
+        <option value="5">5</option>
+        <option value="10" selected>10</option>
+        <option value="15">15</option>
+        <option value="20">20</option>
+      </select>
+    </div>
+    <button class="btn-primary" onclick="startQuiz()">Quiz starten</button>
+  </div>
+
+  <!-- ══ QUESTION SCREEN ══ -->
+  <div id="question-screen">
+    <div id="progress-bar-wrap"><div id="progress-bar"></div></div>
+    <div id="question-header">
+      <span id="question-counter">Frage 1 / 10</span>
+      <span id="score-display">✓ 0</span>
+    </div>
+    <div id="photo-wrap">
+      <span id="loading-spinner">Lädt …</span>
+      <img id="plant-photo" src="" alt="Pflanzenfoto" style="opacity:0"
+           onload="photoLoaded()" onerror="photoError()">
+    </div>
+    <div id="question-text">Wie heißt diese Pflanze?</div>
+    <div id="answers"></div>
+    <div id="feedback"></div>
+    <button id="next-btn" onclick="nextQuestion()">Weiter →</button>
+  </div>
+
+  <!-- ══ RESULT SCREEN ══ -->
+  <div id="result-screen">
+    <h2>Ergebnis</h2>
+    <div id="result-score"></div>
+    <div id="result-msg"></div>
+    <div id="result-detail"></div>
+    <div id="wrong-list"><h3>Nicht erkannt:</h3><div id="wrong-items"></div></div>
+    <button class="btn-primary" onclick="resetQuiz()">Nochmal spielen</button>
+  </div>
+
+</div>
+
+<footer>
+  Fotos &amp; Daten: <a href="https://flora.mibaso.de" target="_blank">flora.mibaso.de</a>
+  · CC BY-NC Michael Baur
+</footer>
+
+<script>
+// ═══════════════════════════════════════════════════
+//  PFLANZENDATEN – alle Arten aus flora.mibaso.de
+//  Format: { slug, name, latein }
+// ═══════════════════════════════════════════════════
+const ARTEN = [
+  { slug: "galanthus-nivalis",        name: "Schneeglöckchen",         latein: "Galanthus nivalis" },
+  { slug: "anemone-nemorosa",         name: "Buschwindröschen",        latein: "Anemone nemorosa" },
+  { slug: "ficaria-verna",            name: "Scharbockskraut",         latein: "Ficaria verna" },
+  { slug: "allium-ursinum",           name: "Bärlauch",                latein: "Allium ursinum" },
+  { slug: "corydalis-cava",           name: "Hohler Lerchensporn",     latein: "Corydalis cava" },
+  { slug: "corydalis-solida",         name: "Gefingerter Lerchensporn",latein: "Corydalis solida" },
+  { slug: "gagea-lutea",              name: "Wald-Gelbstern",          latein: "Gagea lutea" },
+  { slug: "anemone-ranunculoides",    name: "Gelbes Windröschen",      latein: "Anemone ranunculoides" },
+  { slug: "oxalis-acetosella",        name: "Wald-Sauerklee",          latein: "Oxalis acetosella" },
+  { slug: "pulmonaria-officinalis",   name: "Lungenkraut",             latein: "Pulmonaria officinalis" },
+  { slug: "hepatica-nobilis",         name: "Leberblümchen",           latein: "Hepatica nobilis" },
+  { slug: "leucojum-vernum",          name: "Märzbecher",              latein: "Leucojum vernum" },
+  { slug: "lathyrus-vernus",          name: "Frühlings-Platterbse",    latein: "Lathyrus vernus" },
+  { slug: "eranthis-hyemalis",        name: "Winterling",              latein: "Eranthis hyemalis" },
+  { slug: "lamium-galeobdolon",       name: "Goldnessel",              latein: "Lamium galeobdolon" },
+  { slug: "scilla-bifolia",           name: "Sternhyazinthe",          latein: "Scilla bifolia" },
+  { slug: "ranunculus-auricomus",     name: "Gold-Hahnenfuß",          latein: "Ranunculus auricomus" },
+  { slug: "ajuga-reptans",            name: "Kriechender Günsel",      latein: "Ajuga reptans" },
+  { slug: "viola-odorata",            name: "Wohlriechendes Veilchen", latein: "Viola odorata" },
+  { slug: "alliaria-petiolata",       name: "Knoblauchsrauke",         latein: "Alliaria petiolata" },
+  { slug: "stellaria-holostea",       name: "Große Sternmiere",        latein: "Stellaria holostea" },
+  { slug: "bellis-perennis",          name: "Gänseblümchen",           latein: "Bellis perennis" },
+  { slug: "cardamine-pratensis",      name: "Wiesen-Schaumkraut",      latein: "Cardamine pratensis" },
+  { slug: "taraxacum-officinale",     name: "Löwenzahn",               latein: "Taraxacum officinale" },
+  { slug: "veronica-chamaedrys",      name: "Gamander-Ehrenpreis",     latein: "Veronica chamaedrys" },
+  { slug: "viola-tricolor",           name: "Wildes Stiefmütterchen",  latein: "Viola tricolor" },
+  { slug: "thlaspi-arvense",          name: "Acker-Hellerkraut",       latein: "Thlaspi arvense" },
+  { slug: "stellaria-media",          name: "Vogelmiere",              latein: "Stellaria media" },
+  { slug: "lamium-purpureum",         name: "Rote Taubnessel",         latein: "Lamium purpureum" },
+  { slug: "caltha-palustris",         name: "Sumpfdotterblume",        latein: "Caltha palustris" },
+  { slug: "tussilago-farfara",        name: "Huflattich",              latein: "Tussilago farfara" },
+  { slug: "primula-veris",            name: "Schlüsselblume",          latein: "Primula veris" },
+  { slug: "muscari-botryoides",       name: "Traubenhyazinthe",        latein: "Muscari botryoides" },
+  { slug: "scilla-siberica",          name: "Blaustern",               latein: "Scilla siberica" },
+  { slug: "potentilla-neumanniana",   name: "Frühlings-Fingerkraut",   latein: "Potentilla neumanniana" },
+  { slug: "draba-verna",              name: "Frühlings-Hungerblümchen",latein: "Erophila verna" },
+  { slug: "pulsatilla-vulgaris",      name: "Küchenschelle",           latein: "Pulsatilla vulgaris" },
+  { slug: "veronica-persica",         name: "Persischer Ehrenpreis",   latein: "Veronica persica" },
+  { slug: "cardamine-hirsuta",        name: "Viermänniges Schaumkraut",latein: "Cardamine hirsuta" },
+  { slug: "lamium-album",             name: "Weiße Taubnessel",        latein: "Lamium album" },
+  { slug: "campanula-rapunculus",     name: "Rapunzel-Glockenblume",   latein: "Campanula rapunculus" },
+  { slug: "campanula-trachelium",     name: "Nesselblättr. Glockenblume",latein: "Campanula trachelium" },
+  { slug: "centaurea-jacea",          name: "Wiesen-Flockenblume",     latein: "Centaurea jacea" },
+  { slug: "cichorium-intybus",        name: "Gewöhnliche Wegwarte",    latein: "Cichorium intybus" },
+  { slug: "echium-vulgare",           name: "Gewöhnlicher Natternkopf",latein: "Echium vulgare" },
+  { slug: "geranium-palustre",        name: "Sumpf-Storchschnabel",    latein: "Geranium palustre" },
+  { slug: "geranium-pratense",        name: "Wiesen-Storchschnabel",   latein: "Geranium pratense" },
+  { slug: "malva-moschata",           name: "Moschus-Malve",           latein: "Malva moschata" },
+  { slug: "polemonium-caeruleum",     name: "Jakobsleiter",            latein: "Polemonium caeruleum" },
+  { slug: "bistorta-officinalis",     name: "Wiesen-Knöterich",        latein: "Bistorta officinalis" },
+  { slug: "centaurium-erythraea",     name: "Echtes Tausendgüldenkraut",latein: "Centaurium erythraea" },
+  { slug: "cirsium-arvense",          name: "Acker-Kratzdistel",       latein: "Cirsium arvense" },
+  { slug: "dianthus-deltoides",       name: "Heide-Nelke",             latein: "Dianthus deltoides" },
+  { slug: "digitalis-purpurea",       name: "Roter Fingerhut",         latein: "Digitalis purpurea" },
+  { slug: "epilobium-hirsutum",       name: "Zottiges Weidenröschen",  latein: "Epilobium hirsutum" },
+  { slug: "eupatorium-cannabinum",    name: "Wasserdost",              latein: "Eupatorium cannabinum" },
+  { slug: "geranium-robertianum",     name: "Ruprechtskraut",          latein: "Geranium robertianum" },
+  { slug: "impatiens-glandulifera",   name: "Drüsiges Springkraut",    latein: "Impatiens glandulifera" },
+  { slug: "lythrum-salicaria",        name: "Blut-Weiderich",          latein: "Lythrum salicaria" },
+  { slug: "sanguisorba-officinalis",  name: "Großer Wiesenknopf",      latein: "Sanguisorba officinalis" },
+  { slug: "silene-dioica",            name: "Rote Lichtnelke",         latein: "Silene dioica" },
+  { slug: "stachys-palustris",        name: "Sumpf-Ziest",             latein: "Stachys palustris" },
+  { slug: "trifolium-pratense",       name: "Wiesen-Klee",             latein: "Trifolium pratense" },
+  { slug: "achillea-millefolium",     name: "Schafgarbe",              latein: "Achillea millefolium" },
+  { slug: "potentilla-anserina",      name: "Gänsefingerkraut",        latein: "Potentilla anserina" },
+  { slug: "artemisia-vulgaris",       name: "Beifuß",                  latein: "Artemisia vulgaris" },
+  { slug: "circaea-lutetiana",        name: "Hexenkraut",              latein: "Circaea lutetiana" },
+  { slug: "crepis-biennis",           name: "Wiesen-Pippau",           latein: "Crepis biennis" },
+  { slug: "daucus-carota",            name: "Wilde Möhre",             latein: "Daucus carota" },
+  { slug: "erigeron-annuus",          name: "Einjähriges Berufkraut",  latein: "Erigeron annuus" },
+  { slug: "filipendula-ulmaria",      name: "Mädesüß",                 latein: "Filipendula ulmaria" },
+  { slug: "galeopsis-tetrahit",       name: "Stechender Hohlzahn",     latein: "Galeopsis tetrahit" },
+  { slug: "galium-verum",             name: "Echtes Labkraut",         latein: "Galium verum" },
+  { slug: "geum-urbanum",             name: "Echte Nelkenwurz",        latein: "Geum urbanum" },
+  { slug: "heracleum-sphondylium",    name: "Wiesen-Bärenklau",        latein: "Heracleum sphondylium" },
+  { slug: "hypericum-perforatum",     name: "Echtes Johanniskraut",    latein: "Hypericum perforatum" },
+  { slug: "impatiens-nolitangere",    name: "Großes Springkraut",      latein: "Impatiens noli-tangere" },
+  { slug: "impatiens-parviflora",     name: "Kleinblütiges Springkraut",latein: "Impatiens parviflora" },
+  { slug: "jacobaea-vulgaris",        name: "Jakobs-Greiskraut",       latein: "Jacobaea vulgaris" },
+  { slug: "lapsana-communis",         name: "Rainkohl",                latein: "Lapsana communis" },
+  { slug: "lathyrus-pratensis",       name: "Wiesen-Platterbse",       latein: "Lathyrus pratensis" },
+  { slug: "linaria-vulgaris",         name: "Echtes Leinkraut",        latein: "Linaria vulgaris" },
+  { slug: "lysimachia-vulgaris",      name: "Gemeiner Gilbweiderich",  latein: "Lysimachia vulgaris" },
+  { slug: "pastinaca-sativa",         name: "Pastinak",                latein: "Pastinaca sativa" },
+  { slug: "plantago-lanceolata",      name: "Spitz-Wegerich",          latein: "Plantago lanceolata" },
+  { slug: "saponaria-officinalis",    name: "Gewöhnliches Seifenkraut",latein: "Saponaria officinalis" },
+  { slug: "silene-vulgaris",          name: "Aufgeblasenes Leimkraut", latein: "Silene vulgaris" },
+  { slug: "tanacetum-vulgare",        name: "Rainfarn",                latein: "Tanacetum vulgare" },
+  { slug: "torilis-japonica",         name: "Klettenkerbel",           latein: "Torilis japonica" },
+  { slug: "trifolium-repens",         name: "Weiß-Klee",               latein: "Trifolium repens" },
+  { slug: "cardamine-bulbifera",      name: "Zwiebel-Zahnwurz",        latein: "Cardamine bulbifera" },
+  { slug: "doronicum-pardalianches",  name: "Kriechende Gämswurz",     latein: "Doronicum pardalianches" },
+  { slug: "lunaria-annua",            name: "Einjähriges Silberblatt", latein: "Lunaria annua" },
+  { slug: "silene-latifolia",         name: "Weiße Lichtnelke",        latein: "Silene latifolia" },
+  { slug: "tripleurospermum-inodorum",name: "Geruchlose Kamille",      latein: "Tripleurospermum inodorum" },
+];
+
+// ═══════════════════════════════════════════════════
+//  HILFSFUNKTIONEN
+// ═══════════════════════════════════════════════════
+
+function shuffle(arr) {
+  // Fisher-Yates-Shuffle: zufällige Reihenfolge
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+function fotoUrl(slug, nr = 1) {
+  return `https://flora.mibaso.de/images/fotos/${slug}-${nr}.jpg`;
+}
+
+// ═══════════════════════════════════════════════════
+//  SPIELZUSTAND
+// ═══════════════════════════════════════════════════
+
+let questions = [];   // die zufällig gewählten Arten für diese Runde
+let current = 0;      // aktueller Frageindex
+let score = 0;        // richtige Antworten
+let answered = false; // wurde die aktuelle Frage schon beantwortet?
+let wrongAnswers = []; // falsch beantwortete für Auswertung
+let totalQ = 10;
+
+// ═══════════════════════════════════════════════════
+//  QUIZ STARTEN
+// ═══════════════════════════════════════════════════
+
+function startQuiz() {
+  totalQ = parseInt(document.getElementById('num-q').value);
+  questions = shuffle(ARTEN).slice(0, totalQ);
+  current = 0;
+  score = 0;
+  answered = false;
+  wrongAnswers = [];
+
+  document.getElementById('start-screen').style.display = 'none';
+  document.getElementById('result-screen').style.display = 'none';
+  document.getElementById('question-screen').style.display = 'block';
+
+  showQuestion();
+}
+
+// ═══════════════════════════════════════════════════
+//  FRAGE ANZEIGEN
+// ═══════════════════════════════════════════════════
+
+function showQuestion() {
+  answered = false;
+  const art = questions[current];
+
+  // Fortschrittsbalken
+  document.getElementById('progress-bar').style.width =
+    ((current / totalQ) * 100) + '%';
+
+  // Zähler & Score
+  document.getElementById('question-counter').textContent =
+    `Frage ${current + 1} / ${totalQ}`;
+  document.getElementById('score-display').textContent = `✓ ${score}`;
+
+  // Feedback zurücksetzen
+  document.getElementById('feedback').textContent = '';
+  document.getElementById('next-btn').style.display = 'none';
+
+  // Foto laden
+  const img = document.getElementById('plant-photo');
+  const spinner = document.getElementById('loading-spinner');
+  img.style.opacity = 0;
+  spinner.style.display = 'block';
+  img.src = fotoUrl(art.slug, 1);
+
+  // 4 Antwortoptionen: 1 richtig + 3 zufällige Falsche
+  const falsche = shuffle(ARTEN.filter(a => a.slug !== art.slug)).slice(0, 3);
+  const optionen = shuffle([art, ...falsche]);
+
+  const container = document.getElementById('answers');
+  container.innerHTML = '';
+  optionen.forEach(opt => {
+    const btn = document.createElement('button');
+    btn.className = 'answer-btn';
+    btn.innerHTML = `<strong>${opt.name}</strong><br><em style="font-size:0.8rem;color:#888">${opt.latein}</em>`;
+    btn.onclick = () => checkAnswer(opt.slug === art.slug, btn, art);
+    container.appendChild(btn);
+  });
+}
+
+// ═══════════════════════════════════════════════════
+//  FOTO-EVENTS
+// ═══════════════════════════════════════════════════
+
+function photoLoaded() {
+  document.getElementById('loading-spinner').style.display = 'none';
+  document.getElementById('plant-photo').style.opacity = 1;
+}
+
+function photoError() {
+  // Falls Foto-1 nicht vorhanden, versuche Tafel als Fallback
+  // (Tafel hat zwar den Namen, aber besser als leeres Bild)
+  const art = questions[current];
+  const img = document.getElementById('plant-photo');
+  if (!img.src.includes('tafeln')) {
+    img.src = `https://flora.mibaso.de/images/tafeln/${art.slug}.jpg`;
+  } else {
+    document.getElementById('loading-spinner').textContent = '(kein Foto verfügbar)';
+  }
+}
+
+// ═══════════════════════════════════════════════════
+//  ANTWORT PRÜFEN
+// ═══════════════════════════════════════════════════
+
+function checkAnswer(isCorrect, clickedBtn, art) {
+  if (answered) return;
+  answered = true;
+
+  // Alle Buttons markieren
+  const buttons = document.querySelectorAll('.answer-btn');
+  buttons.forEach(btn => {
+    btn.disabled = true;
+    // Richtigen Button grün einfärben
+    if (btn.innerHTML.includes(`>${art.name}<`)) {
+      btn.classList.add('correct');
+    }
+  });
+
+  if (isCorrect) {
+    score++;
+    document.getElementById('feedback').textContent = '✓ Richtig!';
+    document.getElementById('score-display').textContent = `✓ ${score}`;
+  } else {
+    clickedBtn.classList.add('wrong');
+    document.getElementById('feedback').textContent =
+      `✗ Es war: ${art.name}`;
+    wrongAnswers.push({ art, given: clickedBtn.querySelector('strong').textContent });
+  }
+
+  document.getElementById('next-btn').style.display = 'block';
+}
+
+// ═══════════════════════════════════════════════════
+//  NÄCHSTE FRAGE / ERGEBNIS
+// ═══════════════════════════════════════════════════
+
+function nextQuestion() {
+  current++;
+  if (current >= totalQ) {
+    showResult();
+  } else {
+    showQuestion();
+  }
+}
+
+// ═══════════════════════════════════════════════════
+//  ERGEBNIS ANZEIGEN
+// ═══════════════════════════════════════════════════
+
+function showResult() {
+  document.getElementById('question-screen').style.display = 'none';
+  document.getElementById('result-screen').style.display = 'block';
+  document.getElementById('progress-bar').style.width = '100%';
+
+  document.getElementById('result-score').textContent =
+    `${score} / ${totalQ}`;
+
+  // Bewertungstext
+  const pct = score / totalQ;
+  let msg = '';
+  if (pct === 1)       msg = 'Perfekt! Du kennst alle Pflanzen der Region. 🌿';
+  else if (pct >= 0.8) msg = 'Sehr gut! Fast alles erkannt.';
+  else if (pct >= 0.6) msg = 'Gut! Mit etwas Übung kennst du bald alle.';
+  else if (pct >= 0.4) msg = 'Nicht schlecht — die nächste Exkursion bringt mehr Sicherheit.';
+  else                 msg = 'Noch viel zu entdecken — perfekt für die nächste Exkursion!';
+
+  document.getElementById('result-msg').textContent = msg;
+  document.getElementById('result-detail').textContent =
+    `${score} richtig, ${totalQ - score} nicht erkannt`;
+
+  // Falsche Antworten auflisten
+  const wrongList = document.getElementById('wrong-list');
+  const wrongItems = document.getElementById('wrong-items');
+  wrongItems.innerHTML = '';
+
+  if (wrongAnswers.length > 0) {
+    wrongList.style.display = 'block';
+    wrongAnswers.forEach(w => {
+      const div = document.createElement('div');
+      div.className = 'wrong-item';
+      div.innerHTML = `
+        <img src="${fotoUrl(w.art.slug)}" alt="${w.art.name}"
+             onerror="this.src='https://flora.mibaso.de/images/tafeln/${w.art.slug}.jpg'">
+        <div class="wi-names">
+          <div class="wi-correct">${w.art.name}</div>
+          <div class="wi-given">Du tipptest: ${w.given}</div>
+        </div>
+      `;
+      wrongItems.appendChild(div);
+    });
+  } else {
+    wrongList.style.display = 'none';
+  }
+}
+
+// ═══════════════════════════════════════════════════
+//  QUIZ ZURÜCKSETZEN
+// ═══════════════════════════════════════════════════
+
+function resetQuiz() {
+  document.getElementById('result-screen').style.display = 'none';
+  document.getElementById('start-screen').style.display = 'block';
+  document.getElementById('progress-bar').style.width = '0%';
+}
+</script>
+</body>
+</html>
