@@ -7,11 +7,13 @@
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
 
+  html, body { height: 100%; }
+
   body {
     font-family: Georgia, 'Times New Roman', serif;
     background: #f8f5f0;
     color: #2c2c2c;
-    min-height: 100vh;
+    min-height: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -41,12 +43,19 @@
     max-width: 560px;
     width: 100%;
     overflow: hidden;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
   }
 
   /* ── Startscreen ── */
   #start-screen {
     padding: 20px 24px;
     text-align: center;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
   }
   #start-screen h2 { color: #2d5a1b; margin-bottom: 8px; font-size: 1.1rem; }
   #start-screen p { color: #555; line-height: 1.5; margin-bottom: 16px; font-size: 0.92rem; }
@@ -190,6 +199,10 @@
     display: none;
     padding: 20px 24px;
     text-align: center;
+    flex: 1;
+    display: none;
+    flex-direction: column;
+    justify-content: center;
   }
   #result-screen h2 { color: #2d5a1b; font-size: 1.3rem; margin-bottom: 6px; }
   #result-score { font-size: 2.5rem; font-weight: bold; color: #2d5a1b; margin: 8px 0; }
