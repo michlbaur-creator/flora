@@ -15,22 +15,22 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 20px;
+    padding: 10px;
   }
 
   header {
     text-align: center;
-    margin-bottom: 24px;
+    margin-bottom: 10px;
   }
   header h1 {
-    font-size: 1.6rem;
+    font-size: 1.3rem;
     color: #2d5a1b;
     letter-spacing: 0.02em;
   }
   header p {
-    font-size: 0.9rem;
+    font-size: 0.82rem;
     color: #666;
-    margin-top: 4px;
+    margin-top: 2px;
     font-style: italic;
   }
 
@@ -45,18 +45,18 @@
 
   /* ── Startscreen ── */
   #start-screen {
-    padding: 36px 32px;
+    padding: 20px 24px;
     text-align: center;
   }
-  #start-screen h2 { color: #2d5a1b; margin-bottom: 12px; }
-  #start-screen p { color: #555; line-height: 1.6; margin-bottom: 24px; }
+  #start-screen h2 { color: #2d5a1b; margin-bottom: 8px; font-size: 1.1rem; }
+  #start-screen p { color: #555; line-height: 1.5; margin-bottom: 16px; font-size: 0.92rem; }
   .setting-row {
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 12px;
-    margin-bottom: 24px;
-    font-size: 0.95rem;
+    margin-bottom: 16px;
+    font-size: 0.92rem;
     color: #444;
   }
   .setting-row select {
@@ -96,14 +96,14 @@
   #photo-wrap {
     background: #111;
     position: relative;
-    min-height: 260px;
+    min-height: 200px;
     display: flex;
     align-items: center;
     justify-content: center;
   }
   #plant-photo {
     width: 100%;
-    max-height: 340px;
+    max-height: 260px;
     object-fit: cover;
     display: block;
     transition: opacity 0.3s;
@@ -116,8 +116,8 @@
   }
 
   #question-text {
-    padding: 16px 20px 8px;
-    font-size: 1.05rem;
+    padding: 10px 16px 6px;
+    font-size: 0.95rem;
     color: #333;
     text-align: center;
   }
@@ -125,16 +125,16 @@
   #answers {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 10px;
-    padding: 12px 20px 20px;
+    gap: 8px;
+    padding: 8px 14px 14px;
   }
 
   .answer-btn {
     background: #f4f1eb;
     border: 2px solid #ddd;
     border-radius: 8px;
-    padding: 12px 10px;
-    font-size: 0.9rem;
+    padding: 9px 8px;
+    font-size: 0.85rem;
     font-family: Georgia, serif;
     color: #333;
     cursor: pointer;
@@ -171,14 +171,14 @@
 
   #next-btn {
     display: none;
-    margin: 8px 20px 20px;
-    width: calc(100% - 40px);
-    padding: 12px;
+    margin: 4px 14px 14px;
+    width: calc(100% - 28px);
+    padding: 10px;
     background: #2d5a1b;
     color: white;
     border: none;
     border-radius: 8px;
-    font-size: 1rem;
+    font-size: 0.95rem;
     font-family: Georgia, serif;
     cursor: pointer;
     transition: background 0.2s;
@@ -188,11 +188,11 @@
   /* ── Result screen ── */
   #result-screen {
     display: none;
-    padding: 36px 32px;
+    padding: 20px 24px;
     text-align: center;
   }
-  #result-screen h2 { color: #2d5a1b; font-size: 1.5rem; margin-bottom: 8px; }
-  #result-score { font-size: 3rem; font-weight: bold; color: #2d5a1b; margin: 12px 0; }
+  #result-screen h2 { color: #2d5a1b; font-size: 1.3rem; margin-bottom: 6px; }
+  #result-score { font-size: 2.5rem; font-weight: bold; color: #2d5a1b; margin: 8px 0; }
   #result-msg { color: #555; margin-bottom: 8px; font-style: italic; line-height: 1.5; }
   #result-detail { font-size: 0.85rem; color: #888; margin-bottom: 28px; }
 
@@ -239,8 +239,8 @@
   .btn-primary:hover { background: #3a7523; }
 
   footer {
-    margin-top: 20px;
-    font-size: 0.75rem;
+    margin-top: 10px;
+    font-size: 0.72rem;
     color: #aaa;
     text-align: center;
   }
@@ -250,17 +250,16 @@
 <body>
 
 <header>
-  <h1>🌿 Pflanzenquiz</h1>
-  <p>Ebsdorfer Grund · Michael Baur</p>
+  <h1>🌿 Was blüht denn hier?</h1>
+  <p>Ein Pflanzenquiz von Michael Baur</p>
 </header>
 
 <div id="quiz-box">
 
   <!-- ══ STARTSCREEN ══ -->
   <div id="start-screen">
-    <h2>Welche Pflanze ist das?</h2>
-    <p>Du siehst ein Foto aus der Region — erkennst du die Art?<br>
-       Tippe auf die richtige Antwort.</p>
+    <h2>Erkennst du die Art?</h2>
+    <p>Tippe auf die richtige Antwort.</p>
     <div class="setting-row">
       <label for="num-q">Anzahl Fragen:</label>
       <select id="num-q">
