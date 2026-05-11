@@ -1,15 +1,15 @@
 /* Was blüht hier? — Pflanzenportal von Michael Baur
-   Hauptfarbe: warmes Dunkelgrün #2D4A28
+   Hauptfarbe: kühles Forstgrün #2F4F3E
    Akzente: hellbraun/beige (Filterbereich, Karten, Footer)
    Detailseiten: warmer Brauntonstil bleibt erhalten.
 */
 
 :root {
-  /* Grün (neu) */
-  --gruen-dunkel: #2D4A28;
-  --gruen-mittel: #3f6638;
-  --gruen-akzent: #5a8a4d;
-  --gruen-blass:  #c9d8c1;
+  /* Grün (abgestimmt mit Quiz-Tool) */
+  --gruen-dunkel: #2F4F3E;
+  --gruen-mittel: #3A5F4A;
+  --gruen-akzent: #5A8068;
+  --gruen-blass:  #CDD9D0;
 
   /* Braun-/Beigetöne (Akzente, Filterbereich, Detailseiten) */
   --braun-dunkel: #5a3a24;
@@ -193,7 +193,7 @@ header.top a:hover { color: #fff; }
 .chip.farbe[data-farbe="blau"]::before    { background: #3a6aa0; }
 .chip.farbe[data-farbe="violett"]::before { background: #8c5aa3; }
 .chip.farbe[data-farbe="rot"]::before     { background: #c13f3f; }
-.chip.farbe[data-farbe="grün"]::before    { background: #5a8a4d; }
+.chip.farbe[data-farbe="grün"]::before    { background: #5A8068; }
 
 /* Blütenaufbau-Chips mit kleinem SVG */
 .chip.aufbau .symbol {
@@ -435,7 +435,7 @@ header.top a:hover { color: #fff; }
 .farb-punkt[data-farbe="rot"]     { background: #c13f3f; }
 .farb-punkt[data-farbe="violett"] { background: #8c5aa3; }
 .farb-punkt[data-farbe="blau"]    { background: #3a6aa0; }
-.farb-punkt[data-farbe="grün"]    { background: #5a8a4d; }
+.farb-punkt[data-farbe="grün"]    { background: #5A8068; }
 
 .leer {
   text-align: center;
@@ -627,7 +627,7 @@ footer.bottom .lizenz {
 .ecke-farbpunkt[data-farbe="rot"]     { background: #c13f3f; }
 .ecke-farbpunkt[data-farbe="violett"] { background: #8c5aa3; }
 .ecke-farbpunkt[data-farbe="blau"]    { background: #3a6aa0; }
-.ecke-farbpunkt[data-farbe="grün"]    { background: #5a8a4d; }
+.ecke-farbpunkt[data-farbe="grün"]    { background: #5A8068; }
 
 /* Monatsleiste: gleichmäßige 6er- bzw. 4er-Reihen statt unschönen Umbrüchen */
 .monate-grid {
