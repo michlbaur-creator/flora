@@ -7,13 +7,12 @@
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
 
-  html, body { height: 100%; }
 
   body {
     font-family: Georgia, 'Times New Roman', serif;
     background: #f8f5f0;
     color: #2c2c2c;
-    min-height: 100%;
+    min-height: auto;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -755,7 +754,13 @@ function resetQuiz() {
 // ═══════════════════════════════════════════════════
 
 function sendHeight() {
-  const h = document.body.scrollHeight;
+  const box = document.getElementById('quiz-box');
+  const header = document.querySelector('header');
+  const footer = document.querySelector('footer');
+  const headerH = header ? header.offsetHeight + 20 : 0;
+  const footerH = footer ? footer.offsetHeight + 10 : 0;
+  const boxH = box ? box.offsetHeight : 0;
+  const h = headerH + boxH + footerH + 20;
   window.parent.postMessage({ quizHeight: h }, '*');
 }
 
