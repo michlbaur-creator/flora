@@ -747,7 +747,25 @@ function resetQuiz() {
   document.getElementById('result-screen').style.display = 'none';
   document.getElementById('start-screen').style.display = 'block';
   document.getElementById('progress-bar').style.width = '0%';
+  sendHeight();
 }
+
+// ═══════════════════════════════════════════════════
+//  AUTO-RESIZE: Höhe an Parent-Seite (WordPress) senden
+// ═══════════════════════════════════════════════════
+
+function sendHeight() {
+  const h = document.body.scrollHeight;
+  window.parent.postMessage({ quizHeight: h }, '*');
+}
+
+// Nach jedem Laden und bei Zustandswechseln senden
+window.addEventListener('load', sendHeight);
+window.addEventListener('resize', sendHeight);
+
+// MutationObserver: erkennt Änderungen im DOM (Fragen, Ergebnis usw.)
+const observer = new MutationObserver(sendHeight);
+observer.observe(document.body, { childList: true, subtree: true, attributes: true });
 </script>
 </body>
 </html>
