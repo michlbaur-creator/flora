@@ -314,12 +314,7 @@
     border-radius: 10px;
     padding: 12px 16px;
     margin: 0 0 14px;
-    opacity: 0;
-    transform: scale(0.3);
-    transition: none;
-  }
-  #sieger-msg.bounce-in {
-    animation: bounce-in 0.7s cubic-bezier(0.36,0.07,0.19,0.97) forwards;
+    animation: bounce-in 0.8s 0.4s cubic-bezier(0.36,0.07,0.19,0.97) both;
   }
 </style>
 </head>
@@ -713,11 +708,7 @@ function showResult() {
     perfectBlock.innerHTML = html;
     perfectBlock.style.display = 'block';
 
-    // Bounce-Animation kurz nach dem Einsetzen auslösen
-    setTimeout(() => {
-      const msg = document.getElementById('sieger-msg');
-      if (msg) msg.classList.add('bounce-in');
-    }, 80);
+    // Animation läuft automatisch per CSS (0.4s Verzögerung)
   } else {
     perfectBlock.style.display = 'none';
     perfectBlock.innerHTML = '';
