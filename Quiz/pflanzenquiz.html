@@ -103,16 +103,16 @@
   #score-display { font-size: 0.85rem; color: #3A5F4A; font-weight: bold; }
 
   #photo-wrap {
-    background: #111;
+    background: #1a1a1a;
     position: relative;
-    min-height: 200px;
+    min-height: 220px;
     display: flex;
     align-items: center;
     justify-content: center;
   }
   #plant-photo {
     width: 100%;
-    max-height: 260px;
+    max-height: 360px;
     object-fit: cover;
     display: block;
     transition: opacity 0.3s;
@@ -586,7 +586,17 @@ function showQuestion() {
 
 function photoLoaded() {
   document.getElementById('loading-spinner').style.display = 'none';
-  document.getElementById('plant-photo').style.opacity = 1;
+  const img = document.getElementById('plant-photo');
+  img.style.opacity = 1;
+  // Hochformat erkennen: wenn Höhe > Breite → ganzes Foto zeigen (contain)
+  if (img.naturalHeight > img.naturalWidth) {
+    img.style.objectFit = 'contain';
+    img.style.maxHeight = '400px';
+    img.style.background = '#1a1a1a';
+  } else {
+    img.style.objectFit = 'cover';
+    img.style.maxHeight = '360px';
+  }
 }
 
 function photoError() {
