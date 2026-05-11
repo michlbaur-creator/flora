@@ -26,7 +26,7 @@
   }
   header h1 {
     font-size: 1.3rem;
-    color: #2d5a1b;
+    color: #3A5F4A;
     letter-spacing: 0.02em;
   }
   header p {
@@ -57,7 +57,7 @@
     flex-direction: column;
     justify-content: center;
   }
-  #start-screen h2 { color: #2d5a1b; margin-bottom: 8px; font-size: 1.1rem; }
+  #start-screen h2 { color: #3A5F4A; margin-bottom: 8px; font-size: 1.1rem; }
   #start-screen p { color: #555; line-height: 1.5; margin-bottom: 16px; font-size: 0.92rem; }
   .setting-row {
     display: flex;
@@ -84,7 +84,7 @@
   }
   #progress-bar {
     height: 100%;
-    background: #2d5a1b;
+    background: #3A5F4A;
     transition: width 0.4s ease;
     width: 0%;
   }
@@ -100,7 +100,7 @@
     border-bottom: 1px solid #f0f0f0;
   }
   #question-counter { font-size: 0.85rem; color: #888; }
-  #score-display { font-size: 0.85rem; color: #2d5a1b; font-weight: bold; }
+  #score-display { font-size: 0.85rem; color: #3A5F4A; font-weight: bold; }
 
   #photo-wrap {
     background: #111;
@@ -153,13 +153,13 @@
   }
   .answer-btn:hover:not(:disabled) {
     background: #e8f0e0;
-    border-color: #2d5a1b;
+    border-color: #3A5F4A;
     transform: translateY(-1px);
   }
   .answer-btn.correct {
-    background: #d4edda;
-    border-color: #2d5a1b;
-    color: #155724;
+    background: #e0ede8;
+    border-color: #3A5F4A;
+    color: #2F4F3E;
     font-weight: bold;
   }
   .answer-btn.wrong {
@@ -183,7 +183,7 @@
     margin: 4px 14px 14px;
     width: calc(100% - 28px);
     padding: 10px;
-    background: #2d5a1b;
+    background: #3A5F4A;
     color: white;
     border: none;
     border-radius: 8px;
@@ -192,7 +192,7 @@
     cursor: pointer;
     transition: background 0.2s;
   }
-  #next-btn:hover { background: #3a7523; }
+  #next-btn:hover { background: #2F4F3E; }
 
   /* ── Result screen ── */
   #result-screen {
@@ -204,8 +204,8 @@
     flex-direction: column;
     justify-content: center;
   }
-  #result-screen h2 { color: #2d5a1b; font-size: 1.3rem; margin-bottom: 6px; }
-  #result-score { font-size: 2.5rem; font-weight: bold; color: #2d5a1b; margin: 8px 0; }
+  #result-screen h2 { color: #3A5F4A; font-size: 1.3rem; margin-bottom: 6px; }
+  #result-score { font-size: 2.5rem; font-weight: bold; color: #3A5F4A; margin: 8px 0; }
   #result-msg { color: #555; margin-bottom: 8px; font-style: italic; line-height: 1.5; }
   #result-detail { font-size: 0.85rem; color: #888; margin-bottom: 28px; }
 
@@ -233,13 +233,13 @@
     flex-shrink: 0;
   }
   .wrong-item .wi-names { flex: 1; }
-  .wi-correct { color: #155724; font-weight: bold; }
+  .wi-correct { color: #2F4F3E; font-weight: bold; }
   .wi-given { color: #721c24; font-size: 0.8rem; }
 
   .btn-primary {
     display: inline-block;
     padding: 12px 28px;
-    background: #2d5a1b;
+    background: #3A5F4A;
     color: white;
     border: none;
     border-radius: 8px;
@@ -249,7 +249,7 @@
     transition: background 0.2s;
     text-decoration: none;
   }
-  .btn-primary:hover { background: #3a7523; }
+  .btn-primary:hover { background: #2F4F3E; }
 
   footer {
     margin-top: 10px;
@@ -257,7 +257,7 @@
     color: #aaa;
     text-align: center;
   }
-  footer a { color: #2d5a1b; text-decoration: none; }
+  footer a { color: #3A5F4A; text-decoration: none; }
 
   /* ── Fotoleiste Startscreen ── */
   #start-photos {
@@ -279,34 +279,47 @@
   #start-photos img:hover { transform: scale(1.04); filter: brightness(1) saturate(1.2); }
   #start-photos img:not(:last-child) { border-right: 2px solid white; }
 
-  /* ── Konfetti-Animation für Perfekt-Ergebnis ── */
-  @keyframes rocket {
-    0%   { transform: translateY(0) scale(1); }
-    50%  { transform: translateY(-18px) scale(1.15); }
-    100% { transform: translateY(0) scale(1); }
+  /* ── Konfetti & Sieges-Animation ── */
+  @keyframes konfetti-regen {
+    0%   { transform: translateY(-10px) rotate(0deg); opacity: 1; }
+    80%  { opacity: 1; }
+    100% { transform: translateY(200px) rotate(540deg); opacity: 0; }
   }
-  @keyframes confetti-fall {
-    0%   { transform: translateY(-20px) rotate(0deg); opacity: 1; }
-    100% { transform: translateY(80px) rotate(360deg); opacity: 0; }
+  @keyframes bounce-in {
+    0%   { transform: scale(0.3); opacity: 0; }
+    55%  { transform: scale(1.15); opacity: 1; }
+    75%  { transform: scale(0.92); }
+    90%  { transform: scale(1.05); }
+    100% { transform: scale(1); }
   }
-  #perfect-rocket {
-    font-size: 3rem;
-    display: inline-block;
-    animation: rocket 1s ease-in-out infinite;
-    margin-bottom: 4px;
-  }
-  .confetti-wrap {
+  #confetti-field {
     position: relative;
-    height: 60px;
+    height: 120px;
     overflow: hidden;
-    margin: 0 auto 8px;
-    width: 200px;
+    width: 100%;
+    margin-bottom: 10px;
   }
-  .confetti-dot {
+  .konfetti-stück {
     position: absolute;
-    width: 8px; height: 8px;
+    top: -10px;
     border-radius: 2px;
-    animation: confetti-fall 1.2s ease-in infinite;
+    animation: konfetti-regen linear infinite;
+  }
+  #sieger-msg {
+    font-size: 1.05rem;
+    font-weight: bold;
+    color: #3A5F4A;
+    background: #e8f4ed;
+    border: 2px solid #3A5F4A;
+    border-radius: 10px;
+    padding: 12px 16px;
+    margin: 0 0 14px;
+    opacity: 0;
+    transform: scale(0.3);
+    transition: none;
+  }
+  #sieger-msg.bounce-in {
+    animation: bounce-in 0.7s cubic-bezier(0.36,0.07,0.19,0.97) forwards;
   }
 </style>
 </head>
@@ -314,7 +327,8 @@
 
 <header>
   <h1>🌿 Was blüht denn hier?</h1>
-  <p>Ein Pflanzenquiz von Michael Baur</p>
+  <p>Das Quiz zum Bestimmungstool</p>
+  <p style="font-style:normal; font-size:0.78rem; color:#888; margin-top:1px;">von Michael Baur</p>
 </header>
 
 <div id="quiz-box">
@@ -327,7 +341,7 @@
       <img src="https://flora.mibaso.de/images/fotos/galanthus-nivalis-1.jpg" alt="Schneeglöckchen">
       <img src="https://flora.mibaso.de/images/fotos/primula-veris-1.jpg" alt="Schlüsselblume">
     </div>
-    <h2>Erkennst du die Art?</h2>
+    <h2 style="margin-top: 18px;">Erkennst du die Art?</h2>
     <p>Tippe auf die richtige Antwort.</p>
     <div class="setting-row">
       <label for="num-q">Anzahl Fragen:</label>
@@ -665,7 +679,7 @@ function showResult() {
   // Perfekt-Ergebnis: Rakete und Konfetti
   const perfectBlock = document.getElementById('perfect-block');
   if (score === totalQ) {
-    const colors = ['#2d5a1b','#f4c430','#c0392b','#3498db','#e67e22','#9b59b6'];
+    const colors = ['#3A5F4A','#f4c430','#c0392b','#3498db','#e67e22','#9b59b6'];
     let html = '<div id="perfect-rocket">🚀</div>';
     html += '<div class="confetti-wrap">';
     for (let i = 0; i < 14; i++) {
@@ -676,7 +690,7 @@ function showResult() {
       html += `<div class="confetti-dot" style="background:${c}; left:${left}px; animation-delay:${delay}s; animation-duration:${dur}s"></div>`;
     }
     html += '</div>';
-    html += '<p style="color:#2d5a1b; font-weight:bold; font-size:1.05rem; margin-bottom:12px">Perfekt! Du kennst alle Pflanzen der Region. Außergewöhnlich!</p>';
+    html += '<p style="color:#3A5F4A; font-weight:bold; font-size:1.05rem; margin-bottom:12px">Perfekt! Du kennst alle Pflanzen der Region. Außergewöhnlich!</p>';
     perfectBlock.innerHTML = html;
     perfectBlock.style.display = 'block';
   } else {
