@@ -647,3 +647,22 @@ footer.bottom .lizenz {
 @media (max-width: 460px) {
   .monate-grid { grid-template-columns: repeat(3, 1fr); }
 }
+
+/* Farb-Chips: gleiche Grid-Struktur wie Monate für bündige Ausrichtung */
+.farbe-grid {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 8px;
+  flex: 1;
+  min-width: 0;
+}
+.farbe-grid .chip.farbe {
+  text-align: center;
+  padding: 6px 10px;
+}
+@media (max-width: 720px) {
+  .farbe-grid { grid-template-columns: repeat(4, 1fr); }
+}
+@media (max-width: 460px) {
+  .farbe-grid { grid-template-columns: repeat(3, 1fr); }
+}
