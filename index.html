@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Mibaso Natur — Pflanzen verstehen, bestimmen, entdecken</title>
-<meta name="description" content="Mibaso Natur: Interaktive Lerntafeln zu Pflanzen und Bestäubung, ein Online-Bestimmungstool, Quiz und Broschüren – die digitale Naturwerkstatt von Michael Baur.">
+<title>Mibaso Natur — Pflanzen entdecken · Pflanzen verstehen</title>
+<meta name="description" content="Deine digitale Naturwerkstatt für die Hosentasche: über 100 Pflanzenarten bestimmen, Broschüren, Quiz und interaktive Lerntafeln zu Pflanzenbau und Bestäubung – funktioniert überall, auch ohne Netz.">
 <meta name="theme-color" content="#2F4F3E">
 
 <!-- App-Installation -->
@@ -18,18 +18,26 @@
 
 <style>
   :root{
+    /* Basis */
     --gruen-dunkel:#2F4F3E;
     --gruen-mittel:#3A5F4A;
     --gruen-akzent:#5A8068;
     --gruen-blass:#CDD9D0;
-    --braun-dunkel:#5a3a24;
     --braun-warm:#a67952;
-    --braun-hell:#c9a987;
+    --braun-mittel:#8b5a3c;
     --beige-hell:#f7f0e4;
     --beige-mittel:#efe4cf;
     --papier:#fbf6ed;
     --text:#3b2a1c;
     --text-leise:#6b5340;
+
+    /* Sektions-Farben */
+    --entdecken:#a67952;        /* warmes Sandbraun – Aufbruch, Wege */
+    --entdecken-bg:#faf3e3;
+    --ausprobieren:#5A8068;     /* frisches Pflanzengrün – Aktivität, Spiel */
+    --ausprobieren-bg:#e0ebde;
+    --verstehen:#2F4F3E;        /* tiefes Waldgrün – Fokus, Wissen */
+    --verstehen-bg:#d1ddd5;
   }
 
   *{box-sizing:border-box}
@@ -48,138 +56,43 @@
   header.app-head{
     background:linear-gradient(180deg,var(--gruen-dunkel) 0%,var(--gruen-mittel) 100%);
     color:var(--beige-hell);
-    padding:28px 20px 30px;
-    padding-top:max(28px,env(safe-area-inset-top));
+    padding:24px 20px 26px;
+    padding-top:max(24px,env(safe-area-inset-top));
     border-bottom:4px double var(--gruen-akzent);
     text-align:center;
   }
   header.app-head .logo{
-    width:84px;height:84px;
-    margin:0 auto 12px;
+    width:54px;height:54px;
+    margin:0 auto 10px;
     display:block;
-    border-radius:20px;
+    border-radius:14px;
     background:var(--papier);
-    padding:6px;
-    box-shadow:0 4px 16px rgba(0,0,0,.18);
+    padding:4px;
+    box-shadow:0 3px 10px rgba(0,0,0,.18);
   }
   header.app-head h1{
     margin:0;
-    font-size:2.1rem;
+    font-size:1.7rem;
     font-weight:normal;
-    letter-spacing:0.02em;
+    letter-spacing:0.01em;
+    line-height:1.25;
+  }
+  header.app-head .trenner{
+    color:var(--gruen-blass);
+    margin:0 0.3em;
+    font-weight:300;
   }
   header.app-head .untertitel{
     font-style:italic;
     color:var(--gruen-blass);
-    margin-top:6px;
-    font-size:1.02rem;
-  }
-  header.app-head .autor{
-    margin-top:10px;
-    font-size:0.88rem;
-    color:var(--gruen-blass);
-    opacity:0.85;
+    margin-top:8px;
+    font-size:0.98rem;
+    max-width:520px;
+    margin-left:auto;margin-right:auto;
+    line-height:1.4;
   }
 
-  /* Inhalt */
-  main{
-    max-width:1100px;
-    margin:0 auto;
-    padding:28px 20px 60px;
-  }
-  .intro{
-    text-align:center;
-    color:var(--text-leise);
-    max-width:640px;
-    margin:0 auto 32px;
-    font-size:1.05rem;
-  }
-
-  /* Sektionen */
-  .sektion{margin-bottom:38px}
-  .sektion-titel{
-    font-size:0.95rem;
-    text-transform:uppercase;
-    letter-spacing:0.14em;
-    color:var(--gruen-mittel);
-    margin:0 0 14px 4px;
-    font-weight:600;
-    border-bottom:1px solid var(--braun-hell);
-    padding-bottom:8px;
-  }
-
-  /* Kachel-Raster */
-  .kacheln{
-    display:grid;
-    gap:16px;
-    grid-template-columns:repeat(auto-fill,minmax(260px,1fr));
-  }
-
-  .kachel{
-    display:flex;
-    flex-direction:column;
-    background:#fff;
-    border:1px solid var(--beige-mittel);
-    border-radius:18px;
-    padding:22px 22px 20px;
-    text-decoration:none;
-    color:var(--text);
-    box-shadow:0 2px 8px rgba(90,58,36,0.06);
-    transition:transform .15s ease, box-shadow .15s ease, border-color .15s ease;
-    min-height:170px;
-  }
-  .kachel:hover, .kachel:focus-visible{
-    transform:translateY(-3px);
-    box-shadow:0 8px 22px rgba(47,79,62,0.16);
-    border-color:var(--gruen-akzent);
-    outline:none;
-  }
-  .kachel:active{transform:translateY(-1px)}
-
-  .kachel .icon{
-    width:48px;height:48px;
-    display:flex;align-items:center;justify-content:center;
-    background:var(--beige-hell);
-    border-radius:12px;
-    margin-bottom:14px;
-    color:var(--gruen-dunkel);
-    flex-shrink:0;
-  }
-  .kachel .icon svg{width:30px;height:30px}
-
-  .kachel h3{
-    margin:0 0 6px;
-    font-size:1.25rem;
-    color:var(--gruen-dunkel);
-    font-weight:600;
-    letter-spacing:0.01em;
-  }
-  .kachel p{
-    margin:0;
-    color:var(--text-leise);
-    font-size:0.97rem;
-    line-height:1.45;
-  }
-
-  /* Footer */
-  footer.app-foot{
-    text-align:center;
-    padding:24px 20px 32px;
-    padding-bottom:max(32px,env(safe-area-inset-bottom));
-    color:var(--text-leise);
-    font-size:0.88rem;
-    border-top:1px solid var(--beige-mittel);
-    background:var(--beige-hell);
-  }
-  footer.app-foot a{color:var(--gruen-mittel)}
-  .lizenz{margin-top:6px;font-size:0.8rem;opacity:0.75}
-
-  /* App-Modus (wenn als installierte PWA geöffnet) */
-  @media (display-mode:standalone){
-    header.app-head{padding-top:max(36px,env(safe-area-inset-top))}
-  }
-
-  /* Safari-Hinweis für iPhone-Nutzer in fremden Browsern */
+  /* Safari-Hinweis */
   #safari-hinweis{
     display:none;
     background:#fff5e0;
@@ -203,12 +116,128 @@
     #safari-hinweis{display:none !important}
   }
 
+  /* Inhalt */
+  main{
+    max-width:1100px;
+    margin:0 auto;
+    padding:32px 20px 60px;
+  }
+
+  /* Sektionen */
+  .sektion{margin-bottom:42px}
+  .sektion-titel{
+    font-size:2rem;
+    margin:0 0 16px 4px;
+    font-weight:normal;
+    letter-spacing:0.005em;
+    line-height:1.1;
+  }
+  .sektion[data-thema="entdecken"]    .sektion-titel{color:var(--entdecken)}
+  .sektion[data-thema="ausprobieren"] .sektion-titel{color:var(--ausprobieren)}
+  .sektion[data-thema="verstehen"]    .sektion-titel{color:var(--verstehen)}
+
+  .sektion[data-thema="entdecken"]    .sektion-titel::after,
+  .sektion[data-thema="ausprobieren"] .sektion-titel::after,
+  .sektion[data-thema="verstehen"]    .sektion-titel::after{
+    content:"";
+    display:block;
+    width:42px;height:3px;
+    border-radius:2px;
+    margin-top:8px;
+  }
+  .sektion[data-thema="entdecken"]    .sektion-titel::after{background:var(--entdecken)}
+  .sektion[data-thema="ausprobieren"] .sektion-titel::after{background:var(--ausprobieren)}
+  .sektion[data-thema="verstehen"]    .sektion-titel::after{background:var(--verstehen)}
+
+  /* Kachel-Raster */
+  .kacheln{
+    display:grid;
+    gap:16px;
+    grid-template-columns:repeat(auto-fill,minmax(280px,1fr));
+  }
+
+  .kachel{
+    display:flex;
+    flex-direction:column;
+    background:#fff;
+    border:1px solid var(--beige-mittel);
+    border-radius:18px;
+    padding:22px 22px 20px;
+    text-decoration:none;
+    color:var(--text);
+    box-shadow:0 2px 8px rgba(90,58,36,0.06);
+    transition:transform .15s ease, box-shadow .15s ease, border-color .15s ease;
+    min-height:170px;
+  }
+  .kachel:hover, .kachel:focus-visible{
+    transform:translateY(-3px);
+    box-shadow:0 8px 22px rgba(47,79,62,0.16);
+    outline:none;
+  }
+  .kachel:active{transform:translateY(-1px)}
+
+  /* Themenspezifisches Hover (Border) */
+  .sektion[data-thema="entdecken"]    .kachel:hover{border-color:var(--entdecken)}
+  .sektion[data-thema="ausprobieren"] .kachel:hover{border-color:var(--ausprobieren)}
+  .sektion[data-thema="verstehen"]    .kachel:hover{border-color:var(--verstehen)}
+
+  .kachel .icon{
+    width:54px;height:54px;
+    display:flex;align-items:center;justify-content:center;
+    border-radius:14px;
+    margin-bottom:14px;
+    flex-shrink:0;
+  }
+  .kachel .icon svg{width:34px;height:34px}
+
+  /* Icon-Farben je Sektion */
+  .sektion[data-thema="entdecken"]    .icon{background:var(--entdecken-bg);    color:var(--entdecken)}
+  .sektion[data-thema="ausprobieren"] .icon{background:var(--ausprobieren-bg); color:var(--ausprobieren)}
+  .sektion[data-thema="verstehen"]    .icon{background:var(--verstehen-bg);    color:var(--verstehen)}
+
+  .kachel h3{
+    margin:0 0 6px;
+    font-size:1.22rem;
+    font-weight:600;
+    letter-spacing:0.01em;
+  }
+  .sektion[data-thema="entdecken"]    .kachel h3{color:var(--entdecken)}
+  .sektion[data-thema="ausprobieren"] .kachel h3{color:var(--ausprobieren)}
+  .sektion[data-thema="verstehen"]    .kachel h3{color:var(--verstehen)}
+
+  .kachel p{
+    margin:0;
+    color:var(--text-leise);
+    font-size:0.97rem;
+    line-height:1.45;
+  }
+
+  /* Footer */
+  footer.app-foot{
+    text-align:center;
+    padding:24px 20px 32px;
+    padding-bottom:max(32px,env(safe-area-inset-bottom));
+    color:var(--text-leise);
+    font-size:0.88rem;
+    border-top:1px solid var(--beige-mittel);
+    background:var(--beige-hell);
+  }
+  footer.app-foot a{color:var(--gruen-mittel)}
+  .lizenz{margin-top:6px;font-size:0.8rem;opacity:0.75}
+
+  /* App-Modus (installierte PWA) */
+  @media (display-mode:standalone){
+    header.app-head{padding-top:max(36px,env(safe-area-inset-top))}
+  }
+
   /* Mobile-Feinschliff */
   @media (max-width:520px){
-    header.app-head h1{font-size:1.75rem}
-    main{padding:22px 16px 50px}
+    header.app-head h1{font-size:1.45rem}
+    header.app-head .untertitel{font-size:0.92rem}
+    main{padding:24px 16px 50px}
+    .sektion-titel{font-size:1.7rem}
     .kachel{padding:18px 18px 16px;min-height:150px}
-    .kachel h3{font-size:1.15rem}
+    .kachel h3{font-size:1.12rem}
   }
 </style>
 </head>
@@ -224,116 +253,141 @@
 
 <header class="app-head">
   <img class="logo" src="assets/icon.svg" alt="Mibaso Natur Logo">
-  <h1>Mibaso Natur</h1>
-  <div class="untertitel">Pflanzen verstehen · bestimmen · entdecken</div>
-  <div class="autor">von Michael Baur</div>
+  <h1>Pflanzen entdecken <span class="trenner">·</span> Pflanzen verstehen</h1>
+  <div class="untertitel">Deine digitale Naturwerkstatt für die Hosentasche. Funktioniert überall, ganz ohne Netz.</div>
 </header>
 
 <main>
-  <p class="intro">Eine kleine digitale Naturwerkstatt mit Lerntafeln, einem Bestimmungstool, Quiz und vier Broschüren – für alle, die die heimische Pflanzenwelt genauer kennenlernen möchten.</p>
-
-  <!-- VERSTEHEN -->
-  <section class="sektion">
-    <h2 class="sektion-titel">Verstehen</h2>
-    <div class="kacheln">
-      <a class="kachel" href="interaktiv/pflanze-erklaerung.html">
-        <div class="icon" aria-hidden="true">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M12 21V11"/>
-            <path d="M12 11c0-4 3-7 8-7 0 5-3 8-8 8z"/>
-            <path d="M12 14c0-3-2-5-6-5 0 4 2 6 6 6z"/>
-          </svg>
-        </div>
-        <h3>Aufbau einer Pflanze</h3>
-        <p>Interaktive Tafel: Wurzel, Stängel, Blatt, Blüte – mit Erklärungen zum Antippen.</p>
-      </a>
-
-      <a class="kachel" href="interaktiv/bestaeubung-erklaerung.html">
-        <div class="icon" aria-hidden="true">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-            <ellipse cx="12" cy="13" rx="5" ry="4"/>
-            <path d="M9 11 L5 7 M15 11 L19 7"/>
-            <path d="M10 13h4 M10 15h4"/>
-            <circle cx="12" cy="13" r="0.8" fill="currentColor"/>
-          </svg>
-        </div>
-        <h3>Bestäubung erklärt</h3>
-        <p>Wie kommt der Pollen von Blüte zu Blüte? Tiere, Wind und Wasser im Überblick.</p>
-      </a>
-    </div>
-  </section>
-
-  <!-- ÜBEN -->
-  <section class="sektion">
-    <h2 class="sektion-titel">Üben</h2>
-    <div class="kacheln">
-      <a class="kachel" href="interaktiv/pflanze-zuordnung.html">
-        <div class="icon" aria-hidden="true">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-            <circle cx="8" cy="8" r="3"/>
-            <path d="M11 8h9"/>
-            <circle cx="8" cy="16" r="3"/>
-            <path d="M11 16h9"/>
-          </svg>
-        </div>
-        <h3>Pflanze beschriften</h3>
-        <p>Ziehe die Begriffe an die richtige Stelle und prüfe dein Wissen zur Pflanzenanatomie.</p>
-      </a>
-
-      <a class="kachel" href="interaktiv/bestaeubung-zuordnung.html">
-        <div class="icon" aria-hidden="true">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-            <circle cx="7" cy="7" r="2.5"/>
-            <path d="M9.5 7h5l4 4"/>
-            <circle cx="7" cy="17" r="2.5"/>
-            <path d="M9.5 17h5l4-4"/>
-          </svg>
-        </div>
-        <h3>Bestäubung beschriften</h3>
-        <p>Ordne Tier, Pollen und Blüte den richtigen Begriffen zu.</p>
-      </a>
-
-      <a class="kachel" href="quiz/pflanzenquiz.html">
-        <div class="icon" aria-hidden="true">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-            <circle cx="12" cy="12" r="9"/>
-            <path d="M9.5 9a2.5 2.5 0 1 1 3.5 2.3c-.8.4-1.5 1-1.5 2.2"/>
-            <circle cx="11.5" cy="17" r="0.6" fill="currentColor" stroke="none"/>
-          </svg>
-        </div>
-        <h3>Pflanzenquiz</h3>
-        <p>Wie gut kennst du die heimischen Arten? Ein kleines Spiel zum Knobeln und Wiederholen.</p>
-      </a>
-    </div>
-  </section>
 
   <!-- ENTDECKEN -->
-  <section class="sektion">
+  <section class="sektion" data-thema="entdecken">
     <h2 class="sektion-titel">Entdecken</h2>
     <div class="kacheln">
+
       <a class="kachel" href="bestimmen.html">
         <div class="icon" aria-hidden="true">
+          <!-- Lupe mit Blatt -->
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
             <circle cx="10.5" cy="10.5" r="6"/>
             <path d="m20 20-5-5"/>
-            <path d="M10.5 8v5 M8 10.5h5"/>
+            <path d="M10.5 13c0-2.5 1.8-4 4-4 0 2.5-1.8 4-4 4z"/>
+            <path d="M10.5 13v-3"/>
           </svg>
         </div>
         <h3>Pflanzen bestimmen</h3>
-        <p>Über 90 heimische Arten mit Fotos, Lehrtafeln und Steckbriefen – filtere nach Farbe, Blühzeit, Familie und mehr.</p>
+        <p>Weit über 100 Arten mit Lerntafeln, Fotos und Steckbriefen – filtere nach Farbe, Blühzeit und mehr.</p>
       </a>
 
       <a class="kachel" href="broschueren/">
         <div class="icon" aria-hidden="true">
+          <!-- Aufgeschlagenes Buch -->
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M4 4h7v16H4z"/>
-            <path d="M13 4h7v16h-7z"/>
-            <path d="M4 4c2 0 3 .5 3.5 1.5 M20 4c-2 0-3 .5-3.5 1.5"/>
+            <path d="M3 5c3.5 0 6.5 1 9 3v13c-2.5-2-5.5-3-9-3V5z"/>
+            <path d="M21 5c-3.5 0-6.5 1-9 3v13c2.5-2 5.5-3 9-3V5z"/>
+            <path d="M12 8v13"/>
           </svg>
         </div>
         <h3>Broschüren</h3>
-        <p>Vier PDF-Broschüren: Frühblüher, Bäume, Sträucher und Schmetterlinge – zum Lesen und Mitnehmen.</p>
+        <p>Kompakte PDFs zum Schmökern und Mitnehmen: Frühblüher, Bäume, Sträucher und ihre Schmetterlinge.</p>
       </a>
+
+    </div>
+  </section>
+
+  <!-- AUSPROBIEREN -->
+  <section class="sektion" data-thema="ausprobieren">
+    <h2 class="sektion-titel">Ausprobieren</h2>
+    <div class="kacheln">
+
+      <a class="kachel" href="quiz/pflanzenquiz.html">
+        <div class="icon" aria-hidden="true">
+          <!-- Pokal -->
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M8 4h8v5a4 4 0 0 1-8 0z"/>
+            <path d="M8 6H5.5a2.5 2.5 0 0 0 2.7 4.5"/>
+            <path d="M16 6h2.5a2.5 2.5 0 0 1-2.7 4.5"/>
+            <path d="M10 13.5c0 1.5-.3 3-1 4h6c-.7-1-1-2.5-1-4"/>
+            <path d="M7 21h10"/>
+          </svg>
+        </div>
+        <h3>Quiz</h3>
+        <p>Erkennen, raten, staunen – ein Quiz mit über 100 Arten zur heimischen Pflanzenwelt.</p>
+      </a>
+
+    </div>
+  </section>
+
+  <!-- VERSTEHEN -->
+  <section class="sektion" data-thema="verstehen">
+    <h2 class="sektion-titel">Verstehen</h2>
+    <div class="kacheln">
+
+      <a class="kachel" href="interaktiv/pflanze-erklaerung.html">
+        <div class="icon" aria-hidden="true">
+          <!-- Pflanze mit Annotations-Punkten -->
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 21v-9"/>
+            <path d="M12 14c-3.5 0-5.5-2-5.5-4.5C9.5 9.5 12 11 12 14z"/>
+            <path d="M12 11c0-3 2-5 5.5-5C17.5 9 15 11 12 11z"/>
+            <circle cx="6.5" cy="9.5" r="1.1" fill="currentColor" stroke="none"/>
+            <circle cx="17.5" cy="6" r="1.1" fill="currentColor" stroke="none"/>
+            <path d="M10 22 l2-2 M14 22 l-2-2"/>
+          </svg>
+        </div>
+        <h3>Wurzel, Blatt, Blüte</h3>
+        <p>Was macht was? Entdecke, wie Pflanzen aufgebaut sind.</p>
+      </a>
+
+      <a class="kachel" href="interaktiv/pflanze-zuordnung.html">
+        <div class="icon" aria-hidden="true">
+          <!-- Puzzleteil -->
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M4 8h3.5a2 2 0 1 1 4 0H15v3.5a2 2 0 1 0 0 4V19H4v-3.5a2 2 0 1 1 0-4z"/>
+          </svg>
+        </div>
+        <h3>Anatomie-Check</h3>
+        <p>Ziehe die Begriffe an die richtige Stelle – ganz ohne Biologiestudium.</p>
+      </a>
+
+      <a class="kachel" href="interaktiv/bestaeubung-erklaerung.html">
+        <div class="icon" aria-hidden="true">
+          <!-- Biene mit Flugbahn zur Blüte -->
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <!-- Biene -->
+            <ellipse cx="17" cy="6" rx="2.7" ry="1.9"/>
+            <path d="M17 4.6 L17 3.4 M17 7.4 L17 8.6"/>
+            <path d="M14.5 4.5 L13 3.5 M19.5 4.5 L21 3.5"/>
+            <path d="M15.5 6 L18.5 6"/>
+            <!-- Gestrichelte Flugbahn -->
+            <path d="M14.3 7 Q11 11 9 14" stroke-dasharray="1.5 2"/>
+            <!-- Blüte -->
+            <circle cx="7" cy="17" r="1.6" fill="currentColor" stroke="none"/>
+            <ellipse cx="7" cy="13.5" rx="1.6" ry="2.2"/>
+            <ellipse cx="10.5" cy="17" rx="2.2" ry="1.6"/>
+            <ellipse cx="7" cy="20.5" rx="1.6" ry="2.2"/>
+            <ellipse cx="3.5" cy="17" rx="2.2" ry="1.6"/>
+          </svg>
+        </div>
+        <h3>Bestäubung &amp; Befruchtung</h3>
+        <p>Wie Pollen auf Reisen gehen – mit Bienen, Wind und manchmal ziemlich viel Zufall.</p>
+      </a>
+
+      <a class="kachel" href="interaktiv/bestaeubung-zuordnung.html">
+        <div class="icon" aria-hidden="true">
+          <!-- Puzzleteil mit Pfeilspuren / Verbindungen -->
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="5" cy="6" r="2.2"/>
+            <circle cx="19" cy="6" r="2.2"/>
+            <circle cx="12" cy="18" r="2.5"/>
+            <path d="M6.5 7.5 L10.5 16" stroke-dasharray="1.5 2"/>
+            <path d="M17.5 7.5 L13.5 16" stroke-dasharray="1.5 2"/>
+            <path d="M7.2 6 L16.8 6" stroke-dasharray="1.5 2"/>
+          </svg>
+        </div>
+        <h3>Wer transportiert hier eigentlich wen?</h3>
+        <p>Ordne Blüte, Pollen und Biene richtig zu.</p>
+      </a>
+
     </div>
   </section>
 </main>
@@ -348,7 +402,6 @@
   (function(){
     var ua = navigator.userAgent || '';
     var istIOS = /iPhone|iPod/.test(ua) || (/Macintosh/.test(ua) && 'ontouchend' in document);
-    // Apple verbietet anderen iOS-Browsern das "Zum Home-Bildschirm". Diese identifizieren sich u.a. so:
     var istKeinSafari = /CriOS|FxiOS|EdgiOS|OPiOS|YaBrowser|GSA|FBAN|FBAV|Instagram|Line|MicroMessenger|Twitter/i.test(ua);
     var schonInstalliert = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone;
     var ausgeblendet = localStorage.getItem('safari-hinweis-zu') === '1';
@@ -365,7 +418,7 @@
   })();
 </script>
 
-<!-- Service-Worker registrieren (für Offline-Nutzung und App-Installation) -->
+<!-- Service-Worker registrieren -->
 <script>
   if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
