@@ -92,28 +92,77 @@
     line-height:1.4;
   }
 
-  /* Safari-Hinweis */
-  #safari-hinweis{
+  /* Installations-Sprechblase (nur iPhone, nicht im App-Modus) */
+  #install-bubble{
+    display:none;
+    text-align:center;
+    padding:10px 12px 0;
+  }
+  .bubble-trigger{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    background:var(--gruen-dunkel);
+    color:var(--beige-hell);
+    border:none;
+    border-radius:999px;
+    padding:9px 16px 9px 14px;
+    font-size:0.92rem;
+    font-family:inherit;
+    cursor:pointer;
+    box-shadow:0 3px 12px rgba(0,0,0,0.18);
+    transition:background 0.2s;
+    line-height:1.2;
+  }
+  .bubble-trigger:hover,
+  .bubble-trigger:focus-visible{
+    background:var(--gruen-mittel);
+    outline:none;
+  }
+  .bubble-trigger svg{width:18px;height:18px;flex-shrink:0}
+  .bubble-trigger .chevron{
+    transition:transform 0.2s;
+    font-size:0.8rem;
+    margin-left:2px;
+  }
+  .bubble-trigger[aria-expanded="true"] .chevron{transform:rotate(180deg)}
+  .bubble-content{
     display:none;
     background:#fff5e0;
-    border-bottom:1px solid #e8c989;
-    color:#5a3a24;
-    padding:14px 18px;
+    border:1px solid #e8c989;
+    border-radius:16px;
+    padding:16px 20px 14px;
+    margin:10px auto 0;
+    max-width:560px;
+    text-align:left;
     font-size:0.95rem;
-    line-height:1.45;
-    text-align:center;
+    line-height:1.5;
+    color:#5a3a24;
+    box-shadow:0 4px 16px rgba(90,58,36,0.12);
   }
-  #safari-hinweis strong{color:#3A5F4A}
-  #safari-hinweis .schliessen{
+  .bubble-content.open{display:block}
+  .bubble-content h4{
+    margin:0 0 6px;
+    font-size:1.05rem;
+    color:var(--gruen-dunkel);
+    font-weight:600;
+  }
+  .bubble-content p{margin:10px 0 4px}
+  .bubble-content p:first-of-type{margin-top:4px}
+  .bubble-content ol{margin:4px 0 6px 22px;padding:0}
+  .bubble-content li{margin-bottom:3px}
+  .bubble-content strong{color:var(--gruen-dunkel)}
+  .bubble-content em{font-style:italic;color:var(--braun-mittel);font-weight:600}
+  .bubble-content .schliessen{
     display:inline-block;
-    margin-left:10px;
+    margin-top:8px;
     color:#8b5a3c;
     text-decoration:underline;
     cursor:pointer;
-    font-size:0.88rem;
+    font-size:0.86rem;
   }
   @media (display-mode:standalone){
-    #safari-hinweis{display:none !important}
+    #install-bubble{display:none !important}
   }
 
   /* Inhalt */
@@ -243,12 +292,39 @@
 </head>
 <body>
 
-<!-- Hinweis-Banner: erscheint nur auf iPhone und nur in nicht-Safari-Browsern -->
-<div id="safari-hinweis" role="note">
-  <strong>Tipp für iPhone-Nutzer:</strong>
-  Damit du Mibaso Natur als App auf deinem Startbildschirm ablegen kannst,
-  öffne diese Seite bitte in <strong>Safari</strong> (Chrome und andere Browser lassen das auf dem iPhone leider nicht zu).
-  <a class="schliessen" id="safari-hinweis-zu">Schließen</a>
+<!-- Installations-Sprechblase: erscheint nur auf iPhone und nur, solange nicht installiert -->
+<div id="install-bubble">
+  <button class="bubble-trigger" id="bubble-trigger" aria-expanded="false" aria-controls="bubble-content">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <rect x="5" y="2" width="14" height="20" rx="3"/>
+      <line x1="12" y1="18" x2="12" y2="18"/>
+    </svg>
+    <span>Als App aufs iPhone</span>
+    <span class="chevron" aria-hidden="true">▾</span>
+  </button>
+  <div class="bubble-content" id="bubble-content" role="region" aria-label="Installations-Anleitung">
+    <h4>So legst du Mibaso Natur als App ab</h4>
+
+    <p><strong>Variante A – wenn du in Safari bist (am einfachsten):</strong></p>
+    <ol>
+      <li>Unten auf das <em>Teilen-Symbol</em> (Kästchen mit Pfeil nach oben)</li>
+      <li><em>„Zum Home-Bildschirm"</em> antippen (eventuell vorher <em>„Mehr anzeigen"</em>)</li>
+      <li>Oben rechts auf <em>„Hinzufügen"</em></li>
+    </ol>
+
+    <p><strong>Variante B – wenn du in einem anderen Browser bist (Chrome, Google-App, Instagram &amp; Co.):</strong></p>
+    <ol>
+      <li>Oben rechts auf das <em>Teilen-Symbol</em></li>
+      <li><em>„In Safari öffnen"</em> oder <em>„In Chrome öffnen"</em></li>
+      <li>Dort nochmal das <em>Teilen-Symbol</em></li>
+      <li><em>„Zum Home-Bildschirm"</em> antippen (eventuell vorher <em>„Mehr anzeigen"</em>)</li>
+      <li>Oben rechts auf <em>„Hinzufügen"</em></li>
+    </ol>
+
+    <p style="margin-top:10px;font-size:0.88rem;color:#6b5340;">Tipp: Den Link findest du auch, wenn du <strong>flora.mibaso.de</strong> in die Google-Suchmaske eingibst – das öffnet dieselbe Seite und der Weg über Chrome funktioniert ebenfalls.</p>
+
+    <a class="schliessen" id="bubble-schliessen">Nicht mehr anzeigen</a>
+  </div>
 </div>
 
 <header class="app-head">
@@ -397,23 +473,34 @@
   <p class="lizenz">© 2026 Michael Baur · Fotos: CC BY-NC</p>
 </footer>
 
-<!-- Safari-Hinweis nur für iPhone+Nicht-Safari einblenden -->
+<!-- Installations-Sprechblase: nur iPhone, nur wenn nicht installiert und nicht weggeklickt -->
 <script>
   (function(){
     var ua = navigator.userAgent || '';
     var istIOS = /iPhone|iPod/.test(ua) || (/Macintosh/.test(ua) && 'ontouchend' in document);
-    var istKeinSafari = /CriOS|FxiOS|EdgiOS|OPiOS|YaBrowser|GSA|FBAN|FBAV|Instagram|Line|MicroMessenger|Twitter/i.test(ua);
     var schonInstalliert = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone;
-    var ausgeblendet = localStorage.getItem('safari-hinweis-zu') === '1';
-    if (istIOS && istKeinSafari && !schonInstalliert && !ausgeblendet) {
-      var box = document.getElementById('safari-hinweis');
-      if (box) box.style.display = 'block';
+    var ausgeblendet = false;
+    try { ausgeblendet = localStorage.getItem('install-bubble-zu') === '1'; } catch(e){}
+
+    if (istIOS && !schonInstalliert && !ausgeblendet) {
+      var bubble = document.getElementById('install-bubble');
+      if (bubble) bubble.style.display = 'block';
     }
-    var btn = document.getElementById('safari-hinweis-zu');
-    if (btn) btn.addEventListener('click', function(){
-      var box = document.getElementById('safari-hinweis');
-      if (box) box.style.display = 'none';
-      try { localStorage.setItem('safari-hinweis-zu', '1'); } catch(e){}
+
+    var trigger = document.getElementById('bubble-trigger');
+    var content = document.getElementById('bubble-content');
+    if (trigger && content) {
+      trigger.addEventListener('click', function(){
+        var isOpen = content.classList.toggle('open');
+        trigger.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+      });
+    }
+
+    var closeBtn = document.getElementById('bubble-schliessen');
+    if (closeBtn) closeBtn.addEventListener('click', function(){
+      var bubble = document.getElementById('install-bubble');
+      if (bubble) bubble.style.display = 'none';
+      try { localStorage.setItem('install-bubble-zu', '1'); } catch(e){}
     });
   })();
 </script>
