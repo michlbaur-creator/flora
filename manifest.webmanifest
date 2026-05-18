@@ -51,7 +51,7 @@
     {
       "name": "Pflanzenquiz",
       "short_name": "Quiz",
-      "url": "/Quiz/pflanzenquiz.html"
+      "url": "/quiz/pflanzenquiz.html"
     }
   ]
 }

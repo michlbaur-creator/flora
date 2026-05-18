@@ -179,6 +179,30 @@
     header.app-head{padding-top:max(36px,env(safe-area-inset-top))}
   }
 
+  /* Safari-Hinweis für iPhone-Nutzer in fremden Browsern */
+  #safari-hinweis{
+    display:none;
+    background:#fff5e0;
+    border-bottom:1px solid #e8c989;
+    color:#5a3a24;
+    padding:14px 18px;
+    font-size:0.95rem;
+    line-height:1.45;
+    text-align:center;
+  }
+  #safari-hinweis strong{color:#3A5F4A}
+  #safari-hinweis .schliessen{
+    display:inline-block;
+    margin-left:10px;
+    color:#8b5a3c;
+    text-decoration:underline;
+    cursor:pointer;
+    font-size:0.88rem;
+  }
+  @media (display-mode:standalone){
+    #safari-hinweis{display:none !important}
+  }
+
   /* Mobile-Feinschliff */
   @media (max-width:520px){
     header.app-head h1{font-size:1.75rem}
@@ -189,6 +213,14 @@
 </style>
 </head>
 <body>
+
+<!-- Hinweis-Banner: erscheint nur auf iPhone und nur in nicht-Safari-Browsern -->
+<div id="safari-hinweis" role="note">
+  <strong>Tipp für iPhone-Nutzer:</strong>
+  Damit du Mibaso Natur als App auf deinem Startbildschirm ablegen kannst,
+  öffne diese Seite bitte in <strong>Safari</strong> (Chrome und andere Browser lassen das auf dem iPhone leider nicht zu).
+  <a class="schliessen" id="safari-hinweis-zu">Schließen</a>
+</div>
 
 <header class="app-head">
   <img class="logo" src="assets/icon.svg" alt="Mibaso Natur Logo">
@@ -261,7 +293,7 @@
         <p>Ordne Tier, Pollen und Blüte den richtigen Begriffen zu.</p>
       </a>
 
-      <a class="kachel" href="Quiz/pflanzenquiz.html">
+      <a class="kachel" href="quiz/pflanzenquiz.html">
         <div class="icon" aria-hidden="true">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
             <circle cx="12" cy="12" r="9"/>
@@ -310,6 +342,28 @@
   <p>Hinweise und Korrekturen sind willkommen: <a href="mailto:mibaur@me.com">mibaur@me.com</a></p>
   <p class="lizenz">© 2026 Michael Baur · Fotos: CC BY-NC</p>
 </footer>
+
+<!-- Safari-Hinweis nur für iPhone+Nicht-Safari einblenden -->
+<script>
+  (function(){
+    var ua = navigator.userAgent || '';
+    var istIOS = /iPhone|iPod/.test(ua) || (/Macintosh/.test(ua) && 'ontouchend' in document);
+    // Apple verbietet anderen iOS-Browsern das "Zum Home-Bildschirm". Diese identifizieren sich u.a. so:
+    var istKeinSafari = /CriOS|FxiOS|EdgiOS|OPiOS|YaBrowser|GSA|FBAN|FBAV|Instagram|Line|MicroMessenger|Twitter/i.test(ua);
+    var schonInstalliert = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone;
+    var ausgeblendet = localStorage.getItem('safari-hinweis-zu') === '1';
+    if (istIOS && istKeinSafari && !schonInstalliert && !ausgeblendet) {
+      var box = document.getElementById('safari-hinweis');
+      if (box) box.style.display = 'block';
+    }
+    var btn = document.getElementById('safari-hinweis-zu');
+    if (btn) btn.addEventListener('click', function(){
+      var box = document.getElementById('safari-hinweis');
+      if (box) box.style.display = 'none';
+      try { localStorage.setItem('safari-hinweis-zu', '1'); } catch(e){}
+    });
+  })();
+</script>
 
 <!-- Service-Worker registrieren (für Offline-Nutzung und App-Installation) -->
 <script>

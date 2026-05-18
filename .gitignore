@@ -1,0 +1,7 @@
+# macOS-Systemmüll – nie ins Repo
+.DS_Store
+**/.DS_Store
+
+# Backup-Dateien
+*~
+*.bak
