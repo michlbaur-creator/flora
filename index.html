@@ -92,8 +92,8 @@
     line-height:1.4;
   }
 
-  /* Installations-Sprechblase (nur iPhone, nicht im App-Modus) */
-  #install-bubble{
+  /* Installations-Sprechblasen (iPhone + Android, nicht im App-Modus) */
+  .install-bubble{
     display:none;
     text-align:center;
     padding:10px 12px 0;
@@ -162,7 +162,7 @@
     font-size:0.86rem;
   }
   @media (display-mode:standalone){
-    #install-bubble{display:none !important}
+    .install-bubble{display:none !important}
   }
 
   /* Inhalt */
@@ -292,9 +292,9 @@
 </head>
 <body>
 
-<!-- Installations-Sprechblase: erscheint nur auf iPhone und nur, solange nicht installiert -->
-<div id="install-bubble">
-  <button class="bubble-trigger" id="bubble-trigger" aria-expanded="false" aria-controls="bubble-content">
+<!-- Installations-Sprechblase iPhone -->
+<div id="install-bubble-ios" class="install-bubble">
+  <button class="bubble-trigger" id="bubble-trigger-ios" aria-expanded="false" aria-controls="bubble-content-ios">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
       <rect x="5" y="2" width="14" height="20" rx="3"/>
       <line x1="12" y1="18" x2="12" y2="18"/>
@@ -302,7 +302,7 @@
     <span>Als App aufs iPhone</span>
     <span class="chevron" aria-hidden="true">▾</span>
   </button>
-  <div class="bubble-content" id="bubble-content" role="region" aria-label="Installations-Anleitung">
+  <div class="bubble-content" id="bubble-content-ios" role="region" aria-label="Installations-Anleitung iPhone">
     <h4>So legst du Mibaso Natur als App ab</h4>
 
     <p><strong>Variante A – wenn du in Safari bist (am einfachsten):</strong></p>
@@ -323,14 +323,53 @@
 
     <p style="margin-top:10px;font-size:0.88rem;color:#6b5340;">Tipp: Den Link findest du auch, wenn du <strong>flora.mibaso.de</strong> in die Google-Suchmaske eingibst – das öffnet dieselbe Seite und der Weg über Chrome funktioniert ebenfalls.</p>
 
-    <a class="schliessen" id="bubble-schliessen">Nicht mehr anzeigen</a>
+    <a class="schliessen" id="bubble-schliessen-ios">Nicht mehr anzeigen</a>
+  </div>
+</div>
+
+<!-- Installations-Sprechblase Android -->
+<div id="install-bubble-android" class="install-bubble">
+  <button class="bubble-trigger" id="bubble-trigger-android" aria-expanded="false" aria-controls="bubble-content-android">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <rect x="5" y="2" width="14" height="20" rx="3"/>
+      <line x1="12" y1="18" x2="12" y2="18"/>
+    </svg>
+    <span>Als App auf dein Android-Handy</span>
+    <span class="chevron" aria-hidden="true">▾</span>
+  </button>
+  <div class="bubble-content" id="bubble-content-android" role="region" aria-label="Installations-Anleitung Android">
+    <h4>So legst du Mibaso Natur als App ab</h4>
+
+    <p><strong>In Chrome (am häufigsten):</strong></p>
+    <ol>
+      <li>Oben rechts auf das <em>Drei-Punkte-Menü</em> (⋮)</li>
+      <li><em>„App installieren"</em> oder <em>„Zum Startbildschirm hinzufügen"</em> antippen</li>
+      <li>Im Dialog auf <em>„Installieren"</em> bzw. <em>„Hinzufügen"</em> tippen</li>
+    </ol>
+
+    <p><strong>In Samsung Internet:</strong></p>
+    <ol>
+      <li>Unten auf das <em>Drei-Striche-Menü</em> (≡)</li>
+      <li><em>„Seite hinzufügen zu"</em> → <em>„Startbildschirm"</em></li>
+      <li>Mit <em>„Hinzufügen"</em> bestätigen</li>
+    </ol>
+
+    <p><strong>In Firefox:</strong></p>
+    <ol>
+      <li>Oben rechts auf das <em>Drei-Punkte-Menü</em> (⋮)</li>
+      <li><em>„Installieren"</em> bzw. <em>„Zur Startseite hinzufügen"</em></li>
+    </ol>
+
+    <p style="margin-top:10px;font-size:0.88rem;color:#6b5340;">Tipp: Manchmal blendet Chrome auch ganz von selbst unten einen Balken „Mibaso Natur installieren" ein – dann reicht ein Tipp darauf.</p>
+
+    <a class="schliessen" id="bubble-schliessen-android">Nicht mehr anzeigen</a>
   </div>
 </div>
 
 <header class="app-head">
   <img class="logo" src="assets/icon.svg" alt="Mibaso Natur Logo">
   <h1>Pflanzen entdecken <span class="trenner">·</span> Pflanzen verstehen</h1>
-  <div class="untertitel">Deine digitale Naturwerkstatt für die Hosentasche. Funktioniert überall, ganz ohne Netz.</div>
+  <div class="untertitel">Deine digitale Naturwerkstatt für die Hosentasche.</div>
 </header>
 
 <main>
@@ -473,34 +512,42 @@
   <p class="lizenz">© 2026 Michael Baur · Fotos: CC BY-NC</p>
 </footer>
 
-<!-- Installations-Sprechblase: nur iPhone, nur wenn nicht installiert und nicht weggeklickt -->
+<!-- Installations-Sprechblasen: passende Variante je nach Gerät einblenden -->
 <script>
   (function(){
     var ua = navigator.userAgent || '';
     var istIOS = /iPhone|iPod/.test(ua) || (/Macintosh/.test(ua) && 'ontouchend' in document);
+    var istAndroid = /Android/i.test(ua) && !istIOS;
     var schonInstalliert = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone;
     var ausgeblendet = false;
     try { ausgeblendet = localStorage.getItem('install-bubble-zu') === '1'; } catch(e){}
 
-    if (istIOS && !schonInstalliert && !ausgeblendet) {
-      var bubble = document.getElementById('install-bubble');
-      if (bubble) bubble.style.display = 'block';
+    if (!schonInstalliert && !ausgeblendet) {
+      var bubbleId = istIOS ? 'install-bubble-ios'
+                   : istAndroid ? 'install-bubble-android'
+                   : null;
+      if (bubbleId) {
+        var bubble = document.getElementById(bubbleId);
+        if (bubble) bubble.style.display = 'block';
+      }
     }
 
-    var trigger = document.getElementById('bubble-trigger');
-    var content = document.getElementById('bubble-content');
-    if (trigger && content) {
-      trigger.addEventListener('click', function(){
-        var isOpen = content.classList.toggle('open');
-        trigger.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+    // Trigger und Schließen-Buttons beider Sprechblasen verkabeln
+    ['ios','android'].forEach(function(plat){
+      var trigger = document.getElementById('bubble-trigger-' + plat);
+      var content = document.getElementById('bubble-content-' + plat);
+      if (trigger && content) {
+        trigger.addEventListener('click', function(){
+          var isOpen = content.classList.toggle('open');
+          trigger.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+        });
+      }
+      var closeBtn = document.getElementById('bubble-schliessen-' + plat);
+      if (closeBtn) closeBtn.addEventListener('click', function(){
+        var bubble = document.getElementById('install-bubble-' + plat);
+        if (bubble) bubble.style.display = 'none';
+        try { localStorage.setItem('install-bubble-zu', '1'); } catch(e){}
       });
-    }
-
-    var closeBtn = document.getElementById('bubble-schliessen');
-    if (closeBtn) closeBtn.addEventListener('click', function(){
-      var bubble = document.getElementById('install-bubble');
-      if (bubble) bubble.style.display = 'none';
-      try { localStorage.setItem('install-bubble-zu', '1'); } catch(e){}
     });
   })();
 </script>
