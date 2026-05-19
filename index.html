@@ -72,16 +72,16 @@
   }
   header.app-head h1{
     margin:0;
-    /* flüssig skalierend, damit "Pflanzen entdecken · bestimmen · erleben" auch auf kleinen Handys nicht umbricht */
-    font-size:clamp(1.05rem, 4.4vw, 1.7rem);
+    /* flüssig skalierend; sehr klein min, damit "Pflanzen entdecken·bestimmen·erleben" auf jedem Handy reinpasst */
+    font-size:clamp(0.88rem, 3.8vw, 1.65rem);
     font-weight:normal;
-    letter-spacing:0.01em;
+    letter-spacing:0.005em;
     line-height:1.25;
     white-space:nowrap;
   }
   header.app-head .trenner{
     color:var(--gruen-blass);
-    margin:0 0.3em;
+    margin:0 0.18em;
     font-weight:300;
   }
   header.app-head .untertitel{
@@ -283,6 +283,7 @@
 
   /* Mobile-Feinschliff */
   @media (max-width:520px){
+    header.app-head{padding:24px 10px 24px}
     header.app-head .untertitel{font-size:0.92rem}
     main{padding:24px 16px 50px}
     .sektion-titel{font-size:1.7rem}
@@ -356,7 +357,7 @@
 
 <header class="app-head">
   <img class="logo" src="assets/icon.svg" alt="Mibaso Natur Logo">
-  <h1>Pflanzen entdecken <span class="trenner">·</span> bestimmen <span class="trenner">·</span> erleben</h1>
+  <h1>Pflanzen entdecken<span class="trenner">·</span>bestimmen<span class="trenner">·</span>erleben</h1>
   <div class="untertitel">Deine digitale Naturwerkstatt für die Hosentasche.</div>
 </header>
 

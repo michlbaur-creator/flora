@@ -36,7 +36,7 @@
 #ph-root .ph-btn.ph-open{background:#2e7d32!important;border-color:#1b5e20!important;}
 
 /* Erklärungs-Panel UNTER dem Bild – ruhig und filigran */
-#ph-root .ph-panel{
+#ph-root #ph-panel{
   margin:10px 0 0!important;
   background:#fff!important;
   border:1px solid #d6e0d6!important;
@@ -45,24 +45,34 @@
   overflow:hidden!important;
   min-height:62px!important;
 }
-#ph-root .ph-hint{
+#ph-root #ph-panel .ph-hint{
   padding:14px 16px!important;
   text-align:center!important;
   color:#6a6a6a!important;
   font-size:.85rem!important;
   font-style:italic!important;
   line-height:1.5!important;
+  display:block!important;
+}
+#ph-root #ph-panel.active .ph-hint{
+  display:none!important;
+}
+#ph-root #ph-panel .ph-tip-content{
+  display:none!important;
+}
+#ph-root #ph-panel.active .ph-tip-content{
+  display:block!important;
+  animation:ph-fade .18s ease!important;
 }
 #ph-root .ph-tip-head{
   background:#2e7d32!important;color:#fff!important;
   font-size:.85rem!important;font-weight:600!important;
   letter-spacing:.02em!important;
-  padding:8px 14px!important;display:block!important;
+  padding:8px 14px!important;
 }
 #ph-root .ph-tip-body{
   font-size:.88rem!important;color:#333!important;
-  padding:11px 14px 12px!important;line-height:1.55!important;display:block!important;
-  animation:ph-fade .18s ease!important;
+  padding:11px 14px 12px!important;line-height:1.55!important;
 }
 @keyframes ph-fade{
   from{opacity:0;transform:translateY(2px);}
@@ -132,25 +142,25 @@
   </div>
   </div>
   <!-- Erklärungs-Panel UNTER dem Bild – verdeckt die Grafik nicht mehr -->
-  <div class="ph-panel" id="ph-panel">
-    <div class="ph-hint" id="ph-hint">Tippe auf einen der grünen Punkte im Bild, um mehr zu erfahren.</div>
-    <div class="ph-tip-head" id="ph-tip-head" style="display:none"></div>
-    <div class="ph-tip-body" id="ph-tip-body" style="display:none"></div>
+  <div id="ph-panel">
+    <div class="ph-hint">Tippe auf einen der grünen Punkte im Bild, um mehr zu erfahren.</div>
+    <div class="ph-tip-content">
+      <div class="ph-tip-head" id="ph-tip-head"></div>
+      <div class="ph-tip-body" id="ph-tip-body"></div>
+    </div>
   </div>
 </div>
 
 <script>
 (function(){
   var openBtn = null;
-  var hint    = document.getElementById('ph-hint');
+  var panel   = document.getElementById('ph-panel');
   var tipHead = document.getElementById('ph-tip-head');
   var tipBody = document.getElementById('ph-tip-body');
 
   function showHint(){
     if(openBtn){ openBtn.classList.remove('ph-open'); openBtn = null; }
-    hint.style.display    = 'block';
-    tipHead.style.display = 'none';
-    tipBody.style.display = 'none';
+    panel.classList.remove('active');
   }
 
   window.phToggle = function(btn){
@@ -161,10 +171,7 @@
     tipBody.textContent = btn.dataset.text;
     btn.classList.add('ph-open');
     openBtn = btn;
-
-    hint.style.display    = 'none';
-    tipHead.style.display = 'block';
-    tipBody.style.display = 'block';
+    panel.classList.add('active');
   };
 
   // Klick außerhalb von Punkt + Panel → zurück zum Hinweis
