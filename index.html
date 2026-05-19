@@ -276,19 +276,27 @@
   footer.app-foot a{color:var(--gruen-mittel)}
   .lizenz{margin-top:6px;font-size:0.8rem;opacity:0.75}
 
-  /* App-Modus (installierte PWA) */
-  @media (display-mode:standalone){
-    header.app-head{padding-top:max(36px,env(safe-area-inset-top))}
-  }
-
   /* Mobile-Feinschliff */
   @media (max-width:520px){
-    header.app-head{padding:24px 10px 24px}
+    header.app-head{
+      padding-left:10px;
+      padding-right:10px;
+      padding-bottom:24px;
+      /* Notch/Dynamic-Island respektieren – mindestens 28px Luft oben */
+      padding-top:max(28px, env(safe-area-inset-top));
+    }
     header.app-head .untertitel{font-size:0.92rem}
     main{padding:24px 16px 50px}
     .sektion-titel{font-size:1.7rem}
     .kachel{padding:18px 18px 16px;min-height:150px}
     .kachel h3{font-size:1.12rem}
+  }
+
+  /* App-Modus (installierte PWA): mehr Luft unter dem Notch */
+  @media (display-mode:standalone){
+    header.app-head{
+      padding-top:max(42px, calc(env(safe-area-inset-top) + 10px));
+    }
   }
 </style>
 </head>
