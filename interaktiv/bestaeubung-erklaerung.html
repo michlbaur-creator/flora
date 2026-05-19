@@ -92,120 +92,110 @@
     letter-spacing: 0.02em;
   }
 
-  /* ── Modal overlay ── */
-  #bestaeubung1-app #modal-overlay {
-    display: none;
-    position: fixed;
-    inset: 0;
-    background: rgba(30,30,20,0.52);
-    z-index: 9000;
-    align-items: center;
-    justify-content: center;
-    padding: 16px;
-    backdrop-filter: blur(2px);
-    -webkit-backdrop-filter: blur(2px);
-  }
-  #bestaeubung1-app #modal-overlay.open {
-    display: flex;
-  }
-
-  @keyframes modalIn {
-    from { opacity: 0; transform: scale(0.88) translateY(10px); }
-    to   { opacity: 1; transform: scale(1)    translateY(0); }
-  }
-  #bestaeubung1-app #modal-box {
+  /* ── Erklärungs-Panel UNTER dem Bild – kein Vollbild-Overlay mehr ── */
+  #bestaeubung1-app #explain-panel {
     background: white;
-    border-radius: 16px;
-    box-shadow: 0 8px 40px rgba(0,0,0,0.22);
-    max-width: 420px;
-    width: 100%;
-    padding: 0;
+    border-radius: 14px;
+    box-shadow: 0 2px 14px rgba(0,0,0,0.08);
+    margin: 0 10px 10px;
     overflow: hidden;
-    animation: modalIn 0.22s ease-out forwards;
+    min-height: 60px;
+  }
+  #bestaeubung1-app #explain-hint {
+    padding: 14px 16px;
+    text-align: center;
+    color: #6a6a6a;
+    font-size: 0.86rem;
+    font-style: italic;
+    line-height: 1.5;
+  }
+  #bestaeubung1-app #explain-content { display: none; }
+  #bestaeubung1-app #explain-content.open { display: block; animation: explainIn 0.22s ease-out; }
+  @keyframes explainIn {
+    from { opacity: 0; transform: translateY(4px); }
+    to   { opacity: 1; transform: translateY(0); }
   }
 
-  #bestaeubung1-app #modal-header {
+  #bestaeubung1-app #explain-header {
     background: #3A5F4A;
-    padding: 18px 20px 14px;
+    padding: 10px 16px 9px;
     display: flex;
     align-items: center;
-    gap: 14px;
+    gap: 11px;
   }
-  #bestaeubung1-app #modal-badge {
-    width: 44px;
-    height: 44px;
+  #bestaeubung1-app #explain-badge {
+    width: 30px;
+    height: 30px;
     border-radius: 50%;
     background: white;
     color: #2F4F3E;
-    font-size: 1.3rem;
+    font-size: 1rem;
     font-weight: bold;
     font-family: Georgia, serif;
     display: flex;
     align-items: center;
     justify-content: center;
     flex-shrink: 0;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    box-shadow: 0 1px 4px rgba(0,0,0,0.15);
   }
-  #bestaeubung1-app #modal-title {
+  #bestaeubung1-app #explain-title {
     color: white;
-    font-size: 1.08rem;
+    font-size: 0.98rem;
     font-weight: bold;
     font-family: Georgia, serif;
     line-height: 1.2;
     flex: 1;
   }
 
-  #bestaeubung1-app #modal-body {
-    padding: 18px 22px 22px;
-    font-size: 0.97rem;
+  #bestaeubung1-app #explain-body {
+    padding: 11px 16px 12px;
+    font-size: 0.92rem;
     line-height: 1.55;
     color: #333;
   }
-  #bestaeubung1-app #modal-body strong {
-    color: #2F4F3E;
-  }
+  #bestaeubung1-app #explain-body strong { color: #2F4F3E; }
 
-  #bestaeubung1-app #modal-footer {
-    padding: 0 22px 18px;
+  #bestaeubung1-app #explain-footer {
+    padding: 0 14px 12px;
     display: flex;
-    gap: 10px;
-    justify-content: flex-end;
+    gap: 8px;
+    justify-content: space-between;
+    align-items: center;
   }
-  #bestaeubung1-app .modal-nav-btn {
+  #bestaeubung1-app .nav-group { display: flex; gap: 8px; }
+  #bestaeubung1-app .explain-nav-btn {
     font-family: Georgia, serif;
-    font-size: 0.85rem;
+    font-size: 0.82rem;
     font-weight: bold;
-    padding: 7px 14px;
-    border-radius: 20px;
+    padding: 6px 12px;
+    border-radius: 16px;
     border: 1.5px solid #3A5F4A;
     cursor: pointer;
     background: white;
     color: #3A5F4A;
     transition: background 0.14s, transform 0.1s;
   }
-  #bestaeubung1-app .modal-nav-btn:hover { background: #f0f6f1; }
-  #bestaeubung1-app .modal-nav-btn:active { transform: scale(0.97); }
-  #bestaeubung1-app #modal-close-btn {
+  #bestaeubung1-app .explain-nav-btn:hover { background: #f0f6f1; }
+  #bestaeubung1-app .explain-nav-btn:active { transform: scale(0.97); }
+  #bestaeubung1-app #explain-close-btn {
     font-family: Georgia, serif;
-    font-size: 0.85rem;
-    font-weight: bold;
-    padding: 7px 18px;
-    border-radius: 20px;
+    font-size: 0.82rem;
+    padding: 6px 12px;
+    border-radius: 16px;
     border: none;
     cursor: pointer;
-    background: #3A5F4A;
-    color: white;
-    transition: background 0.14s, transform 0.1s;
+    background: transparent;
+    color: #888;
+    transition: color 0.14s;
   }
-  #bestaeubung1-app #modal-close-btn:hover { background: #2F4F3E; }
-  #bestaeubung1-app #modal-close-btn:active { transform: scale(0.97); }
+  #bestaeubung1-app #explain-close-btn:hover { color: #3A5F4A; }
 
   @media (max-width: 520px) {
-    #bestaeubung1-app #modal-badge { width: 36px; height: 36px; font-size: 1.1rem; }
-    #bestaeubung1-app #modal-title { font-size: 0.97rem; }
-    #bestaeubung1-app #modal-body  { font-size: 0.9rem; padding: 14px 16px 16px; }
-    #bestaeubung1-app #modal-footer { padding: 0 16px 14px; }
+    #bestaeubung1-app #explain-badge { width: 26px; height: 26px; font-size: 0.88rem; }
+    #bestaeubung1-app #explain-title { font-size: 0.92rem; }
+    #bestaeubung1-app #explain-body  { font-size: 0.88rem; padding: 10px 14px 11px; }
     #bestaeubung1-app #diagram-box { margin: 0 6px 8px; }
+    #bestaeubung1-app #explain-panel { margin: 0 6px 8px; }
   }
 </style>
 </head>
@@ -235,18 +225,21 @@
     </div>
   </div>
 
-  <!-- Modal -->
-  <div id="modal-overlay">
-    <div id="modal-box">
-      <div id="modal-header">
-        <div id="modal-badge">–</div>
-        <div id="modal-title">–</div>
+  <!-- Erklärungs-Panel unter dem Diagramm -->
+  <div id="explain-panel">
+    <div id="explain-hint">Tippe auf eine der nummerierten Stellen im Bild, um den jeweiligen Schritt zu erfahren.</div>
+    <div id="explain-content">
+      <div id="explain-header">
+        <div id="explain-badge">–</div>
+        <div id="explain-title">–</div>
       </div>
-      <div id="modal-body">–</div>
-      <div id="modal-footer">
-        <button class="modal-nav-btn" id="modal-prev">◀ zurück</button>
-        <button class="modal-nav-btn" id="modal-next">weiter ▶</button>
-        <button id="modal-close-btn">Schließen</button>
+      <div id="explain-body">–</div>
+      <div id="explain-footer">
+        <div class="nav-group">
+          <button class="explain-nav-btn" id="explain-prev">◀ zurück</button>
+          <button class="explain-nav-btn" id="explain-next">weiter ▶</button>
+        </div>
+        <button id="explain-close-btn">×</button>
       </div>
     </div>
   </div>
@@ -299,33 +292,36 @@
   ];
 
   const app      = document.getElementById('bestaeubung1-app');
-  const overlay  = app.querySelector('#modal-overlay');
-  const badge    = app.querySelector('#modal-badge');
-  const title    = app.querySelector('#modal-title');
-  const body     = app.querySelector('#modal-body');
-  const prevBtn  = app.querySelector('#modal-prev');
-  const nextBtn  = app.querySelector('#modal-next');
-  const closeBtn = app.querySelector('#modal-close-btn');
+  const hint     = app.querySelector('#explain-hint');
+  const content  = app.querySelector('#explain-content');
+  const badge    = app.querySelector('#explain-badge');
+  const title    = app.querySelector('#explain-title');
+  const body     = app.querySelector('#explain-body');
+  const prevBtn  = app.querySelector('#explain-prev');
+  const nextBtn  = app.querySelector('#explain-next');
+  const closeBtn = app.querySelector('#explain-close-btn');
 
-  let currentIdx = 0;
+  let currentIdx = -1;
 
-  function openModal(idx) {
+  function showStep(idx) {
     currentIdx = idx;
     const s = steps[idx];
     badge.textContent = s.num;
     title.textContent = s.title;
     body.innerHTML    = s.body;
-    // update nav buttons
     prevBtn.disabled  = (idx === 0);
     prevBtn.style.opacity = (idx === 0) ? '0.35' : '1';
     nextBtn.disabled  = (idx === steps.length - 1);
     nextBtn.style.opacity = (idx === steps.length - 1) ? '0.35' : '1';
-    overlay.classList.add('open');
+    hint.style.display = 'none';
+    content.classList.add('open');
     sendHeight();
   }
 
-  function closeModal() {
-    overlay.classList.remove('open');
+  function showHint() {
+    currentIdx = -1;
+    content.classList.remove('open');
+    hint.style.display = 'block';
     sendHeight();
   }
 
@@ -333,27 +329,23 @@
   app.querySelectorAll('.num-btn').forEach(btn => {
     const num = parseInt(btn.dataset.num, 10);
     btn.addEventListener('click', () => {
-      // pulse effect
       btn.classList.remove('pulse');
-      void btn.offsetWidth; // reflow
+      void btn.offsetWidth;
       btn.classList.add('pulse');
-      openModal(num - 1);
+      showStep(num - 1);
     });
   });
 
-  overlay.addEventListener('click', (e) => {
-    if (e.target === overlay) closeModal();
-  });
-  closeBtn.addEventListener('click', closeModal);
-  prevBtn.addEventListener('click', () => { if (currentIdx > 0) openModal(currentIdx - 1); });
-  nextBtn.addEventListener('click', () => { if (currentIdx < steps.length - 1) openModal(currentIdx + 1); });
+  closeBtn.addEventListener('click', showHint);
+  prevBtn.addEventListener('click', () => { if (currentIdx > 0) showStep(currentIdx - 1); });
+  nextBtn.addEventListener('click', () => { if (currentIdx < steps.length - 1) showStep(currentIdx + 1); });
 
-  // Keyboard support
+  // Tastatursteuerung – nur wenn ein Schritt angezeigt wird
   document.addEventListener('keydown', (e) => {
-    if (!overlay.classList.contains('open')) return;
-    if (e.key === 'Escape') closeModal();
-    if (e.key === 'ArrowLeft'  && currentIdx > 0)               openModal(currentIdx - 1);
-    if (e.key === 'ArrowRight' && currentIdx < steps.length - 1) openModal(currentIdx + 1);
+    if (currentIdx < 0) return;
+    if (e.key === 'Escape') showHint();
+    if (e.key === 'ArrowLeft'  && currentIdx > 0)               showStep(currentIdx - 1);
+    if (e.key === 'ArrowRight' && currentIdx < steps.length - 1) showStep(currentIdx + 1);
   });
 
   function sendHeight() {

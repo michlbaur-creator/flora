@@ -72,10 +72,12 @@
   }
   header.app-head h1{
     margin:0;
-    font-size:1.7rem;
+    /* flüssig skalierend, damit "Pflanzen entdecken · bestimmen · erleben" auch auf kleinen Handys nicht umbricht */
+    font-size:clamp(1.05rem, 4.4vw, 1.7rem);
     font-weight:normal;
     letter-spacing:0.01em;
     line-height:1.25;
+    white-space:nowrap;
   }
   header.app-head .trenner{
     color:var(--gruen-blass);
@@ -281,7 +283,6 @@
 
   /* Mobile-Feinschliff */
   @media (max-width:520px){
-    header.app-head h1{font-size:1.45rem}
     header.app-head .untertitel{font-size:0.92rem}
     main{padding:24px 16px 50px}
     .sektion-titel{font-size:1.7rem}
@@ -340,24 +341,11 @@
   <div class="bubble-content" id="bubble-content-android" role="region" aria-label="Installations-Anleitung Android">
     <h4>So legst du Mibaso Natur als App ab</h4>
 
-    <p><strong>In Chrome (am häufigsten):</strong></p>
+    <p><strong>In Chrome:</strong></p>
     <ol>
       <li>Oben rechts auf das <em>Drei-Punkte-Menü</em> (⋮)</li>
       <li><em>„App installieren"</em> oder <em>„Zum Startbildschirm hinzufügen"</em> antippen</li>
       <li>Im Dialog auf <em>„Installieren"</em> bzw. <em>„Hinzufügen"</em> tippen</li>
-    </ol>
-
-    <p><strong>In Samsung Internet:</strong></p>
-    <ol>
-      <li>Unten auf das <em>Drei-Striche-Menü</em> (≡)</li>
-      <li><em>„Seite hinzufügen zu"</em> → <em>„Startbildschirm"</em></li>
-      <li>Mit <em>„Hinzufügen"</em> bestätigen</li>
-    </ol>
-
-    <p><strong>In Firefox:</strong></p>
-    <ol>
-      <li>Oben rechts auf das <em>Drei-Punkte-Menü</em> (⋮)</li>
-      <li><em>„Installieren"</em> bzw. <em>„Zur Startseite hinzufügen"</em></li>
     </ol>
 
     <p style="margin-top:10px;font-size:0.88rem;color:#6b5340;">Tipp: Manchmal blendet Chrome auch ganz von selbst unten einen Balken „Mibaso Natur installieren" ein – dann reicht ein Tipp darauf.</p>
@@ -368,7 +356,7 @@
 
 <header class="app-head">
   <img class="logo" src="assets/icon.svg" alt="Mibaso Natur Logo">
-  <h1>Pflanzen entdecken <span class="trenner">·</span> Pflanzen verstehen</h1>
+  <h1>Pflanzen entdecken <span class="trenner">·</span> bestimmen <span class="trenner">·</span> erleben</h1>
   <div class="untertitel">Deine digitale Naturwerkstatt für die Hosentasche.</div>
 </header>
 
@@ -509,7 +497,7 @@
 
 <footer class="app-foot">
   <p>Hinweise und Korrekturen sind willkommen: <a href="mailto:mibaur@me.com">mibaur@me.com</a></p>
-  <p class="lizenz">© 2026 Michael Baur · Fotos: CC BY-NC</p>
+  <p class="lizenz">© 2026 <a href="ueber/">Michael Baur</a> · Fotos: CC BY-NC</p>
 </footer>
 
 <!-- Installations-Sprechblasen: passende Variante je nach Gerät einblenden -->

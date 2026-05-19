@@ -35,32 +35,38 @@
 #ph-root .ph-btn:hover{background:rgba(46,125,50,0.28)!important;}
 #ph-root .ph-btn.ph-open{background:#2e7d32!important;border-color:#1b5e20!important;}
 
-/* Globaler Tooltip */
-#ph-root .ph-tooltip{
-  display:none!important;
-  position:absolute!important;
-  width:200px!important;
+/* Erklärungs-Panel UNTER dem Bild – ruhig und filigran */
+#ph-root .ph-panel{
+  margin:10px 0 0!important;
   background:#fff!important;
-  border-radius:10px!important;
-  box-shadow:0 4px 24px rgba(0,0,0,.28)!important;
-  z-index:999!important;
+  border:1px solid #d6e0d6!important;
+  border-radius:12px!important;
+  box-shadow:0 2px 10px rgba(0,0,0,.06)!important;
   overflow:hidden!important;
-  animation:ph-fade .18s ease!important;
-  pointer-events:auto!important;
+  min-height:62px!important;
 }
-#ph-root .ph-tooltip.ph-show{display:block!important;}
+#ph-root .ph-hint{
+  padding:14px 16px!important;
+  text-align:center!important;
+  color:#6a6a6a!important;
+  font-size:.85rem!important;
+  font-style:italic!important;
+  line-height:1.5!important;
+}
 #ph-root .ph-tip-head{
   background:#2e7d32!important;color:#fff!important;
-  font-size:.78rem!important;font-weight:700!important;
-  padding:7px 11px!important;display:block!important;
+  font-size:.85rem!important;font-weight:600!important;
+  letter-spacing:.02em!important;
+  padding:8px 14px!important;display:block!important;
 }
 #ph-root .ph-tip-body{
-  font-size:.71rem!important;color:#333!important;
-  padding:9px 11px!important;line-height:1.5!important;display:block!important;
+  font-size:.88rem!important;color:#333!important;
+  padding:11px 14px 12px!important;line-height:1.55!important;display:block!important;
+  animation:ph-fade .18s ease!important;
 }
 @keyframes ph-fade{
-  from{opacity:0;transform:scale(.95);}
-  to  {opacity:1;transform:scale(1);}
+  from{opacity:0;transform:translateY(2px);}
+  to  {opacity:1;transform:translateY(0);}
 }
 </style>
 
@@ -124,66 +130,47 @@
        onclick="phToggle(this)"
        role="button" aria-label="Wurzel anzeigen">
   </div>
-    <!-- Einziger globaler Tooltip – nach allen Kreisen im DOM -->
-    <div class="ph-tooltip" id="ph-tooltip">
-      <div class="ph-tip-head" id="ph-tip-head"></div>
-      <div class="ph-tip-body" id="ph-tip-body"></div>
-    </div>
+  </div>
+  <!-- Erklärungs-Panel UNTER dem Bild – verdeckt die Grafik nicht mehr -->
+  <div class="ph-panel" id="ph-panel">
+    <div class="ph-hint" id="ph-hint">Tippe auf einen der grünen Punkte im Bild, um mehr zu erfahren.</div>
+    <div class="ph-tip-head" id="ph-tip-head" style="display:none"></div>
+    <div class="ph-tip-body" id="ph-tip-body" style="display:none"></div>
   </div>
 </div>
 
 <script>
 (function(){
-  var openBtn  = null;
-  var tooltip  = document.getElementById('ph-tooltip');
-  var tipHead  = document.getElementById('ph-tip-head');
-  var tipBody  = document.getElementById('ph-tip-body');
-  var wrap     = document.getElementById('ph-wrap');
-  var TW       = 200;   // tooltip width in px (matches CSS)
-  var MARGIN   = 6;     // min gap to wrap edge
+  var openBtn = null;
+  var hint    = document.getElementById('ph-hint');
+  var tipHead = document.getElementById('ph-tip-head');
+  var tipBody = document.getElementById('ph-tip-body');
 
-  function closeAll(){
+  function showHint(){
     if(openBtn){ openBtn.classList.remove('ph-open'); openBtn = null; }
-    tooltip.classList.remove('ph-show');
+    hint.style.display    = 'block';
+    tipHead.style.display = 'none';
+    tipBody.style.display = 'none';
   }
 
   window.phToggle = function(btn){
-    if(btn === openBtn){ closeAll(); return; }
-    closeAll();
+    if(btn === openBtn){ showHint(); return; }
+    if(openBtn) openBtn.classList.remove('ph-open');
 
     tipHead.textContent = btn.dataset.label;
     tipBody.textContent = btn.dataset.text;
     btn.classList.add('ph-open');
     openBtn = btn;
-    tooltip.classList.add('ph-show');
 
-    var wr = wrap.getBoundingClientRect();
-    var br = btn.getBoundingClientRect();
-
-    // Kreis-Mittelpunkt relativ zu wrap
-    var cx = br.left - wr.left + br.width  / 2;
-    var cy = br.top  - wr.top  + br.height / 2;
-    var th = tooltip.offsetHeight;
-
-    // Horizontal: bevorzugt rechts vom Kreis, sonst links
-    var tx = cx - 8;                        // 8px links vom Mittelpunkt → überdeckt Kreis
-    if(tx + TW > wr.width - MARGIN){       // würde rechts rausgehen?
-      tx = cx - TW + 8;                     // dann nach links aufklappen
-    }
-    if(tx < MARGIN) tx = MARGIN;            // niemals links rausgehen
-
-    // Vertikal: vertikal zentriert am Kreis, aber innerhalb wrap
-    var ty = cy - th / 2;
-    if(ty < MARGIN) ty = MARGIN;
-    if(ty + th > wr.height - MARGIN) ty = wr.height - th - MARGIN;
-
-    tooltip.style.left = tx + 'px';
-    tooltip.style.top  = ty + 'px';
+    hint.style.display    = 'none';
+    tipHead.style.display = 'block';
+    tipBody.style.display = 'block';
   };
 
+  // Klick außerhalb von Punkt + Panel → zurück zum Hinweis
   document.addEventListener('click', function(e){
     if(!e.target.closest('#ph-root .ph-btn') &&
-       !e.target.closest('#ph-tooltip')) closeAll();
+       !e.target.closest('#ph-panel')) showHint();
   });
 })();
 </script>
