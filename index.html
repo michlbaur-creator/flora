@@ -72,12 +72,10 @@
   }
   header.app-head h1{
     margin:0;
-    /* flüssig skalierend; sehr klein min, damit "Pflanzen entdecken·bestimmen·erleben" auf jedem Handy reinpasst */
-    font-size:clamp(0.88rem, 3.8vw, 1.65rem);
+    font-size:1.9rem;
     font-weight:normal;
-    letter-spacing:0.005em;
-    line-height:1.25;
-    white-space:nowrap;
+    letter-spacing:0.02em;
+    line-height:1.2;
   }
   header.app-head .trenner{
     color:var(--gruen-blass);
@@ -285,6 +283,7 @@
       /* Notch/Dynamic-Island respektieren – mindestens 28px Luft oben */
       padding-top:max(28px, env(safe-area-inset-top));
     }
+    header.app-head h1{font-size:1.65rem}
     header.app-head .untertitel{font-size:0.92rem}
     main{padding:24px 16px 50px}
     .sektion-titel{font-size:1.7rem}
@@ -365,8 +364,8 @@
 
 <header class="app-head">
   <img class="logo" src="assets/icon.svg" alt="Mibaso Natur Logo">
-  <h1>Pflanzen entdecken<span class="trenner">·</span>bestimmen<span class="trenner">·</span>erleben</h1>
-  <div class="untertitel">Deine digitale Naturwerkstatt für die Hosentasche.</div>
+  <h1>Mibaso Natur</h1>
+  <div class="untertitel">Michael Baurs digitale Naturwerkstatt für die Hosentasche.</div>
 </header>
 
 <main>
@@ -386,8 +385,8 @@
             <path d="M10.5 13v-3"/>
           </svg>
         </div>
-        <h3>Pflanzen bestimmen</h3>
-        <p>Weit über 100 Arten mit Lerntafeln, Fotos und Steckbriefen – filtere nach Farbe, Blühzeit und mehr.</p>
+        <h3>Was blüht denn hier?</h3>
+        <p>Über 100 Arten zum Entdecken, Vergleichen und Wiederfinden.</p>
       </a>
 
       <a class="kachel" href="broschueren/">
@@ -399,8 +398,8 @@
             <path d="M12 8v13"/>
           </svg>
         </div>
-        <h3>Broschüren</h3>
-        <p>Kompakte PDFs zum Schmökern und Mitnehmen: Frühblüher, Bäume, Sträucher und ihre Schmetterlinge.</p>
+        <h3>Natur zum Mitnehmen</h3>
+        <p>PDFs über Frühblüher, Bäume, Sträucher und deren Schmetterlinge.</p>
       </a>
 
     </div>
@@ -408,7 +407,7 @@
 
   <!-- AUSPROBIEREN -->
   <section class="sektion" data-thema="ausprobieren">
-    <h2 class="sektion-titel">Ausprobieren</h2>
+    <h2 class="sektion-titel">Spielen</h2>
     <div class="kacheln">
 
       <a class="kachel" href="quiz/pflanzenquiz.html">
@@ -423,7 +422,7 @@
           </svg>
         </div>
         <h3>Quiz</h3>
-        <p>Erkennen, raten, staunen – ein Quiz mit über 100 Arten zur heimischen Pflanzenwelt.</p>
+        <p>Raten, staunen, wiedererkennen: ein Naturquiz mit heimischen Arten.</p>
       </a>
 
     </div>
@@ -447,7 +446,7 @@
           </svg>
         </div>
         <h3>Wurzel, Blatt, Blüte</h3>
-        <p>Was macht was? Entdecke, wie Pflanzen aufgebaut sind.</p>
+        <p>Wer macht hier eigentlich was? Entdecke den Aufbau einer Pflanze.</p>
       </a>
 
       <a class="kachel" href="interaktiv/pflanze-zuordnung.html">
@@ -457,7 +456,7 @@
             <path d="M4 8h3.5a2 2 0 1 1 4 0H15v3.5a2 2 0 1 0 0 4V19H4v-3.5a2 2 0 1 1 0-4z"/>
           </svg>
         </div>
-        <h3>Anatomie-Check</h3>
+        <h3>Was gehört wohin?</h3>
         <p>Ziehe die Begriffe an die richtige Stelle – ganz ohne Biologiestudium.</p>
       </a>
 
@@ -481,7 +480,7 @@
           </svg>
         </div>
         <h3>Bestäubung &amp; Befruchtung</h3>
-        <p>Wie Pollen auf Reisen gehen – mit Bienen, Wind und manchmal ziemlich viel Zufall.</p>
+        <p>Wie Pollen auf Reisen gehen – mit Bienen, Wind und erstaunlich viel Zufall.</p>
       </a>
 
       <a class="kachel" href="interaktiv/bluetenoekologie.html">
@@ -498,7 +497,7 @@
           </svg>
         </div>
         <h3>Blütenökologie – wer besucht wen?</h3>
-        <p>Offene Blüten, Röhrenblüten, Nachtblüher: wie Blütenform und Duft bestimmen, wer kommt.</p>
+        <p>Warum kommt die Hummel hierher – und nicht dort hin?</p>
       </a>
 
       <a class="kachel" href="interaktiv/samenverbreitung.html">
@@ -514,7 +513,7 @@
           </svg>
         </div>
         <h3>Samenverbreitung – wie Pflanzen reisen</h3>
-        <p>Mit Wind, Tieren oder eigenen Tricks: Pflanzen bleiben stehen, ihre Samen erobern neue Lebensräume.</p>
+        <p>Pflanzen bleiben stehen – ihre Samen gehen auf Reisen.</p>
       </a>
 
     </div>
