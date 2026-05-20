@@ -81,23 +81,6 @@
     padding:20px;
   }
 
-  /* MB-Logo-Kärtchen über dem Porträt */
-  .logo-card{
-    width:150px;
-    margin:0 auto 22px;
-    background:#fff;
-    border:1px solid var(--beige-mittel);
-    border-radius:16px;
-    padding:12px;
-    box-shadow:0 3px 14px rgba(90,58,36,0.10);
-  }
-  .logo-card img{
-    width:100%;
-    height:auto;
-    display:block;
-    border-radius:8px;
-  }
-
   .bio p{margin:0 0 14px;}
   .bio a{color:var(--gruen-mittel);text-decoration:underline}
   .bio a:hover{color:var(--gruen-dunkel)}
@@ -153,12 +136,8 @@
 <main>
   <a class="back" href="../">‹ Zurück zur Startseite</a>
 
-  <div class="logo-card">
-    <img src="../images/mb-logo.jpg" alt="Logo Michael Baur">
-  </div>
-
   <div class="portrait-wrap">
-    <img src="../images/portrait.jpg" alt="Michael Baur" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+    <img src="../images/portrait-logo.jpg" alt="Michael Baur mit Hund am Strand" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
     <div class="portrait-fallback" style="display:none">
       Hier kannst du dein Porträtfoto einfügen<br>
       (lege es als <code>images/portrait.jpg</code> ab)
