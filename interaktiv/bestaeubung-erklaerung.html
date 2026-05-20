@@ -196,12 +196,90 @@
     #bestaeubung1-app #explain-body  { font-size: 0.88rem; padding: 10px 14px 11px; }
     #bestaeubung1-app #diagram-box { margin: 0 6px 8px; }
     #bestaeubung1-app #explain-panel { margin: 0 6px 8px; }
+    #bestaeubung1-app #uebersicht { margin: 0 6px 12px; padding: 14px 16px 16px; }
+    #bestaeubung1-app #uebersicht h2 { font-size: 1.05rem; }
+    #bestaeubung1-app #uebersicht .body p,
+    #bestaeubung1-app #uebersicht .body li { font-size: 0.92rem; }
+  }
+
+  /* Übersichts-Block oben (Bild + erklärender Text) */
+  #bestaeubung1-app #uebersicht {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 2px 16px rgba(0,0,0,0.10);
+    margin: 0 10px 14px;
+    overflow: hidden;
+    padding: 18px 22px 22px;
+  }
+  #bestaeubung1-app #uebersicht img {
+    width: 100%;
+    height: auto;
+    display: block;
+    border-radius: 8px;
+    margin-bottom: 16px;
+  }
+  #bestaeubung1-app #uebersicht h2 {
+    margin: 0 0 8px;
+    font-size: 1.15rem;
+    color: #2F4F3E;
+    font-family: Georgia, serif;
+    font-weight: bold;
+    letter-spacing: 0.02em;
+  }
+  #bestaeubung1-app #uebersicht h2:not(:first-of-type) { margin-top: 16px; }
+  #bestaeubung1-app #uebersicht .body p { margin: 0 0 8px; line-height: 1.55; }
+  #bestaeubung1-app #uebersicht .body ul { margin: 4px 0 10px 22px; padding: 0; }
+  #bestaeubung1-app #uebersicht .body li { margin-bottom: 4px; line-height: 1.5; }
+  #bestaeubung1-app #uebersicht strong { color: #2F4F3E; }
+  #bestaeubung1-app #uebersicht .kurz {
+    margin-top: 14px;
+    padding: 10px 14px;
+    background: #f4f1eb;
+    border-left: 4px solid #5A8068;
+    border-radius: 4px;
+    font-style: italic;
+    color: #5a3a24;
+    line-height: 1.5;
+  }
+  #bestaeubung1-app #uebersicht .kurz strong { color: #2F4F3E; font-style: normal; }
+
+  /* Übergang zum interaktiven Teil */
+  #bestaeubung1-app .interaktiv-hinweis {
+    text-align: center;
+    margin: 4px 16px 10px;
+    color: #6a6a6a;
+    font-size: 0.9rem;
+    font-style: italic;
   }
 </style>
 </head>
 <body>
 
 <div id="bestaeubung1-app">
+
+  <!-- Übersicht: Bild + erklärender Text vor der interaktiven Grafik -->
+  <section id="uebersicht">
+    <img src="../images/bestaeubung-uebersicht.jpg" alt="Bestäubung – der Trick mit dem Pollen: vom Staubblatt über die Biene zur Befruchtung; Insektenbestäubung vs. Windbestäubung.">
+
+    <div class="body">
+      <h2>Was passiert eigentlich in der Blüte?</h2>
+      <ul>
+        <li>In den <strong>Staubblättern</strong> entsteht der Pollen (männlich).</li>
+        <li>Die <strong>Narbe</strong> nimmt den Pollen auf (weiblich).</li>
+        <li>Ein <strong>Pollenschlauch</strong> wächst → Befruchtung → der Samen entsteht.</li>
+      </ul>
+
+      <h2>Zwei Wege zum Ziel</h2>
+      <p><strong>Insektenbestäubung:</strong> Auffällige Blüten, Duft, Nektar – Bienen &amp; Co. transportieren den Pollen gezielt.</p>
+      <p><strong>Windbestäubung:</strong> Unscheinbare Blüten, sehr viel Pollen – funktioniert ohne Tiere, aber ungenau.</p>
+
+      <div class="kurz">
+        👉 <strong>Kurz gesagt:</strong> Pflanzen nutzen Tiere als Transportdienst – oder setzen auf Masse statt Klasse.
+      </div>
+    </div>
+  </section>
+
+  <p class="interaktiv-hinweis">Und jetzt selbst entdecken – tippe auf die Zahlen im Bild:</p>
 
   <div id="diagram-box">
     <div id="diagram-wrap">
