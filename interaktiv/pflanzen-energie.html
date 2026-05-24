@@ -54,10 +54,152 @@
     line-height: 1.55;
   }
   #pe-app .kurz strong { color: #2F4F3E; }
+
+  /* ── Anklickbares Photosynthese-Bild ── */
+  #pe-app .pe-diagram-wrap {
+    position: relative;
+    line-height: 0;
+    margin-bottom: 14px;
+    user-select: none;
+    -webkit-user-select: none;
+  }
+  #pe-app .pe-diagram-wrap img {
+    margin-bottom: 0;
+  }
+  #pe-app .num-btn {
+    position: absolute;
+    width: 32px;
+    height: 32px;
+    margin-left: -16px;
+    margin-top: -16px;
+    padding: 0;
+    border-radius: 50%;
+    background: #2F4F3E;
+    color: #fff;
+    border: 2.5px solid #fff;
+    font-family: Georgia, serif;
+    font-weight: bold;
+    font-size: 1rem;
+    line-height: 1;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.38);
+    transition: transform 0.15s, background 0.18s;
+  }
+  #pe-app .num-btn:hover { background: #3f6b52; transform: scale(1.15); }
+  #pe-app .num-btn:active { transform: scale(1.04); }
+  #pe-app .num-btn.active { background: #a8772a; }
+  @keyframes pePulse {
+    0%   { box-shadow: 0 2px 6px rgba(0,0,0,0.38), 0 0 0 0 rgba(47,79,62,0.55); }
+    70%  { box-shadow: 0 2px 6px rgba(0,0,0,0.38), 0 0 0 11px rgba(47,79,62,0); }
+    100% { box-shadow: 0 2px 6px rgba(0,0,0,0.38), 0 0 0 0 rgba(47,79,62,0); }
+  }
+  #pe-app .num-btn.pulse { animation: pePulse 1.6s ease-out 2; }
+
+  /* ── Erklärungs-Fenster unter dem Bild ── */
+  #pe-app #explain-panel {
+    border: 1px solid #e3ddd0;
+    border-radius: 12px;
+    overflow: hidden;
+    background: #fff;
+    margin-bottom: 14px;
+  }
+  #pe-app #explain-hint {
+    padding: 13px 16px;
+    text-align: center;
+    color: #6a6a6a;
+    font-size: 0.9rem;
+    font-style: italic;
+    line-height: 1.5;
+  }
+  #pe-app #explain-content { display: none; }
+  #pe-app #explain-content.open { display: block; animation: peExplainIn 0.22s ease-out; }
+  @keyframes peExplainIn {
+    from { opacity: 0; transform: translateY(4px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  #pe-app #explain-header {
+    background: #2F4F3E;
+    padding: 10px 16px 9px;
+    display: flex;
+    align-items: center;
+    gap: 11px;
+  }
+  #pe-app #explain-badge {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background: #fff;
+    color: #2F4F3E;
+    font-size: 1rem;
+    font-weight: bold;
+    font-family: Georgia, serif;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.15);
+  }
+  #pe-app #explain-title {
+    color: #fff;
+    font-size: 1rem;
+    font-weight: bold;
+    font-family: Georgia, serif;
+    line-height: 1.2;
+    flex: 1;
+  }
+  #pe-app #explain-body {
+    padding: 12px 16px;
+    font-size: 0.95rem;
+    line-height: 1.55;
+    color: #333;
+  }
+  #pe-app #explain-body strong { color: #2F4F3E; }
+  #pe-app #explain-footer {
+    padding: 0 14px 12px;
+    display: flex;
+    gap: 8px;
+    justify-content: space-between;
+    align-items: center;
+  }
+  #pe-app .nav-group { display: flex; gap: 8px; }
+  #pe-app .explain-nav-btn {
+    font-family: Georgia, serif;
+    font-size: 0.82rem;
+    font-weight: bold;
+    padding: 6px 12px;
+    border-radius: 16px;
+    border: 1.5px solid #2F4F3E;
+    cursor: pointer;
+    background: #fff;
+    color: #2F4F3E;
+    transition: background 0.14s, transform 0.1s;
+  }
+  #pe-app .explain-nav-btn:hover { background: #f0f6f1; }
+  #pe-app .explain-nav-btn:active { transform: scale(0.97); }
+  #pe-app #explain-close-btn {
+    font-family: Georgia, serif;
+    font-size: 1rem;
+    padding: 4px 13px;
+    border-radius: 16px;
+    border: none;
+    cursor: pointer;
+    background: transparent;
+    color: #999;
+    transition: color 0.14s;
+  }
+  #pe-app #explain-close-btn:hover { color: #2F4F3E; }
+
   @media (max-width: 520px) {
     #pe-app .karte { margin: 0 6px 10px; padding: 14px 16px 16px; }
     #pe-app .leitsatz { font-size: 1.02rem; }
     #pe-app .karte p { font-size: 0.95rem; }
+    #pe-app .num-btn { width: 28px; height: 28px; margin-left: -14px; margin-top: -14px; font-size: 0.92rem; }
+    #pe-app #explain-badge { width: 26px; height: 26px; font-size: 0.9rem; }
+    #pe-app #explain-title { font-size: 0.94rem; }
+    #pe-app #explain-body { font-size: 0.9rem; }
   }
 </style>
 </head>
@@ -65,11 +207,36 @@
 
 <div id="pe-app">
 
-  <!-- 1) Photosynthese -->
+  <!-- 1) Photosynthese – anklickbar -->
   <section class="karte">
     <h2 class="leitsatz">Pflanzen sind die Solarköche der Erde — sie verwandeln Licht in Leben.</h2>
 
-    <img src="../images/photosynthese.jpg" alt="Photosynthese: Pflanze baut aus Licht, Wasser und Kohlendioxid Zucker und gibt Sauerstoff ab.">
+    <div class="pe-diagram-wrap">
+      <img src="../images/photosynthese_leer.jpg" alt="Photosynthese: Pflanze baut aus Licht, Wasser und Kohlendioxid Zucker und gibt Sauerstoff ab.">
+      <button class="num-btn" data-num="1" style="left:26%; top:19%;">1</button>
+      <button class="num-btn" data-num="2" style="left:66%; top:21%;">2</button>
+      <button class="num-btn" data-num="3" style="left:21%; top:62%;">3</button>
+      <button class="num-btn" data-num="4" style="left:82%; top:56%;">4</button>
+      <button class="num-btn" data-num="5" style="left:57%; top:67%;">5</button>
+    </div>
+
+    <div id="explain-panel">
+      <div id="explain-hint">Tippe auf eine der nummerierten Stellen im Bild, um den jeweiligen Schritt zu erfahren.</div>
+      <div id="explain-content">
+        <div id="explain-header">
+          <div id="explain-badge">–</div>
+          <div id="explain-title">–</div>
+        </div>
+        <div id="explain-body">–</div>
+        <div id="explain-footer">
+          <div class="nav-group">
+            <button class="explain-nav-btn" id="explain-prev">◀ zurück</button>
+            <button class="explain-nav-btn" id="explain-next">weiter ▶</button>
+          </div>
+          <button id="explain-close-btn">×</button>
+        </div>
+      </div>
+    </div>
 
     <div class="kurz">
       👉 Aus <strong>Licht, Wasser und Kohlendioxid</strong> bauen Pflanzen Zucker – und geben dabei <strong>Sauerstoff</strong> ab. Diese Mahlzeit aus Sonnenlicht ist die Grundlage für fast alles Leben auf der Erde.
@@ -88,6 +255,93 @@
   </section>
 
 </div>
+
+<script>
+(function () {
+  const steps = [
+    { num: 1, title: "Sonnenlicht",            body: "Die Sonne liefert die <strong>Energie</strong> für die Photosynthese." },
+    { num: 2, title: "Kohlenstoffdioxid (CO₂)", body: "<strong>CO₂</strong> aus der Luft tritt durch die Spaltöffnungen der Blätter in die Pflanze ein." },
+    { num: 3, title: "Wasser (H₂O)",           body: "<strong>Wasser</strong> wird über die Wurzeln aus dem Boden aufgenommen und durch die Leitungsbahnen in die Blätter transportiert." },
+    { num: 4, title: "Zucker (Glukose)",       body: "In den Blättern wird aus CO₂ und Wasser mithilfe von Sonnenenergie <strong>Zucker (Glukose)</strong> hergestellt. Dieser liefert der Pflanze Energie und Baustoffe." },
+    { num: 5, title: "Sauerstoff (O₂)",        body: "Als Nebenprodukt entsteht <strong>Sauerstoff</strong>. Er wird aus den Blättern an die Luft abgegeben." }
+  ];
+
+  const app      = document.getElementById('pe-app');
+  const hint     = app.querySelector('#explain-hint');
+  const content  = app.querySelector('#explain-content');
+  const badge    = app.querySelector('#explain-badge');
+  const title    = app.querySelector('#explain-title');
+  const body     = app.querySelector('#explain-body');
+  const prevBtn  = app.querySelector('#explain-prev');
+  const nextBtn  = app.querySelector('#explain-next');
+  const closeBtn = app.querySelector('#explain-close-btn');
+  const btns     = app.querySelectorAll('.num-btn');
+
+  let currentIdx = -1;
+
+  function showStep(idx) {
+    currentIdx = idx;
+    const s = steps[idx];
+    badge.textContent = s.num;
+    title.textContent = s.title;
+    body.innerHTML    = s.body;
+    prevBtn.disabled  = (idx === 0);
+    prevBtn.style.opacity = (idx === 0) ? '0.35' : '1';
+    nextBtn.disabled  = (idx === steps.length - 1);
+    nextBtn.style.opacity = (idx === steps.length - 1) ? '0.35' : '1';
+    hint.style.display = 'none';
+    content.classList.add('open');
+    btns.forEach(b => b.classList.toggle('active', parseInt(b.dataset.num, 10) === s.num));
+    sendHeight();
+  }
+
+  function showHint() {
+    currentIdx = -1;
+    content.classList.remove('open');
+    hint.style.display = 'block';
+    btns.forEach(b => b.classList.remove('active'));
+    sendHeight();
+  }
+
+  btns.forEach(btn => {
+    const num = parseInt(btn.dataset.num, 10);
+    btn.addEventListener('click', () => {
+      btn.classList.remove('pulse');
+      void btn.offsetWidth;
+      showStep(num - 1);
+    });
+  });
+
+  closeBtn.addEventListener('click', showHint);
+  prevBtn.addEventListener('click', () => { if (currentIdx > 0) showStep(currentIdx - 1); });
+  nextBtn.addEventListener('click', () => { if (currentIdx < steps.length - 1) showStep(currentIdx + 1); });
+
+  document.addEventListener('keydown', (e) => {
+    if (currentIdx < 0) return;
+    if (e.key === 'Escape') showHint();
+    if (e.key === 'ArrowLeft'  && currentIdx > 0)                showStep(currentIdx - 1);
+    if (e.key === 'ArrowRight' && currentIdx < steps.length - 1) showStep(currentIdx + 1);
+  });
+
+  function sendHeight() {
+    const h = app.offsetHeight + 20;
+    try { window.parent.postMessage({ quizHeight: h }, '*'); } catch (_) {}
+  }
+  window.addEventListener('load', sendHeight);
+  window.addEventListener('resize', sendHeight);
+  const mo = new MutationObserver(sendHeight);
+  mo.observe(app, { childList: true, subtree: true, attributes: true });
+
+  const img = app.querySelector('.pe-diagram-wrap img');
+  if (img) {
+    if (img.complete) sendHeight();
+    else img.addEventListener('load', sendHeight);
+  }
+
+  // Sanfter Puls beim Laden – lädt zum Antippen ein
+  window.addEventListener('load', () => { btns.forEach(b => b.classList.add('pulse')); });
+})();
+</script>
 
 </body>
 </html>
