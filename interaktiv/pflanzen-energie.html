@@ -20,25 +20,6 @@
     -webkit-hyphens: auto;
     hyphens: auto;
   }
-  #pe-app .intro {
-    margin: 0 10px 14px;
-    padding: 2px 12px;
-    text-align: center;
-  }
-  #pe-app .intro h1 {
-    margin: 0 0 4px;
-    font-size: 1.25rem;
-    color: #2F4F3E;
-    font-weight: bold;
-    letter-spacing: 0.02em;
-  }
-  #pe-app .intro p {
-    margin: 0;
-    color: #6b5340;
-    font-style: italic;
-    font-size: 0.95rem;
-    line-height: 1.45;
-  }
   #pe-app .karte {
     background: white;
     border-radius: 12px;
@@ -47,25 +28,20 @@
     overflow: hidden;
     padding: 18px 22px 22px;
   }
+  #pe-app .leitsatz {
+    margin: 0 0 14px;
+    font-size: 1.1rem;
+    color: #2F4F3E;
+    font-weight: bold;
+    line-height: 1.4;
+    letter-spacing: 0.01em;
+  }
   #pe-app .karte img {
     width: 100%;
     height: auto;
     display: block;
     border-radius: 8px;
     margin-bottom: 16px;
-  }
-  #pe-app .karte h2 {
-    margin: 0 0 4px;
-    font-size: 1.15rem;
-    color: #2F4F3E;
-    font-weight: bold;
-    letter-spacing: 0.02em;
-  }
-  #pe-app .untertitel {
-    color: #6b5340;
-    font-style: italic;
-    margin: 0 0 14px;
-    line-height: 1.5;
   }
   #pe-app .karte p { margin: 0 0 8px; line-height: 1.55; }
   #pe-app .kurz {
@@ -80,9 +56,7 @@
   #pe-app .kurz strong { color: #2F4F3E; }
   @media (max-width: 520px) {
     #pe-app .karte { margin: 0 6px 10px; padding: 14px 16px 16px; }
-    #pe-app .intro { margin: 0 6px 10px; }
-    #pe-app .intro h1 { font-size: 1.12rem; }
-    #pe-app .karte h2 { font-size: 1.05rem; }
+    #pe-app .leitsatz { font-size: 1.02rem; }
     #pe-app .karte p { font-size: 0.95rem; }
   }
 </style>
@@ -91,17 +65,11 @@
 
 <div id="pe-app">
 
-  <div class="intro">
-    <h1>Pflanzen &amp; Energie</h1>
-    <p>Wie Pflanzen essen und atmen.</p>
-  </div>
-
   <!-- 1) Photosynthese -->
   <section class="karte">
-    <img src="../images/photosynthese.jpg" alt="Photosynthese: Pflanze baut aus Licht, Wasser und Kohlendioxid Zucker und gibt Sauerstoff ab.">
+    <h2 class="leitsatz">Pflanzen sind die Solarköche der Erde — sie verwandeln Licht in Leben.</h2>
 
-    <h2>Photosynthese</h2>
-    <p class="untertitel">Pflanzen sind die Solarköche der Erde — sie verwandeln Licht in Leben.</p>
+    <img src="../images/photosynthese.jpg" alt="Photosynthese: Pflanze baut aus Licht, Wasser und Kohlendioxid Zucker und gibt Sauerstoff ab.">
 
     <div class="kurz">
       👉 Aus <strong>Licht, Wasser und Kohlendioxid</strong> bauen Pflanzen Zucker – und geben dabei <strong>Sauerstoff</strong> ab. Diese Mahlzeit aus Sonnenlicht ist die Grundlage für fast alles Leben auf der Erde.
@@ -110,10 +78,9 @@
 
   <!-- 2) Atmung -->
   <section class="karte">
-    <img src="../images/atmung.jpg" alt="Zellatmung: Pflanze verbraucht Sauerstoff und gewinnt Energie aus dem selbst gebauten Zucker.">
+    <h2 class="leitsatz">Tagsüber Solar-Küche, nachts Kraftwerk — Pflanzen sind echte Multitalente.</h2>
 
-    <h2>Atmung</h2>
-    <p class="untertitel">Tagsüber Solar-Küche, nachts Kraftwerk — Pflanzen sind echte Multitalente.</p>
+    <img src="../images/atmung.jpg" alt="Zellatmung: Pflanze verbraucht Sauerstoff und gewinnt Energie aus dem selbst gebauten Zucker.">
 
     <div class="kurz">
       👉 Auch Pflanzen <strong>atmen</strong>: Sie verbrauchen Sauerstoff und gewinnen so Energie aus dem selbst gebauten Zucker – rund um die Uhr. Tagsüber überwiegt die Fotosynthese, nachts bleibt nur die Atmung.
