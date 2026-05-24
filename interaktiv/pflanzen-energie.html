@@ -55,7 +55,11 @@
   }
   #pe-app .kurz strong { color: #2F4F3E; }
 
-  /* ── Anklickbares Photosynthese-Bild ── */
+  /* Vollbild-Karte (Zusatz-Grafik ohne Rand) */
+  #pe-app .karte-voll { padding: 0; }
+  #pe-app .karte-voll img { border-radius: 0; margin-bottom: 0; }
+
+  /* ── Anklickbares Diagramm ── */
   #pe-app .pe-diagram-wrap {
     position: relative;
     line-height: 0;
@@ -63,9 +67,7 @@
     user-select: none;
     -webkit-user-select: none;
   }
-  #pe-app .pe-diagram-wrap img {
-    margin-bottom: 0;
-  }
+  #pe-app .pe-diagram-wrap img { margin-bottom: 0; }
   #pe-app .num-btn {
     position: absolute;
     width: 32px;
@@ -99,14 +101,14 @@
   #pe-app .num-btn.pulse { animation: pePulse 1.6s ease-out 2; }
 
   /* ── Erklärungs-Fenster unter dem Bild ── */
-  #pe-app #explain-panel {
+  #pe-app .explain-panel {
     border: 1px solid #e3ddd0;
     border-radius: 12px;
     overflow: hidden;
     background: #fff;
     margin-bottom: 14px;
   }
-  #pe-app #explain-hint {
+  #pe-app .explain-hint {
     padding: 13px 16px;
     text-align: center;
     color: #6a6a6a;
@@ -114,20 +116,20 @@
     font-style: italic;
     line-height: 1.5;
   }
-  #pe-app #explain-content { display: none; }
-  #pe-app #explain-content.open { display: block; animation: peExplainIn 0.22s ease-out; }
+  #pe-app .explain-content { display: none; }
+  #pe-app .explain-content.open { display: block; animation: peExplainIn 0.22s ease-out; }
   @keyframes peExplainIn {
     from { opacity: 0; transform: translateY(4px); }
     to   { opacity: 1; transform: translateY(0); }
   }
-  #pe-app #explain-header {
+  #pe-app .explain-header {
     background: #2F4F3E;
     padding: 10px 16px 9px;
     display: flex;
     align-items: center;
     gap: 11px;
   }
-  #pe-app #explain-badge {
+  #pe-app .explain-badge {
     width: 30px;
     height: 30px;
     border-radius: 50%;
@@ -142,7 +144,7 @@
     flex-shrink: 0;
     box-shadow: 0 1px 4px rgba(0,0,0,0.15);
   }
-  #pe-app #explain-title {
+  #pe-app .explain-title {
     color: #fff;
     font-size: 1rem;
     font-weight: bold;
@@ -150,14 +152,14 @@
     line-height: 1.2;
     flex: 1;
   }
-  #pe-app #explain-body {
+  #pe-app .explain-body {
     padding: 12px 16px;
     font-size: 0.95rem;
     line-height: 1.55;
     color: #333;
   }
-  #pe-app #explain-body strong { color: #2F4F3E; }
-  #pe-app #explain-footer {
+  #pe-app .explain-body strong { color: #2F4F3E; }
+  #pe-app .explain-footer {
     padding: 0 14px 12px;
     display: flex;
     gap: 8px;
@@ -179,7 +181,7 @@
   }
   #pe-app .explain-nav-btn:hover { background: #f0f6f1; }
   #pe-app .explain-nav-btn:active { transform: scale(0.97); }
-  #pe-app #explain-close-btn {
+  #pe-app .explain-close-btn {
     font-family: Georgia, serif;
     font-size: 1rem;
     padding: 4px 13px;
@@ -190,16 +192,17 @@
     color: #999;
     transition: color 0.14s;
   }
-  #pe-app #explain-close-btn:hover { color: #2F4F3E; }
+  #pe-app .explain-close-btn:hover { color: #2F4F3E; }
 
   @media (max-width: 520px) {
     #pe-app .karte { margin: 0 6px 10px; padding: 14px 16px 16px; }
+    #pe-app .karte-voll { padding: 0; }
     #pe-app .leitsatz { font-size: 1.02rem; }
     #pe-app .karte p { font-size: 0.95rem; }
     #pe-app .num-btn { width: 28px; height: 28px; margin-left: -14px; margin-top: -14px; font-size: 0.92rem; }
-    #pe-app #explain-badge { width: 26px; height: 26px; font-size: 0.9rem; }
-    #pe-app #explain-title { font-size: 0.94rem; }
-    #pe-app #explain-body { font-size: 0.9rem; }
+    #pe-app .explain-badge { width: 26px; height: 26px; font-size: 0.9rem; }
+    #pe-app .explain-title { font-size: 0.94rem; }
+    #pe-app .explain-body { font-size: 0.9rem; }
   }
 </style>
 </head>
@@ -211,29 +214,31 @@
   <section class="karte">
     <h2 class="leitsatz">Pflanzen sind die Solarköche der Erde — sie verwandeln Licht in Leben.</h2>
 
-    <div class="pe-diagram-wrap">
-      <img src="../images/photosynthese_leer.jpg" alt="Photosynthese: Pflanze baut aus Licht, Wasser und Kohlendioxid Zucker und gibt Sauerstoff ab.">
-      <button class="num-btn" data-num="1" style="left:26%; top:19%;">1</button>
-      <button class="num-btn" data-num="2" style="left:66%; top:21%;">2</button>
-      <button class="num-btn" data-num="3" style="left:21%; top:62%;">3</button>
-      <button class="num-btn" data-num="4" style="left:82%; top:56%;">4</button>
-      <button class="num-btn" data-num="5" style="left:57%; top:67%;">5</button>
-    </div>
+    <div class="pe-interactive" data-steps="photo">
+      <div class="pe-diagram-wrap">
+        <img src="../images/photosynthese_leer.jpg" alt="Photosynthese: Pflanze baut aus Licht, Wasser und Kohlendioxid Zucker und gibt Sauerstoff ab.">
+        <button class="num-btn" data-num="1" style="left:26%; top:19%;">1</button>
+        <button class="num-btn" data-num="2" style="left:66%; top:21%;">2</button>
+        <button class="num-btn" data-num="3" style="left:21%; top:62%;">3</button>
+        <button class="num-btn" data-num="4" style="left:82%; top:56%;">4</button>
+        <button class="num-btn" data-num="5" style="left:57%; top:67%;">5</button>
+      </div>
 
-    <div id="explain-panel">
-      <div id="explain-hint">Tippe auf eine der nummerierten Stellen im Bild, um den jeweiligen Schritt zu erfahren.</div>
-      <div id="explain-content">
-        <div id="explain-header">
-          <div id="explain-badge">–</div>
-          <div id="explain-title">–</div>
-        </div>
-        <div id="explain-body">–</div>
-        <div id="explain-footer">
-          <div class="nav-group">
-            <button class="explain-nav-btn" id="explain-prev">◀ zurück</button>
-            <button class="explain-nav-btn" id="explain-next">weiter ▶</button>
+      <div class="explain-panel">
+        <div class="explain-hint">Tippe auf eine der nummerierten Stellen im Bild, um den jeweiligen Schritt zu erfahren.</div>
+        <div class="explain-content">
+          <div class="explain-header">
+            <div class="explain-badge">–</div>
+            <div class="explain-title">–</div>
           </div>
-          <button id="explain-close-btn">×</button>
+          <div class="explain-body">–</div>
+          <div class="explain-footer">
+            <div class="nav-group">
+              <button class="explain-nav-btn explain-prev">◀ zurück</button>
+              <button class="explain-nav-btn explain-next">weiter ▶</button>
+            </div>
+            <button class="explain-close-btn">×</button>
+          </div>
         </div>
       </div>
     </div>
@@ -243,84 +248,135 @@
     </div>
   </section>
 
-  <!-- 2) Atmung -->
+  <!-- 2) Atmung – anklickbar -->
   <section class="karte">
     <h2 class="leitsatz">Tagsüber Solar-Küche, nachts Kraftwerk — Pflanzen sind echte Multitalente.</h2>
 
-    <img src="../images/atmung.jpg" alt="Zellatmung: Pflanze verbraucht Sauerstoff und gewinnt Energie aus dem selbst gebauten Zucker.">
+    <div class="pe-interactive" data-steps="atmung">
+      <div class="pe-diagram-wrap">
+        <img src="../images/atmung_leer.jpg" alt="Zellatmung: Sauerstoff und Zucker werden im Mitochondrium zu Energie (ATP) – dabei entstehen Kohlendioxid und Wasser.">
+        <button class="num-btn" data-num="1" style="left:15%; top:48%;">1</button>
+        <button class="num-btn" data-num="2" style="left:30%; top:20%;">2</button>
+        <button class="num-btn" data-num="3" style="left:43%; top:38%;">3</button>
+        <button class="num-btn" data-num="4" style="left:71%; top:37%;">4</button>
+        <button class="num-btn" data-num="5" style="left:90%; top:46%;">5</button>
+      </div>
+
+      <div class="explain-panel">
+        <div class="explain-hint">Tippe auf eine der nummerierten Stellen im Bild, um den jeweiligen Schritt zu erfahren.</div>
+        <div class="explain-content">
+          <div class="explain-header">
+            <div class="explain-badge">–</div>
+            <div class="explain-title">–</div>
+          </div>
+          <div class="explain-body">–</div>
+          <div class="explain-footer">
+            <div class="nav-group">
+              <button class="explain-nav-btn explain-prev">◀ zurück</button>
+              <button class="explain-nav-btn explain-next">weiter ▶</button>
+            </div>
+            <button class="explain-close-btn">×</button>
+          </div>
+        </div>
+      </div>
+    </div>
 
     <div class="kurz">
       👉 Auch Pflanzen <strong>atmen</strong>: Sie verbrauchen Sauerstoff und gewinnen so Energie aus dem selbst gebauten Zucker – rund um die Uhr. Tagsüber überwiegt die Fotosynthese, nachts bleibt nur die Atmung.
     </div>
   </section>
 
+  <!-- 3) Atmung – Zusatz-Grafik in voller Größe -->
+  <section class="karte karte-voll">
+    <img src="../images/atmung_rest.jpg" alt="Atmung im Detail: Was passiert genau? – Warum atmen wir und Pflanzen? – die Küchen-Analogie und das Wichtigste in Kürze.">
+  </section>
+
 </div>
 
 <script>
 (function () {
-  const steps = [
-    { num: 1, title: "Sonnenlicht",            body: "Die Sonne liefert die <strong>Energie</strong> für die Photosynthese." },
-    { num: 2, title: "Kohlenstoffdioxid (CO₂)", body: "<strong>CO₂</strong> aus der Luft tritt durch die Spaltöffnungen der Blätter in die Pflanze ein." },
-    { num: 3, title: "Wasser (H₂O)",           body: "<strong>Wasser</strong> wird über die Wurzeln aus dem Boden aufgenommen und durch die Leitungsbahnen in die Blätter transportiert." },
-    { num: 4, title: "Zucker (Glukose)",       body: "In den Blättern wird aus CO₂ und Wasser mithilfe von Sonnenenergie <strong>Zucker (Glukose)</strong> hergestellt. Dieser liefert der Pflanze Energie und Baustoffe." },
-    { num: 5, title: "Sauerstoff (O₂)",        body: "Als Nebenprodukt entsteht <strong>Sauerstoff</strong>. Er wird aus den Blättern an die Luft abgegeben." }
-  ];
+  const STEPS = {
+    photo: [
+      { num: 1, title: "Sonnenlicht",            body: "Die Sonne liefert die <strong>Energie</strong> für die Photosynthese." },
+      { num: 2, title: "Kohlenstoffdioxid (CO₂)", body: "<strong>CO₂</strong> aus der Luft tritt durch die Spaltöffnungen der Blätter in die Pflanze ein." },
+      { num: 3, title: "Wasser (H₂O)",           body: "<strong>Wasser</strong> wird über die Wurzeln aus dem Boden aufgenommen und durch die Leitungsbahnen in die Blätter transportiert." },
+      { num: 4, title: "Zucker (Glukose)",       body: "In den Blättern wird aus CO₂ und Wasser mithilfe von Sonnenenergie <strong>Zucker (Glukose)</strong> hergestellt. Dieser liefert der Pflanze Energie und Baustoffe." },
+      { num: 5, title: "Sauerstoff (O₂)",        body: "Als Nebenprodukt entsteht <strong>Sauerstoff</strong>. Er wird aus den Blättern an die Luft abgegeben." }
+    ],
+    atmung: [
+      { num: 1, title: "Sauerstoff rein",   body: "<strong>O₂</strong> aus der Luft kommt durch die Spaltöffnungen (bei Pflanzen) oder durch Lungen und Kiemen (bei Tieren) in die Zellen." },
+      { num: 2, title: "Zucker rein",       body: "<strong>Zucker (Glukose)</strong> aus der Nahrung oder aus der Photosynthese wird in die Zellen gebracht." },
+      { num: 3, title: "Kraftwerk starten", body: "In den <strong>Mitochondrien</strong>, dem „Kraftwerk“ der Zelle, wird Zucker mit Sauerstoff zusammengebracht." },
+      { num: 4, title: "Energie raus",      body: "Es entsteht <strong>Energie (ATP)</strong>. Die Zelle nutzt sie für alles, was sie tun muss." },
+      { num: 5, title: "Abfall raus",       body: "Es entstehen <strong>Kohlenstoffdioxid (CO₂)</strong> und <strong>Wasser (H₂O)</strong>. Beide werden wieder abgegeben." }
+    ]
+  };
 
-  const app      = document.getElementById('pe-app');
-  const hint     = app.querySelector('#explain-hint');
-  const content  = app.querySelector('#explain-content');
-  const badge    = app.querySelector('#explain-badge');
-  const title    = app.querySelector('#explain-title');
-  const body     = app.querySelector('#explain-body');
-  const prevBtn  = app.querySelector('#explain-prev');
-  const nextBtn  = app.querySelector('#explain-next');
-  const closeBtn = app.querySelector('#explain-close-btn');
-  const btns     = app.querySelectorAll('.num-btn');
+  const app = document.getElementById('pe-app');
+  let active = null;
 
-  let currentIdx = -1;
+  function initInteractive(root) {
+    const steps   = STEPS[root.dataset.steps] || [];
+    const hint    = root.querySelector('.explain-hint');
+    const content = root.querySelector('.explain-content');
+    const badge   = root.querySelector('.explain-badge');
+    const title   = root.querySelector('.explain-title');
+    const body    = root.querySelector('.explain-body');
+    const prevBtn = root.querySelector('.explain-prev');
+    const nextBtn = root.querySelector('.explain-next');
+    const closeBtn= root.querySelector('.explain-close-btn');
+    const btns    = root.querySelectorAll('.num-btn');
+    let currentIdx = -1;
 
-  function showStep(idx) {
-    currentIdx = idx;
-    const s = steps[idx];
-    badge.textContent = s.num;
-    title.textContent = s.title;
-    body.innerHTML    = s.body;
-    prevBtn.disabled  = (idx === 0);
-    prevBtn.style.opacity = (idx === 0) ? '0.35' : '1';
-    nextBtn.disabled  = (idx === steps.length - 1);
-    nextBtn.style.opacity = (idx === steps.length - 1) ? '0.35' : '1';
-    hint.style.display = 'none';
-    content.classList.add('open');
-    btns.forEach(b => b.classList.toggle('active', parseInt(b.dataset.num, 10) === s.num));
-    sendHeight();
-  }
+    const ctrl = {
+      get idx() { return currentIdx; },
+      len: steps.length,
+      showStep(idx) {
+        currentIdx = idx;
+        const s = steps[idx];
+        badge.textContent = s.num;
+        title.textContent = s.title;
+        body.innerHTML    = s.body;
+        prevBtn.disabled  = (idx === 0);
+        prevBtn.style.opacity = (idx === 0) ? '0.35' : '1';
+        nextBtn.disabled  = (idx === steps.length - 1);
+        nextBtn.style.opacity = (idx === steps.length - 1) ? '0.35' : '1';
+        hint.style.display = 'none';
+        content.classList.add('open');
+        btns.forEach(b => b.classList.toggle('active', parseInt(b.dataset.num, 10) === s.num));
+        active = ctrl;
+        sendHeight();
+      },
+      showHint() {
+        currentIdx = -1;
+        content.classList.remove('open');
+        hint.style.display = 'block';
+        btns.forEach(b => b.classList.remove('active'));
+        sendHeight();
+      }
+    };
 
-  function showHint() {
-    currentIdx = -1;
-    content.classList.remove('open');
-    hint.style.display = 'block';
-    btns.forEach(b => b.classList.remove('active'));
-    sendHeight();
-  }
-
-  btns.forEach(btn => {
-    const num = parseInt(btn.dataset.num, 10);
-    btn.addEventListener('click', () => {
-      btn.classList.remove('pulse');
-      void btn.offsetWidth;
-      showStep(num - 1);
+    btns.forEach(btn => {
+      const num = parseInt(btn.dataset.num, 10);
+      btn.addEventListener('click', () => {
+        btn.classList.remove('pulse');
+        void btn.offsetWidth;
+        ctrl.showStep(num - 1);
+      });
     });
-  });
+    closeBtn.addEventListener('click', () => ctrl.showHint());
+    prevBtn.addEventListener('click', () => { if (currentIdx > 0) ctrl.showStep(currentIdx - 1); });
+    nextBtn.addEventListener('click', () => { if (currentIdx < steps.length - 1) ctrl.showStep(currentIdx + 1); });
+    return ctrl;
+  }
 
-  closeBtn.addEventListener('click', showHint);
-  prevBtn.addEventListener('click', () => { if (currentIdx > 0) showStep(currentIdx - 1); });
-  nextBtn.addEventListener('click', () => { if (currentIdx < steps.length - 1) showStep(currentIdx + 1); });
+  app.querySelectorAll('.pe-interactive').forEach(initInteractive);
 
   document.addEventListener('keydown', (e) => {
-    if (currentIdx < 0) return;
-    if (e.key === 'Escape') showHint();
-    if (e.key === 'ArrowLeft'  && currentIdx > 0)                showStep(currentIdx - 1);
-    if (e.key === 'ArrowRight' && currentIdx < steps.length - 1) showStep(currentIdx + 1);
+    if (!active || active.idx < 0) return;
+    if (e.key === 'Escape') active.showHint();
+    if (e.key === 'ArrowLeft'  && active.idx > 0)            active.showStep(active.idx - 1);
+    if (e.key === 'ArrowRight' && active.idx < active.len-1) active.showStep(active.idx + 1);
   });
 
   function sendHeight() {
@@ -331,15 +387,15 @@
   window.addEventListener('resize', sendHeight);
   const mo = new MutationObserver(sendHeight);
   mo.observe(app, { childList: true, subtree: true, attributes: true });
-
-  const img = app.querySelector('.pe-diagram-wrap img');
-  if (img) {
+  app.querySelectorAll('.pe-diagram-wrap img').forEach(img => {
     if (img.complete) sendHeight();
     else img.addEventListener('load', sendHeight);
-  }
+  });
 
   // Sanfter Puls beim Laden – lädt zum Antippen ein
-  window.addEventListener('load', () => { btns.forEach(b => b.classList.add('pulse')); });
+  window.addEventListener('load', () => {
+    app.querySelectorAll('.num-btn').forEach(b => b.classList.add('pulse'));
+  });
 })();
 </script>
 
