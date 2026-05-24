@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#2F4F3E">
+<link rel="manifest" href="../manifest.webmanifest">
+<link rel="icon" href="../assets/icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="../assets/apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Flora Mibaso">
+<title>Naturquiz – Flora Mibaso</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: Georgia, 'Times New Roman', serif;
+    background: #f8f5f0;
+    color: #2c2c2c;
+    min-height: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 6px 10px 8px;
+  }
+
+  header {
+    text-align: center;
+    margin-bottom: 6px;
+  }
+  header h1 {
+    font-size: 1.15rem;
+    color: #3A5F4A;
+    letter-spacing: 0.02em;
+    line-height: 1.2;
+  }
+  header p {
+    font-size: 0.78rem;
+    color: #666;
+    margin-top: 1px;
+    font-style: italic;
+  }
+
+  #quiz-box {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 2px 16px rgba(0,0,0,0.10);
+    max-width: 560px;
+    width: 100%;
+    overflow: hidden;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* ── Startscreen ── */
+  #start-screen {
+    padding: 20px 22px 22px;
+    text-align: center;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  #start-screen h2 { color: #3A5F4A; margin-bottom: 4px; font-size: 1.1rem; }
+  #start-screen .anleitung { color: #555; line-height: 1.5; margin-bottom: 16px; font-size: 0.9rem; }
+
+  .level-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    margin-bottom: 18px;
+  }
+  .level-btn {
+    background: #f4f1eb;
+    border: 2px solid #ddd;
+    border-radius: 10px;
+    padding: 12px 6px;
+    cursor: pointer;
+    font-family: Georgia, serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    transition: background 0.15s, border-color 0.15s, transform 0.1s;
+  }
+  .level-btn:hover { background: #e8f0e0; border-color: #3A5F4A; transform: translateY(-1px); }
+  .level-btn.selected { background: #e0ede8; border-color: #3A5F4A; }
+  .level-icon { font-size: 1.5rem; }
+  .level-name { font-size: 0.82rem; color: #333; font-weight: bold; }
+  .level-stufe { font-size: 0.68rem; color: #888; letter-spacing: 0.04em; text-transform: uppercase; }
+
+  .setting-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    margin-bottom: 18px;
+    font-size: 0.92rem;
+    color: #444;
+  }
+  .setting-row select {
+    padding: 6px 10px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 0.95rem;
+    color: #333;
+    background: #fafafa;
+    font-family: Georgia, serif;
+  }
+
+  .btn-primary {
+    display: inline-block;
+    padding: 12px 28px;
+    background: #3A5F4A;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-family: Georgia, serif;
+    cursor: pointer;
+    transition: background 0.2s;
+    text-decoration: none;
+  }
+  .btn-primary:hover:not(:disabled) { background: #2F4F3E; }
+  .btn-primary:disabled { background: #b7b7b7; cursor: not-allowed; }
+
+  /* ── Progress bar ── */
+  #progress-bar-wrap {
+    height: 6px;
+    background: #e8e8e8;
+  }
+  #progress-bar {
+    height: 100%;
+    background: #3A5F4A;
+    transition: width 0.4s ease;
+    width: 0%;
+  }
+
+  /* ── Question screen ── */
+  #question-screen { display: none; }
+
+  #question-header {
+    padding: 8px 16px 6px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #f0f0f0;
+  }
+  #question-counter { font-size: 0.85rem; color: #888; }
+  #level-tag { font-size: 0.78rem; color: #5A8068; font-style: italic; }
+  #score-display { font-size: 0.85rem; color: #3A5F4A; font-weight: bold; }
+
+  #question-text {
+    padding: 16px 18px 6px;
+    font-size: 1rem;
+    color: #333;
+    text-align: center;
+    line-height: 1.4;
+  }
+
+  #answers {
+    display: grid;
+    gap: 8px;
+    padding: 8px 14px 10px;
+  }
+
+  .answer-btn {
+    background: #f4f1eb;
+    border: 2px solid #ddd;
+    border-radius: 8px;
+    padding: 11px 14px;
+    font-size: 0.92rem;
+    font-family: Georgia, serif;
+    color: #333;
+    cursor: pointer;
+    text-align: left;
+    line-height: 1.35;
+    transition: background 0.15s, border-color 0.15s, transform 0.1s;
+  }
+  .answer-btn:hover:not(:disabled) {
+    background: #e8f0e0;
+    border-color: #3A5F4A;
+    transform: translateY(-1px);
+  }
+  .answer-btn.correct {
+    background: #e0ede8;
+    border-color: #3A5F4A;
+    color: #2F4F3E;
+    font-weight: bold;
+  }
+  .answer-btn.wrong {
+    background: #f8d7da;
+    border-color: #c0392b;
+    color: #721c24;
+  }
+  .answer-btn:disabled { cursor: default; }
+
+  #feedback {
+    text-align: center;
+    padding: 2px 16px 2px;
+    font-size: 0.9rem;
+    min-height: 18px;
+    color: #555;
+    font-style: italic;
+    line-height: 1.4;
+  }
+
+  #next-btn {
+    display: none;
+    margin: 6px 14px 10px;
+    width: calc(100% - 28px);
+    padding: 9px;
+    background: #3A5F4A;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    font-family: Georgia, serif;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+  #next-btn:hover { background: #2F4F3E; }
+
+  /* ── Result screen ── */
+  #result-screen {
+    display: none;
+    padding: 20px 24px;
+    text-align: center;
+    flex-direction: column;
+    justify-content: center;
+  }
+  #result-screen h2 { color: #3A5F4A; font-size: 1.3rem; margin-bottom: 6px; }
+  #result-score { font-size: 2.5rem; font-weight: bold; color: #3A5F4A; margin: 8px 0; }
+  #result-msg { color: #555; margin-bottom: 8px; font-style: italic; line-height: 1.5; }
+  #result-detail { font-size: 0.85rem; color: #888; margin-bottom: 24px; }
+
+  #wrong-list {
+    text-align: left;
+    margin-bottom: 24px;
+    display: none;
+  }
+  #wrong-list h3 { color: #555; font-size: 0.9rem; margin-bottom: 10px; }
+  .wrong-item {
+    margin-bottom: 8px;
+    font-size: 0.85rem;
+    padding: 8px 12px;
+    background: #fdf5f5;
+    border-radius: 6px;
+    border-left: 3px solid #c0392b;
+    line-height: 1.4;
+  }
+  .wi-q { color: #333; margin-bottom: 3px; }
+  .wi-correct { color: #2F4F3E; font-weight: bold; }
+  .wi-given { color: #721c24; font-size: 0.8rem; }
+
+  .result-btns { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+  .btn-secondary {
+    display: inline-block;
+    padding: 11px 22px;
+    background: transparent;
+    color: #3A5F4A;
+    border: 2px solid #3A5F4A;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    font-family: Georgia, serif;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+  .btn-secondary:hover { background: #eef4ef; }
+
+  footer {
+    margin-top: 10px;
+    font-size: 0.72rem;
+    color: #aaa;
+    text-align: center;
+  }
+  footer a { color: #3A5F4A; text-decoration: none; }
+
+  /* ── Konfetti & Sieges-Animation ── */
+  @keyframes konfetti-regen {
+    0%   { transform: translateY(-10px) rotate(0deg); opacity: 1; }
+    80%  { opacity: 1; }
+    100% { transform: translateY(200px) rotate(540deg); opacity: 0; }
+  }
+  @keyframes bounce-in {
+    0%   { transform: scale(0.3); }
+    55%  { transform: scale(1.15); }
+    75%  { transform: scale(0.92); }
+    90%  { transform: scale(1.05); }
+    100% { transform: scale(1); }
+  }
+  #confetti-field {
+    position: relative;
+    height: 120px;
+    overflow: hidden;
+    width: 100%;
+    margin-bottom: 10px;
+  }
+  .konfetti-stück {
+    position: absolute;
+    top: -10px;
+    border-radius: 2px;
+    animation: konfetti-regen linear infinite;
+  }
+  #sieger-msg {
+    font-size: 1.05rem;
+    font-weight: bold;
+    color: #3A5F4A;
+    background: #e8f4ed;
+    border: 2px solid #3A5F4A;
+    border-radius: 10px;
+    padding: 12px 16px;
+    margin: 8px 0 14px;
+    animation: bounce-in 0.7s cubic-bezier(0.36,0.07,0.19,0.97) forwards;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>🌿 Naturquiz</h1>
+  <p>Raten, staunen, weiterdenken.</p>
+</header>
+
+<div id="quiz-box">
+
+  <!-- ══ STARTSCREEN ══ -->
+  <div id="start-screen">
+    <h2>Wähle dein Level</h2>
+    <p class="anleitung">Drei Stufen, je 15 Fragen rund um Pflanzen und Natur.</p>
+
+    <div class="level-grid">
+      <button class="level-btn" data-level="1" onclick="selectLevel(1)">
+        <span class="level-icon">🌱</span>
+        <span class="level-name">Einsteiger</span>
+        <span class="level-stufe">Level 1</span>
+      </button>
+      <button class="level-btn" data-level="2" onclick="selectLevel(2)">
+        <span class="level-icon">🌿</span>
+        <span class="level-name">Fortgeschritten</span>
+        <span class="level-stufe">Level 2</span>
+      </button>
+      <button class="level-btn" data-level="3" onclick="selectLevel(3)">
+        <span class="level-icon">🌳</span>
+        <span class="level-name">Experte</span>
+        <span class="level-stufe">Level 3</span>
+      </button>
+    </div>
+
+    <div class="setting-row">
+      <label for="num-q">Anzahl Fragen:</label>
+      <select id="num-q">
+        <option value="5">5</option>
+        <option value="10" selected>10</option>
+        <option value="15">Alle 15</option>
+      </select>
+    </div>
+
+    <div><button class="btn-primary" id="start-btn" onclick="startQuiz()" disabled>Erst Level wählen …</button></div>
+  </div>
+
+  <!-- ══ QUESTION SCREEN ══ -->
+  <div id="question-screen">
+    <div id="progress-bar-wrap"><div id="progress-bar"></div></div>
+    <div id="question-header">
+      <span id="question-counter">Frage 1 / 10</span>
+      <span id="level-tag"></span>
+      <span id="score-display">✓ 0</span>
+    </div>
+    <div id="question-text"></div>
+    <div id="answers"></div>
+    <div id="feedback"></div>
+    <button id="next-btn" onclick="nextQuestion()">Weiter →</button>
+  </div>
+
+  <!-- ══ RESULT SCREEN ══ -->
+  <div id="result-screen">
+    <div id="perfect-block" style="display:none"></div>
+    <h2>Ergebnis</h2>
+    <div id="result-score"></div>
+    <div id="result-msg"></div>
+    <div id="result-detail"></div>
+    <div id="wrong-list"><h3>Das war falsch:</h3><div id="wrong-items"></div></div>
+    <div class="result-btns">
+      <button class="btn-secondary" onclick="retryLevel()">Nochmal</button>
+      <button class="btn-primary" onclick="backToStart()">Anderes Level</button>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  Ein Quiz von <a href="https://flora.mibaso.de" target="_blank">flora.mibaso.de</a>
+  · CC BY-NC Michael Baur
+</footer>
+
+<script>
+// ═══════════════════════════════════════════════════
+//  FRAGEN – drei Level mit je 15 Fragen
+//  Format: { q, opts:[...], ans:Index der richtigen Antwort }
+// ═══════════════════════════════════════════════════
+const QUESTIONS = {
+  1: [
+    { q: "Warum sind viele Nachtblüher weiß?", opts: ["Weiß speichert Wärme","Nachtfalter sehen helle Blüten besser","Weiße Blüten enthalten mehr Nektar","Weiß schützt vor Regen"], ans: 1 },
+    { q: "Warum haben manche Blüten lange Röhren?", opts: ["Zum Wasserspeichern","Damit nur bestimmte Bestäuber hineinkommen","Damit sie stabiler stehen","Wegen der Temperatur"], ans: 1 },
+    { q: "Warum sind Ahornsamen geflügelt?", opts: ["Damit Tiere sie erkennen","Zur Fotosynthese","Damit sie weiter getragen werden","Zum Schutz"], ans: 2 },
+    { q: "Warum schließen Pflanzen ihre Spaltöffnungen bei Hitze?", opts: ["Zum Schutz vor Insekten","Um Wasser zu sparen","Damit kein Pollen entweicht","Zur Kühlung"], ans: 1 },
+    { q: "Welche Aufgabe hat Chlorophyll?", opts: ["Wasser speichern","Licht aufnehmen","Samen schützen","Duft erzeugen"], ans: 1 },
+    { q: "Warum bleiben viele Nadelbäume im Winter grün?", opts: ["Sie verlieren weniger Wasser","Sie spüren keinen Frost","Sie haben mehr Wurzeln","Wegen des Harzes"], ans: 0 },
+    { q: "Warum ist Fremdbestäubung oft vorteilhaft?", opts: ["Samen werden größer","Mehr genetische Vielfalt entsteht","Die Blüte hält länger","Pflanzen sparen Energie"], ans: 1 },
+    { q: "Warum produzieren Windbestäuber extrem viel Pollen?", opts: ["Die Verteilung ist ungenau","Pollen ist billig","Damit Tiere kommen","Wegen der Sonne"], ans: 0 },
+    { q: "Woher nehmen Frühblüher ihre Energie?", opts: ["Aus dem Regen","Aus Reserven im Boden","Aus der Luft","Von Pilzen"], ans: 1 },
+    { q: "Warum verschwinden Frühblüher im Sommer?", opts: ["Sie sterben dauerhaft","Der Boden wird zu dunkel","Wegen der Hitze","Sie frieren"], ans: 1 },
+    { q: "Warum sind Blätter dünn und flach?", opts: ["Damit Regen abläuft","Damit viel Licht aufgenommen wird","Damit Tiere sie nicht sehen","Wegen des Windes"], ans: 1 },
+    { q: "Welche Pflanzen nutzen Ameisen zur Samenverbreitung?", opts: ["Pflanzen mit ölhaltigen Samenanhängseln","Wasserpflanzen","Nadelbäume","Gräser"], ans: 0 },
+    { q: "Warum sind viele Beeren auffällig gefärbt?", opts: ["Damit Tiere sie verbreiten","Zur Tarnung","Wegen der Wärme","Zum Schutz"], ans: 0 },
+    { q: "Warum blühen Pflanzen nicht alle gleichzeitig?", opts: ["Wegen unterschiedlicher Strategien","Wegen der Bodenfarbe","Wegen des Regens","Wegen der Temperatur"], ans: 0 },
+    { q: "Welche Tiere bestäuben manche Nachtblüher?", opts: ["Fledermäuse","Maulwürfe","Frösche","Libellen"], ans: 0 }
+  ],
+  2: [
+    { q: "Woher stammt der größte Teil der Masse eines Baumes?", opts: ["Aus dem Boden","Aus Wasser","Aus Mineralstoffen","Aus Kohlendioxid der Luft"], ans: 3 },
+    { q: "Warum besuchen Bienen manche Blüten immer wieder?", opts: ["Wegen der Farbe","Weil sie sich gute Nahrungsquellen merken","Weil Pflanzen sie rufen","Wegen des Regens"], ans: 1 },
+    { q: "Warum sind Windbestäuber oft grün und unscheinbar?", opts: ["Weil sie keine Tiere anlocken müssen","Weil sie krank sind","Wegen des Waldes","Wegen der Temperatur"], ans: 0 },
+    { q: "Eine Kartoffel ist botanisch gesehen …", opts: ["eine Wurzel","eine Frucht","eine verdickte Sprossknolle","ein Samen"], ans: 2 },
+    { q: "Warum wachsen Pflanzen zum Licht?", opts: ["Wegen der Wärme","Durch ungleiches Wachstum","Weil die Sonne zieht","Wegen des Windes"], ans: 1 },
+    { q: "Warum ist es im Laubwald im Frühling heller?", opts: ["Wegen der Sonne","Weil die Bäume noch wenig Blätter tragen","Wegen der Luftfeuchtigkeit","Wegen des Bodens"], ans: 1 },
+    { q: "Warum platzen manche Früchte explosionsartig auf?", opts: ["Wegen der Sonne","Um Samen weit zu schleudern","Wegen des Windes","Zur Kühlung"], ans: 1 },
+    { q: "Warum produzieren Pflanzen giftige Stoffe?", opts: ["Gegen Sonne","Gegen Fressfeinde","Für schönere Blüten","Gegen Wind"], ans: 1 },
+    { q: "Was passiert oft, wenn eine Pflanzenart verschwindet?", opts: ["Nichts","Nur die Samen fehlen","Oft verschwinden auch spezialisierte Tiere","Der Boden wird hart"], ans: 2 },
+    { q: "Warum sind Wildblumenwiesen wichtig?", opts: ["Wegen der Farben","Weil dort Nahrung und Lebensräume vorhanden sind","Wegen des Bodens","Wegen der Sonne"], ans: 1 },
+    { q: "Können Pflanzen miteinander kommunizieren?", opts: ["Nein","Teilweise über Duftstoffe","Nur im Wald","Nur nachts"], ans: 1 },
+    { q: "Warum bleiben manche Samen jahrzehntelang keimfähig?", opts: ["Sie schlafen","Sie warten auf günstige Bedingungen","Wegen des Mondes","Ohne Sauerstoff"], ans: 1 },
+    { q: "Welche Aussage stimmt über die Zellatmung der Pflanzen?", opts: ["Pflanzen atmen nur nachts","Pflanzen brauchen keinen Sauerstoff","Pflanzen betreiben auch Zellatmung","Pflanzen erzeugen immer Sauerstoff"], ans: 2 },
+    { q: "Sind Erdbeeren botanisch echte Beeren?", opts: ["Ja","Nein","Nur teilweise","Nur im Sommer"], ans: 1 },
+    { q: "Warum blühen nicht alle Pflanzen gleichzeitig?", opts: ["Unterschiedliche Bestäuber und Strategien","Wegen der Bodenfarbe","Wegen der Tageszeit","Weil sie sich stören"], ans: 0 }
+  ],
+  3: [
+    { q: "Warum können Pflanzen trotz fehlender Muskeln Bewegungen ausführen?", opts: ["Durch aktives Muskelgewebe","Durch Veränderungen des Zelldrucks","Weil sie Knochen besitzen","Durch Luftströmungen"], ans: 1 },
+    { q: "Warum ist die Fotosynthese für fast alle Lebewesen indirekt lebenswichtig?", opts: ["Weil Pflanzen Schatten spenden","Weil dabei Sauerstoff und energiereiche Stoffe entstehen","Weil Pflanzen Wärme erzeugen","Weil Tiere Pflanzen mögen"], ans: 1 },
+    { q: "Welche Aussage zur Bestäubung ist richtig?", opts: ["Bestäubung und Befruchtung sind dasselbe","Nach der Bestäubung kann die Befruchtung stattfinden","Bestäubung erfolgt erst nach der Samenbildung","Bestäubung geschieht nur durch Insekten"], ans: 1 },
+    { q: "Warum sind viele Waldpflanzen besonders empfindlich gegenüber Bodenverdichtung?", opts: ["Ihre Wurzeln brauchen lockeren, luftigen Boden","Weil sie kein Wasser mögen","Weil sie keine Pilze vertragen","Weil sie nur auf Sand wachsen"], ans: 0 },
+    { q: "Warum sind Flechten ein Sonderfall in der Natur?", opts: ["Sie bestehen aus mehreren Baumarten","Sie sind eine Lebensgemeinschaft aus Pilz und Alge","Sie können nicht wachsen","Sie betreiben keine Fotosynthese"], ans: 1 },
+    { q: "Warum besitzen viele Samen eine harte Schale?", opts: ["Zur besseren Fotosynthese","Zum Schutz vor Austrocknung und Fraß","Damit sie schneller keimen","Zur besseren Bestäubung"], ans: 1 },
+    { q: "Warum können manche Pflanzen auf nährstoffarmen Böden leben?", opts: ["Sie benötigen extrem wenige Nährstoffe","Sie gehen oft enge Lebensgemeinschaften mit Pilzen ein","Weil sie Steine fressen","Weil sie keinen Stickstoff brauchen"], ans: 1 },
+    { q: "Warum sind Moore wichtige Kohlenstoffspeicher?", opts: ["Weil dort besonders viel Sand liegt","Weil abgestorbenes Material nur sehr langsam zersetzt wird","Weil Moore kaum Pflanzen besitzen","Weil Tiere dort keinen Sauerstoff brauchen"], ans: 1 },
+    { q: "Warum gelten Blütenpflanzen evolutionär als besonders erfolgreich?", opts: ["Weil sie immer groß sind","Weil sie Tiere zur gezielten Bestäubung nutzen können","Weil sie keinen Regen brauchen","Weil sie keine Samen bilden"], ans: 1 },
+    { q: "Warum sterben viele Zimmerpflanzen häufiger an zu viel Wasser als an Trockenheit?", opts: ["Weil Wurzeln Sauerstoff brauchen","Weil Erde Pflanzen verbrennt","Weil Blätter Wasser meiden","Weil Pflanzen nur Regenwasser vertragen"], ans: 0 },
+    { q: "Warum profitieren viele Pflanzen von Pilzen im Boden?", opts: ["Pilze liefern zusätzliche Mineralstoffe und Wasser","Pilze erzeugen Sonnenlicht","Pilze ersetzen die Wurzeln","Pilze bestäuben Blüten"], ans: 0 },
+    { q: "Warum verändern viele Früchte beim Reifen ihre Farbe?", opts: ["Um Bestäuber anzulocken","Damit Tiere die reifen Früchte besser erkennen","Weil die Samen frieren","Weil Chlorophyll giftig wird"], ans: 1 },
+    { q: "Welche Aussage über die Zellatmung der Pflanzen stimmt?", opts: ["Pflanzen betreiben nur tagsüber Zellatmung","Pflanzen betreiben ständig Zellatmung","Pflanzen benötigen keinen Sauerstoff","Nur Wurzeln betreiben Zellatmung"], ans: 1 },
+    { q: "Warum sind invasive Pflanzenarten oft problematisch?", opts: ["Weil sie immer giftig sind","Weil sie heimische Arten verdrängen können","Weil sie keine Blüten besitzen","Weil sie nur im Winter wachsen"], ans: 1 },
+    { q: "Warum ist Biodiversität für Ökosysteme wichtig?", opts: ["Artenreiche Systeme reagieren oft stabiler auf Veränderungen","Weil viele Arten schöner aussehen","Weil Monokulturen mehr Sauerstoff produzieren","Weil Tiere nur in Wäldern leben"], ans: 0 }
+  ]
+};
+
+const LEVEL_NAME = { 1: "Level 1 – Einsteiger", 2: "Level 2 – Fortgeschritten", 3: "Level 3 – Experte" };
+
+// ── Spielzustand ──
+let selectedLevel = null;
+let questions = [];
+let current = 0;
+let score = 0;
+let answered = false;
+let wrongAnswers = [];
+let totalQ = 10;
+
+function shuffle(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+function selectLevel(l) {
+  selectedLevel = l;
+  document.querySelectorAll('.level-btn').forEach(b => {
+    b.classList.toggle('selected', parseInt(b.dataset.level) === l);
+  });
+  const btn = document.getElementById('start-btn');
+  btn.disabled = false;
+  btn.textContent = 'Quiz starten';
+  sendHeight();
+}
+
+function startQuiz() {
+  if (!selectedLevel) return;
+  totalQ = parseInt(document.getElementById('num-q').value);
+  const pool = shuffle(QUESTIONS[selectedLevel]);
+  totalQ = Math.min(totalQ, pool.length);
+  questions = pool.slice(0, totalQ);
+  current = 0;
+  score = 0;
+  answered = false;
+  wrongAnswers = [];
+
+  document.getElementById('start-screen').style.display = 'none';
+  document.getElementById('result-screen').style.display = 'none';
+  document.getElementById('question-screen').style.display = 'block';
+
+  showQuestion();
+}
+
+function showQuestion() {
+  answered = false;
+  const q = questions[current];
+
+  document.getElementById('progress-bar').style.width = ((current / totalQ) * 100) + '%';
+  document.getElementById('question-counter').textContent = `Frage ${current + 1} / ${totalQ}`;
+  document.getElementById('level-tag').textContent = LEVEL_NAME[selectedLevel];
+  document.getElementById('score-display').textContent = `✓ ${score}`;
+  document.getElementById('feedback').textContent = '';
+  document.getElementById('next-btn').style.display = 'none';
+  document.getElementById('question-text').textContent = q.q;
+
+  // Antwortreihenfolge mischen, richtige Antwort merken
+  const indices = shuffle([0, 1, 2, 3]);
+  const container = document.getElementById('answers');
+  container.innerHTML = '';
+  indices.forEach(origIdx => {
+    const btn = document.createElement('button');
+    btn.className = 'answer-btn';
+    btn.textContent = q.opts[origIdx];
+    btn.onclick = () => checkAnswer(origIdx === q.ans, btn, q);
+    container.appendChild(btn);
+  });
+}
+
+function checkAnswer(isCorrect, clickedBtn, q) {
+  if (answered) return;
+  answered = true;
+
+  const correctText = q.opts[q.ans];
+  const buttons = document.querySelectorAll('.answer-btn');
+  buttons.forEach(btn => {
+    btn.disabled = true;
+    if (btn.textContent === correctText) btn.classList.add('correct');
+  });
+
+  if (isCorrect) {
+    score++;
+    document.getElementById('feedback').textContent = '✓ Richtig!';
+    document.getElementById('score-display').textContent = `✓ ${score}`;
+  } else {
+    clickedBtn.classList.add('wrong');
+    document.getElementById('feedback').innerHTML = `✗ Richtig wäre: <strong>${correctText}</strong>`;
+    wrongAnswers.push({ q: q.q, correctText: correctText, given: clickedBtn.textContent });
+  }
+
+  const nextBtn = document.getElementById('next-btn');
+  nextBtn.textContent = (current + 1 < totalQ) ? 'Weiter →' : 'Auswertung →';
+  nextBtn.style.display = 'block';
+}
+
+function nextQuestion() {
+  current++;
+  if (current >= totalQ) {
+    showResult();
+  } else {
+    showQuestion();
+  }
+}
+
+function showResult() {
+  document.getElementById('question-screen').style.display = 'none';
+  document.getElementById('result-screen').style.display = 'flex';
+  document.getElementById('progress-bar').style.width = '100%';
+
+  document.getElementById('result-score').textContent = `${score} / ${totalQ}`;
+
+  const pct = score / totalQ;
+  let msg = '';
+  if (pct === 1)       msg = '';
+  else if (pct >= 0.8) msg = 'Sehr gut! Da steckt viel Naturwissen.';
+  else if (pct >= 0.6) msg = 'Gut gemacht – mit etwas Stöbern wird’s noch mehr.';
+  else if (pct >= 0.4) msg = 'Nicht schlecht – ein guter Anfang.';
+  else                 msg = 'Noch viel zu entdecken – einfach nochmal versuchen!';
+  document.getElementById('result-msg').textContent = msg;
+  document.getElementById('result-detail').textContent =
+    `${score} richtig, ${totalQ - score} daneben · ${LEVEL_NAME[selectedLevel]}`;
+
+  // Perfekt: Konfetti + Siegermeldung
+  const perfectBlock = document.getElementById('perfect-block');
+  if (score === totalQ) {
+    const sprueche = [
+      "🍾 Prost! Alles richtig – Naturwissen vom Feinsten!",
+      "🚀 Abgehoben! Du denkst wie eine Pflanze – nur schneller!",
+      "🎊 Sensationell! Dafür gibt’s einen Blumenstrauß!",
+      "🏆 Goldmedaille! Du bist das wandelnde Naturlexikon!"
+    ];
+    const spruch = sprueche[Math.floor(Math.random() * sprueche.length)];
+    const farben = ['#3A5F4A','#2F4F3E','#6aab7a','#a8d5b5','#f4c430','#e8a020','#c0392b','#e74c3c','#3498db','#2980b9','#9b59b6','#8e44ad'];
+    let html = '<div id="confetti-field">';
+    for (let i = 0; i < 60; i++) {
+      const c = farben[Math.floor(Math.random() * farben.length)];
+      const left = (Math.random() * 96).toFixed(1);
+      const delay = (Math.random() * 2.5).toFixed(2);
+      const dur = (1.4 + Math.random() * 1.4).toFixed(2);
+      const w = 5 + Math.floor(Math.random() * 7);
+      const h = 5 + Math.floor(Math.random() * 7);
+      const rot = Math.floor(Math.random() * 360);
+      html += `<div class="konfetti-stück" style="background:${c};left:${left}%;width:${w}px;height:${h}px;animation-delay:${delay}s;animation-duration:${dur}s;transform:rotate(${rot}deg)"></div>`;
+    }
+    html += '</div><div id="sieger-msg">' + spruch + '</div>';
+    perfectBlock.innerHTML = html;
+    perfectBlock.style.display = 'block';
+  } else {
+    perfectBlock.style.display = 'none';
+    perfectBlock.innerHTML = '';
+  }
+
+  // Falsche Antworten auflisten
+  const wrongList = document.getElementById('wrong-list');
+  const wrongItems = document.getElementById('wrong-items');
+  wrongItems.innerHTML = '';
+  if (wrongAnswers.length > 0) {
+    wrongList.style.display = 'block';
+    wrongAnswers.forEach(w => {
+      const div = document.createElement('div');
+      div.className = 'wrong-item';
+      div.innerHTML = `
+        <div class="wi-q">${w.q}</div>
+        <div class="wi-correct">✓ ${w.correctText}</div>
+        <div class="wi-given">Deine Antwort: ${w.given}</div>`;
+      wrongItems.appendChild(div);
+    });
+  } else {
+    wrongList.style.display = 'none';
+  }
+  sendHeight();
+}
+
+function retryLevel() {
+  startQuiz();
+}
+
+function backToStart() {
+  document.getElementById('result-screen').style.display = 'none';
+  document.getElementById('question-screen').style.display = 'none';
+  document.getElementById('start-screen').style.display = 'flex';
+  document.getElementById('progress-bar').style.width = '0%';
+  sendHeight();
+}
+
+// ── Auto-Resize: Höhe an Parent-Seite (WordPress) senden ──
+function sendHeight() {
+  const box = document.getElementById('quiz-box');
+  const header = document.querySelector('header');
+  const footer = document.querySelector('footer');
+  const headerH = header ? header.offsetHeight + 20 : 0;
+  const footerH = footer ? footer.offsetHeight + 10 : 0;
+  const boxH = box ? box.offsetHeight : 0;
+  const h = headerH + boxH + footerH + 20;
+  window.parent.postMessage({ quizHeight: h }, '*');
+}
+window.addEventListener('load', sendHeight);
+window.addEventListener('resize', sendHeight);
+const observer = new MutationObserver(sendHeight);
+observer.observe(document.body, { childList: true, subtree: true, attributes: true });
+</script>
+</body>
+</html>

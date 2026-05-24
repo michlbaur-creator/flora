@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Mibaso Natur — Pflanzen entdecken · Pflanzen verstehen</title>
+<title>Flora Mibaso — Pflanzen entdecken · Pflanzen verstehen</title>
 <meta name="description" content="Deine digitale Naturwerkstatt für die Hosentasche: über 100 Pflanzenarten bestimmen, Broschüren, Quiz und interaktive Lerntafeln zu Pflanzenbau und Bestäubung – funktioniert überall, auch ohne Netz.">
 <meta name="theme-color" content="#2F4F3E">
 
@@ -14,7 +14,7 @@
 <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="Mibaso Natur">
+<meta name="apple-mobile-web-app-title" content="Flora Mibaso">
 
 <style>
   :root{
@@ -38,6 +38,8 @@
     --ausprobieren-bg:#e0ebde;
     --verstehen:#2F4F3E;        /* tiefes Waldgrün – Fokus, Wissen */
     --verstehen-bg:#d1ddd5;
+    --phaenomene:#a8772a;       /* warmes Honiggold – Neugier, „Warum ist das so?" */
+    --phaenomene-bg:#f4ecd6;
   }
 
   *{box-sizing:border-box}
@@ -184,10 +186,12 @@
   .sektion[data-thema="entdecken"]    .sektion-titel{color:var(--entdecken)}
   .sektion[data-thema="ausprobieren"] .sektion-titel{color:var(--ausprobieren)}
   .sektion[data-thema="verstehen"]    .sektion-titel{color:var(--verstehen)}
+  .sektion[data-thema="phaenomene"]   .sektion-titel{color:var(--phaenomene)}
 
   .sektion[data-thema="entdecken"]    .sektion-titel::after,
   .sektion[data-thema="ausprobieren"] .sektion-titel::after,
-  .sektion[data-thema="verstehen"]    .sektion-titel::after{
+  .sektion[data-thema="verstehen"]    .sektion-titel::after,
+  .sektion[data-thema="phaenomene"]   .sektion-titel::after{
     content:"";
     display:block;
     width:42px;height:3px;
@@ -197,6 +201,7 @@
   .sektion[data-thema="entdecken"]    .sektion-titel::after{background:var(--entdecken)}
   .sektion[data-thema="ausprobieren"] .sektion-titel::after{background:var(--ausprobieren)}
   .sektion[data-thema="verstehen"]    .sektion-titel::after{background:var(--verstehen)}
+  .sektion[data-thema="phaenomene"]   .sektion-titel::after{background:var(--phaenomene)}
 
   /* Kachel-Raster */
   .kacheln{
@@ -229,6 +234,7 @@
   .sektion[data-thema="entdecken"]    .kachel:hover{border-color:var(--entdecken)}
   .sektion[data-thema="ausprobieren"] .kachel:hover{border-color:var(--ausprobieren)}
   .sektion[data-thema="verstehen"]    .kachel:hover{border-color:var(--verstehen)}
+  .sektion[data-thema="phaenomene"]   .kachel:hover{border-color:var(--phaenomene)}
 
   .kachel .icon{
     width:54px;height:54px;
@@ -243,6 +249,7 @@
   .sektion[data-thema="entdecken"]    .icon{background:var(--entdecken-bg);    color:var(--entdecken)}
   .sektion[data-thema="ausprobieren"] .icon{background:var(--ausprobieren-bg); color:var(--ausprobieren)}
   .sektion[data-thema="verstehen"]    .icon{background:var(--verstehen-bg);    color:var(--verstehen)}
+  .sektion[data-thema="phaenomene"]   .icon{background:var(--phaenomene-bg);   color:var(--phaenomene)}
 
   .kachel h3{
     margin:0 0 6px;
@@ -253,6 +260,7 @@
   .sektion[data-thema="entdecken"]    .kachel h3{color:var(--entdecken)}
   .sektion[data-thema="ausprobieren"] .kachel h3{color:var(--ausprobieren)}
   .sektion[data-thema="verstehen"]    .kachel h3{color:var(--verstehen)}
+  .sektion[data-thema="phaenomene"]   .kachel h3{color:var(--phaenomene)}
 
   .kachel p{
     margin:0;
@@ -312,7 +320,7 @@
     <span class="chevron" aria-hidden="true">▾</span>
   </button>
   <div class="bubble-content" id="bubble-content-ios" role="region" aria-label="Installations-Anleitung iPhone">
-    <h4>So legst du Mibaso Natur als App ab</h4>
+    <h4>So legst du Flora Mibaso als App ab</h4>
 
     <p><strong>Variante A – wenn du in Safari bist (am einfachsten):</strong></p>
     <ol>
@@ -347,7 +355,7 @@
     <span class="chevron" aria-hidden="true">▾</span>
   </button>
   <div class="bubble-content" id="bubble-content-android" role="region" aria-label="Installations-Anleitung Android">
-    <h4>So legst du Mibaso Natur als App ab</h4>
+    <h4>So legst du Flora Mibaso als App ab</h4>
 
     <p><strong>In Chrome:</strong></p>
     <ol>
@@ -356,15 +364,15 @@
       <li>Im Dialog auf <em>„Installieren"</em> bzw. <em>„Hinzufügen"</em> tippen</li>
     </ol>
 
-    <p style="margin-top:10px;font-size:0.88rem;color:#6b5340;">Tipp: Manchmal blendet Chrome auch ganz von selbst unten einen Balken „Mibaso Natur installieren" ein – dann reicht ein Tipp darauf.</p>
+    <p style="margin-top:10px;font-size:0.88rem;color:#6b5340;">Tipp: Manchmal blendet Chrome auch ganz von selbst unten einen Balken „Flora Mibaso installieren" ein – dann reicht ein Tipp darauf.</p>
 
     <a class="schliessen" id="bubble-schliessen-android">Nicht mehr anzeigen</a>
   </div>
 </div>
 
 <header class="app-head">
-  <img class="logo" src="assets/icon.svg" alt="Mibaso Natur Logo">
-  <h1>Mibaso Natur</h1>
+  <img class="logo" src="assets/icon.svg" alt="Flora Mibaso Logo">
+  <h1>Flora Mibaso</h1>
   <div class="untertitel">Michael Baurs digitale Naturwerkstatt für die Hosentasche.</div>
 </header>
 
@@ -421,8 +429,23 @@
             <path d="M7 21h10"/>
           </svg>
         </div>
-        <h3>Quiz</h3>
-        <p>Raten, staunen, wiedererkennen: ein Naturquiz mit heimischen Arten.</p>
+        <h3>Vier Pflanzen — aber nur eine passt.</h3>
+        <p>Tippe die Richtige!</p>
+      </a>
+
+      <a class="kachel" href="quiz/naturquiz.html">
+        <div class="icon" aria-hidden="true">
+          <!-- Glühbirne mit Blatt: Wissen & Natur -->
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M9 18h6"/>
+            <path d="M10 21h4"/>
+            <path d="M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.3h6c0-1.1.4-1.8 1-2.3A7 7 0 0 0 12 2z"/>
+            <path d="M12 14c-1.8 0-2.8-1-2.8-2.3 1.6 0 2.8.8 2.8 2.3z"/>
+            <path d="M12 12c0-1.5 1-2.6 2.8-2.6C14.8 11 13.6 12 12 12z"/>
+          </svg>
+        </div>
+        <h3>Naturquiz</h3>
+        <p>Raten, staunen, weiterdenken.</p>
       </a>
 
     </div>
@@ -483,37 +506,100 @@
         <p>Wie Pollen auf Reisen gehen – mit Bienen, Wind und erstaunlich viel Zufall.</p>
       </a>
 
-      <a class="kachel" href="interaktiv/bluetenoekologie.html">
+      <a class="kachel" href="interaktiv/pflanzenstrategien.html">
         <div class="icon" aria-hidden="true">
-          <!-- Blüte mit Besucher -->
+          <!-- Blüte mit davonfliegenden Samen: Anlocken + Verbreiten -->
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-            <circle cx="12" cy="14" r="2"/>
-            <ellipse cx="12" cy="10" rx="2" ry="3.2"/>
-            <ellipse cx="12" cy="18" rx="2" ry="3.2"/>
-            <ellipse cx="8" cy="14" rx="3.2" ry="2"/>
-            <ellipse cx="16" cy="14" rx="3.2" ry="2"/>
-            <circle cx="12" cy="14" r="1" fill="currentColor"/>
-            <path d="M19 4l-2 2 M15 3l-1 2.5" stroke-dasharray="1 1.5"/>
+            <circle cx="9" cy="13" r="1.7"/>
+            <ellipse cx="9" cy="9.6" rx="1.7" ry="2.8"/>
+            <ellipse cx="9" cy="16.4" rx="1.7" ry="2.8"/>
+            <ellipse cx="5.6" cy="13" rx="2.8" ry="1.7"/>
+            <ellipse cx="12.4" cy="13" rx="2.8" ry="1.7"/>
+            <circle cx="9" cy="13" r="0.9" fill="currentColor" stroke="none"/>
+            <path d="M16 7l3-1.5 M17.5 10.5l3 0 M16.5 14l2.7 1.6" stroke-dasharray="1.2 1.6"/>
+            <circle cx="20" cy="5" r="0.6" fill="currentColor" stroke="none"/>
+            <circle cx="21" cy="10.5" r="0.6" fill="currentColor" stroke="none"/>
+            <circle cx="19.7" cy="15.8" r="0.6" fill="currentColor" stroke="none"/>
           </svg>
         </div>
-        <h3>Blütenökologie – wer besucht wen?</h3>
-        <p>Warum kommt die Hummel hierher – und nicht dort hin?</p>
+        <h3>Pflanzenstrategien – die Tricks der Natur</h3>
+        <p>Wie Pflanzen Bestäuber anlocken und ihre Samen auf Reisen schicken.</p>
       </a>
 
-      <a class="kachel" href="interaktiv/samenverbreitung.html">
+    </div>
+  </section>
+
+  <!-- NATURPHÄNOMENE -->
+  <section class="sektion" data-thema="phaenomene">
+    <h2 class="sektion-titel">Naturphänomene erklärt</h2>
+    <p style="margin:-8px 0 18px 4px;color:var(--text-leise);font-style:italic;font-size:1.02rem;">Warum ist das eigentlich so?</p>
+    <div class="kacheln">
+
+      <a class="kachel" href="interaktiv/kletten.html">
         <div class="icon" aria-hidden="true">
-          <!-- Pusteblume mit fliegenden Samen -->
+          <!-- Klette mit Widerhaken -->
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-            <circle cx="10" cy="11" r="4.5"/>
-            <path d="M10 15.5v6"/>
-            <path d="M16 6l3-1.5 M17 9l3 0 M16 12l2.5 1.5" stroke-dasharray="1.2 1.6"/>
-            <circle cx="20" cy="4" r="0.6" fill="currentColor"/>
-            <circle cx="21" cy="9" r="0.6" fill="currentColor"/>
-            <circle cx="19" cy="14" r="0.6" fill="currentColor"/>
+            <circle cx="12" cy="12" r="4"/>
+            <path d="M12 4v2.5 M12 17.5V20 M4 12h2.5 M17.5 12H20 M6.3 6.3l1.8 1.8 M15.9 15.9l1.8 1.8 M17.7 6.3l-1.8 1.8 M8.1 15.9l-1.8 1.8"/>
+            <path d="M12 6.5l-.7-.9 M12 6.5l.7-.9 M12 17.5l-.7.9 M12 17.5l.7.9"/>
           </svg>
         </div>
-        <h3>Samenverbreitung – wie Pflanzen reisen</h3>
-        <p>Pflanzen bleiben stehen – ihre Samen gehen auf Reisen.</p>
+        <h3>Warum kleben Kletten?</h3>
+        <p>Die Mitfahr-Profis der Natur.</p>
+      </a>
+
+      <a class="kachel" href="interaktiv/blumen-nachts.html">
+        <div class="icon" aria-hidden="true">
+          <!-- Blüte mit Mond: Nachtschluss -->
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 21c-3 0-5-2-5-5 0-3 2.5-5 5-9 2.5 4 5 6 5 9 0 3-2 5-5 5z"/>
+            <path d="M12 12v9"/>
+            <path d="M19 4.5a2.5 2.5 0 1 0 .8 4.4 3 3 0 0 1-.8-4.4z"/>
+          </svg>
+        </div>
+        <h3>Warum schließen Blumen nachts?</h3>
+        <p>Kleine Blüten – große Strategie.</p>
+      </a>
+
+      <a class="kachel" href="interaktiv/sonnenblumen.html">
+        <div class="icon" aria-hidden="true">
+          <!-- Sonne mit Strahlen -->
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="4"/>
+            <path d="M12 2v3 M12 19v3 M2 12h3 M19 12h3 M4.9 4.9l2.1 2.1 M17 17l2.1 2.1 M19.1 4.9 17 7 M7 17l-2.1 2.1"/>
+          </svg>
+        </div>
+        <h3>Warum drehen Sonnenblumen?</h3>
+        <p>Die Sonnen-Tracker der Natur.</p>
+      </a>
+
+      <a class="kachel" href="interaktiv/schaumzikaden.html">
+        <div class="icon" aria-hidden="true">
+          <!-- Tropfen/Regen: „Regen" unter Weiden -->
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M5 4c4 0 7 2.5 7 7"/>
+            <path d="M19 4c-4 0-7 2.5-7 7"/>
+            <path d="M12 11v3"/>
+            <path d="M8 17c0 1.1-.9 2-2 2s-2-.9-2-2c0-1.2 2-3 2-3s2 1.8 2 3z"/>
+            <path d="M14 19c0 .8-.7 1.5-1.5 1.5S11 19.8 11 19c0-.9 1.5-2.3 1.5-2.3s1.5 1.4 1.5 2.3z"/>
+            <path d="M20 17c0 1.1-.9 2-2 2s-2-.9-2-2c0-1.2 2-3 2-3s2 1.8 2 3z"/>
+          </svg>
+        </div>
+        <h3>Warum „regnet" es unter Weiden?</h3>
+        <p>Die heimlichen Regenmacher.</p>
+      </a>
+
+      <a class="kachel" href="interaktiv/pflanzen-energie.html">
+        <div class="icon" aria-hidden="true">
+          <!-- Blatt mit Energie-Funke -->
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M5 18c-1-7 4-12 14-13 1 9-4 14-12 13.5"/>
+            <path d="M7 19c2-5 5-7 9-8.5"/>
+            <path d="M13 6.5l-1.6 2.4h2.2L12 11.6"/>
+          </svg>
+        </div>
+        <h3>Pflanzen &amp; Energie</h3>
+        <p>Wie Pflanzen essen und atmen.</p>
       </a>
 
     </div>
