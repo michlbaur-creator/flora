@@ -350,6 +350,74 @@
   .np-trenner h2{margin:10px 0 4px;color:#2F4F3E;font-size:1.15rem;font-weight:bold;letter-spacing:0.02em;}
   .np-trenner p{margin:0;color:#6b5340;font-style:italic;font-size:0.95rem;line-height:1.45;}
 
+  /* ── Lückentext-Quiz ── */
+  #lt-app {
+    max-width: 560px;
+    margin: 18px auto 16px;
+    font-family: Georgia, serif;
+    color: #2c2c2c;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 2px 16px rgba(0,0,0,0.10);
+    padding: 18px 22px 22px;
+  }
+  #lt-app, #lt-app * { box-sizing: border-box; }
+  #lt-app h2 {
+    margin: 0 0 6px;
+    font-size: 1.15rem;
+    color: #2F4F3E;
+    font-weight: bold;
+    font-family: Georgia, serif;
+  }
+  #lt-app .lt-hinweis { margin: 0 0 14px; color: #6b5340; font-style: italic; font-size: 0.9rem; line-height: 1.5; }
+  #lt-app .lt-hinweis strong { color: #a3291a; font-style: normal; }
+  #lt-app .lt-gruppe { margin-bottom: 14px; }
+  #lt-app .lt-gruppe h3 {
+    margin: 0 0 6px; font-size: 1rem; color: #2F4F3E; font-weight: bold;
+    border-bottom: 1px solid #ece4d6; padding-bottom: 3px;
+  }
+  #lt-app .lt-satz { margin: 0 0 10px; line-height: 2.1; font-size: 0.98rem; color: #2c2c2c; }
+  #lt-app .lt-slot {
+    display: inline-block; min-width: 96px; padding: 1px 9px; margin: 0 2px;
+    border-bottom: 2px dashed #b9a98c; text-align: center; color: #2F4F3E;
+    font-weight: bold; cursor: pointer; border-radius: 5px 5px 0 0; line-height: 1.4;
+  }
+  #lt-app .lt-slot.empty { color: #c3b9a6; font-weight: normal; }
+  #lt-app .lt-slot.sel { background: #eef4ee; border-bottom-color: #2F4F3E; }
+  #lt-app .lt-slot.correct { background: #e3f3e3; border-bottom: 2px solid #3A7D44; color: #256029; cursor: default; }
+  #lt-app .lt-slot.wrong { background: #fbe6e6; border-bottom: 2px solid #b3402f; color: #a3291a; cursor: default; }
+  #lt-app .lt-bank {
+    display: flex; flex-wrap: wrap; gap: 8px; justify-content: center;
+    margin: 16px 0 8px; padding: 14px 10px; background: #f4f1eb; border-radius: 10px;
+  }
+  #lt-app .lt-word {
+    font-family: Georgia, serif; font-size: 0.95rem; font-weight: bold;
+    padding: 8px 15px; border-radius: 18px; background: #fff;
+    border: 1.5px solid #2F4F3E; color: #2F4F3E; cursor: pointer;
+    transition: background 0.14s, transform 0.1s;
+  }
+  #lt-app .lt-word:hover { background: #f0f6f1; }
+  #lt-app .lt-word:active { transform: scale(0.96); }
+  #lt-app .lt-word.used { display: none; }
+  #lt-app .lt-actions { display: flex; gap: 10px; justify-content: center; margin-top: 14px; }
+  #lt-app .lt-btn {
+    font-family: Georgia, serif; font-size: 0.95rem; font-weight: bold;
+    padding: 9px 22px; border-radius: 22px; border: none; cursor: pointer;
+    background: #2F4F3E; color: #fff; transition: background 0.14s, transform 0.1s;
+  }
+  #lt-app .lt-btn:hover { background: #3f6b52; }
+  #lt-app .lt-btn:active { transform: scale(0.97); }
+  #lt-app .lt-btn.sekundaer { background: #fff; color: #2F4F3E; border: 1.5px solid #2F4F3E; }
+  #lt-app .lt-ergebnis { text-align: center; font-weight: bold; color: #2F4F3E; margin-top: 13px; min-height: 1.2em; font-size: 1.05rem; line-height: 1.4; }
+  #lt-app .lt-ergebnis.lt-warnung { color: #a3291a; }
+  #lt-app .lt-ergebnis.lt-super { color: #256029; }
+  @media (max-width: 520px) {
+    #lt-app { margin: 14px 6px 12px; padding: 14px 16px 16px; }
+    #lt-app .lt-satz { font-size: 0.95rem; line-height: 2.0; }
+    #lt-app .lt-slot { min-width: 82px; }
+    #lt-app .lt-word { font-size: 0.9rem; padding: 7px 13px; }
+  }
+
 </style>
 </head>
 <body>
@@ -507,6 +575,19 @@
   </div>
 
 </div>
+
+<!-- Lückentext-Quiz: Pflanzenteile und ihre Funktionen -->
+<section id="lt-app">
+  <h2>Teste dich: Bauteile und ihre Aufgaben</h2>
+  <p class="lt-hinweis">Tippe ein Wort aus der Wortbank an – es springt in die nächste Lücke. Eine gefüllte Lücke kannst du durch Antippen wieder leeren. <strong>Achtung: Zwei Wörter passen in keine Lücke!</strong></p>
+  <div class="lt-saetze"></div>
+  <div class="lt-bank"></div>
+  <div class="lt-actions">
+    <button type="button" class="lt-btn" id="lt-pruefen">Prüfen</button>
+    <button type="button" class="lt-btn sekundaer" id="lt-nochmal">Nochmal</button>
+  </div>
+  <div class="lt-ergebnis"></div>
+</section>
 
 <script>
 
@@ -760,6 +841,141 @@
   }
 })();
 
+</script>
+
+<script>
+/* Lückentext-Quiz: Pflanzenteile + Funktionen (mit Ablenkern) */
+(function () {
+  const groups = [
+    { titel: "Aufbau und Aufgabe", saetze: [
+      ["Die ", "Wurzel", " verankert die Pflanze im Boden und nimmt Wasser und Mineralien auf."],
+      ["Der ", "Stängel", " hält die Pflanze aufrecht und transportiert Wasser und Nährstoffe."],
+      ["Im ", "Blatt", " entsteht durch Photosynthese aus Licht, Wasser und CO₂ der Zucker."],
+      ["Die ", "Blüte", " lockt mit Farbe und Duft Bestäuber an – sie dient der Fortpflanzung."]
+    ]},
+    { titel: "Genauer hingeschaut", saetze: [
+      ["Am Blatt wird als Nebenprodukt ", "Sauerstoff", " frei, den wir zum Atmen brauchen."],
+      ["Das Staubblatt ist das männliche Organ der Blüte und bildet den ", "Pollen", "."],
+      ["Die klebrige ", "Narbe", " fängt den Pollen auf, den Bestäuber vorbeibringen."],
+      ["Im ", "Fruchtknoten", " liegen die Samenanlagen – aus ihm wird später die Frucht."]
+    ]}
+  ];
+  const distraktoren = ["Zucker", "Kelchblatt"];
+
+  const app        = document.getElementById('lt-app');
+  if (!app) return;
+  const saetzeWrap = app.querySelector('.lt-saetze');
+  const bankWrap   = app.querySelector('.lt-bank');
+  const pruefBtn   = app.querySelector('#lt-pruefen');
+  const nochBtn    = app.querySelector('#lt-nochmal');
+  const ergebnis   = app.querySelector('.lt-ergebnis');
+
+  let slots = [], words = [], selected = null, checked = false;
+
+  function shuffle(a) {
+    for (let i = a.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [a[i], a[j]] = [a[j], a[i]];
+    }
+    return a;
+  }
+
+  function build() {
+    saetzeWrap.innerHTML = ''; bankWrap.innerHTML = '';
+    slots = []; words = []; selected = null; checked = false;
+    ergebnis.textContent = ''; ergebnis.className = 'lt-ergebnis';
+    const answers = [];
+
+    groups.forEach(g => {
+      const gd = document.createElement('div'); gd.className = 'lt-gruppe';
+      const h = document.createElement('h3'); h.textContent = g.titel; gd.appendChild(h);
+      g.saetze.forEach(parts => {
+        const p = document.createElement('div'); p.className = 'lt-satz';
+        parts.forEach((part, i) => {
+          if (i % 2 === 1) {
+            const slot = document.createElement('span');
+            slot.className = 'lt-slot empty'; slot.textContent = '?';
+            const so = { el: slot, answer: part, filled: null };
+            slot.addEventListener('click', () => onSlot(so));
+            slots.push(so); answers.push(part);
+            p.appendChild(slot);
+          } else if (part) {
+            p.appendChild(document.createTextNode(part));
+          }
+        });
+        gd.appendChild(p);
+      });
+      saetzeWrap.appendChild(gd);
+    });
+
+    shuffle(answers.concat(distraktoren)).forEach(text => {
+      const w = document.createElement('button');
+      w.type = 'button'; w.className = 'lt-word'; w.textContent = text;
+      const wo = { el: w, text: text, used: false };
+      w.addEventListener('click', () => onWord(wo));
+      words.push(wo); bankWrap.appendChild(w);
+    });
+    sendH();
+  }
+
+  function setSelected(so) {
+    slots.forEach(s => s.el.classList.remove('sel'));
+    selected = so;
+    if (so) so.el.classList.add('sel');
+  }
+  function firstEmpty() { return slots.find(s => !s.filled) || null; }
+
+  function onSlot(so) {
+    if (checked) return;
+    if (so.filled) {
+      so.filled.used = false; so.filled.el.classList.remove('used'); so.filled = null;
+      so.el.textContent = '?'; so.el.classList.add('empty');
+    }
+    setSelected(so);
+  }
+
+  function onWord(wo) {
+    if (checked || wo.used) return;
+    const target = (selected && !selected.filled) ? selected : firstEmpty();
+    if (!target) return;
+    target.filled = wo; target.el.textContent = wo.text; target.el.classList.remove('empty');
+    wo.used = true; wo.el.classList.add('used');
+    setSelected(firstEmpty());
+  }
+
+  function pruefen() {
+    if (checked) return;
+    if (slots.some(s => !s.filled)) {
+      ergebnis.className = 'lt-ergebnis lt-warnung';
+      ergebnis.textContent = 'Bitte fülle erst alle Lücken.';
+      return;
+    }
+    let richtig = 0;
+    slots.forEach(s => {
+      if (s.filled.text === s.answer) { s.el.classList.add('correct'); richtig++; }
+      else { s.el.classList.add('wrong'); }
+    });
+    checked = true; setSelected(null);
+    if (richtig === slots.length) {
+      ergebnis.className = 'lt-ergebnis lt-super';
+      ergebnis.textContent = 'Perfekt – alle ' + slots.length + ' richtig! 🌿';
+    } else {
+      ergebnis.className = 'lt-ergebnis';
+      ergebnis.textContent = richtig + ' von ' + slots.length + ' richtig. Tippe „Nochmal“ und probiere die roten Lücken erneut.';
+    }
+    sendH();
+  }
+
+  function sendH() {
+    try { window.parent.postMessage({ quizHeight: document.documentElement.scrollHeight + 20 }, '*'); } catch (_) {}
+  }
+
+  pruefBtn.addEventListener('click', pruefen);
+  nochBtn.addEventListener('click', build);
+  window.addEventListener('load', sendH);
+  window.addEventListener('resize', sendH);
+  build();
+})();
 </script>
 </body>
 </html>
