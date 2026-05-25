@@ -640,11 +640,29 @@
   })();
 </script>
 
-<!-- Service-Worker registrieren -->
+<!-- Service-Worker registrieren + automatische Aktualisierung -->
 <script>
   if ('serviceWorker' in navigator) {
+    let refreshing = false;
+    // War die Seite schon von einem Service-Worker kontrolliert?
+    // (Bei der allerersten Installation NICHT neu laden.)
+    const hatteController = !!navigator.serviceWorker.controller;
+    navigator.serviceWorker.addEventListener('controllerchange', () => {
+      if (refreshing || !hatteController) return;
+      refreshing = true;
+      window.location.reload();
+    });
     window.addEventListener('load', () => {
-      navigator.serviceWorker.register('sw.js').catch(err => {
+      navigator.serviceWorker.register('sw.js').then((reg) => {
+        // sofort auf eine neue Version prüfen
+        reg.update();
+        // jedes Mal prüfen, wenn die App wieder in den Vordergrund kommt
+        document.addEventListener('visibilitychange', () => {
+          if (document.visibilityState === 'visible') reg.update();
+        });
+        // zusätzlich stündlich prüfen, falls die App lange offen bleibt
+        setInterval(() => reg.update(), 60 * 60 * 1000);
+      }).catch((err) => {
         console.log('Service-Worker konnte nicht registriert werden:', err);
       });
     });

@@ -2672,5 +2672,29 @@
     <p class="lizenz">© 2026 Michael Baur</p>
   </div>
 </footer>
+
+<!-- Service-Worker registrieren + automatische Aktualisierung -->
+<script>
+  if ('serviceWorker' in navigator) {
+    let refreshing = false;
+    const hatteController = !!navigator.serviceWorker.controller;
+    navigator.serviceWorker.addEventListener('controllerchange', () => {
+      if (refreshing || !hatteController) return;
+      refreshing = true;
+      window.location.reload();
+    });
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('sw.js').then((reg) => {
+        reg.update();
+        document.addEventListener('visibilitychange', () => {
+          if (document.visibilityState === 'visible') reg.update();
+        });
+        setInterval(() => reg.update(), 60 * 60 * 1000);
+      }).catch((err) => {
+        console.log('Service-Worker konnte nicht registriert werden:', err);
+      });
+    });
+  }
+</script>
 </body>
 </html>
