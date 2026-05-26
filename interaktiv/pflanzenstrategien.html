@@ -9,7 +9,7 @@
 <link rel="apple-touch-icon" href="../assets/apple-touch-icon.png">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="Flora Mibaso">
-<title>Vermehrungsstrategien</title>
+<title>Strategien</title>
 <style>
   #ps-app, #ps-app * { box-sizing: border-box; }
   #ps-app {
@@ -191,7 +191,7 @@
 <div id="ps-app">
 
   <div class="intro">
-    <h1>Vermehrungsstrategien</h1>
+    <h1>Strategien</h1>
     <p>Wie Pflanzen Bestäuber anlocken und ihre Samen auf Reisen schicken.</p>
   </div>
 
@@ -239,7 +239,7 @@
 
   <!-- Lückentext-Quiz -->
   <section class="karte" id="lt-app">
-    <h2>Teste dich: Setze die richtigen Begriffe ein!</h2>
+    <h2>Setze die richtigen Begriffe ein!</h2>
     <p class="lt-hinweis">Tippe ein Wort aus der Wortbank an – es springt in die nächste Lücke. Eine gefüllte Lücke kannst du durch Antippen wieder leeren. Zum Schluss auf „Prüfen“ tippen.</p>
     <div class="lt-saetze"></div>
     <div class="lt-bank"></div>
@@ -364,8 +364,20 @@
     });
     checked = true; setSelected(null);
     if (richtig === slots.length) {
+      const rewards = [
+        'Glanzleistung – die Pflanzen verbeugen sich vor dir! 🌿',
+        'Botanik-Profi am Werk! Selbst der Löwenzahn nickt anerkennend.',
+        'Volltreffer! Da staunen sogar die Schmetterlinge.',
+        'Alle Lücken sitzen – du hast den grünen Daumen für Quizfragen!',
+        'Perfekt! Selbst Goethe hätte das nicht besser gewusst.',
+        'Glatte hundert Prozent – die Wiese applaudiert! 🌾',
+        'Wunderbar! Du bist eine wandelnde Flora.',
+        'Hat alles geklappt – ein echtes Blütenwunder! 🌸',
+        'Sauber! Die Wurzel hängt vor Staunen aus dem Boden.',
+        'Volle Punktzahl – jetzt darf Photosynthese-Pause sein.'
+      ];
       ergebnis.className = 'lt-ergebnis lt-super';
-      ergebnis.textContent = 'Perfekt – alle ' + slots.length + ' richtig! 🌿';
+      ergebnis.textContent = rewards[Math.floor(Math.random() * rewards.length)];
     } else {
       ergebnis.className = 'lt-ergebnis';
       ergebnis.textContent = richtig + ' von ' + slots.length + ' richtig. Tippe „Nochmal“ und probiere die roten Lücken erneut.';
