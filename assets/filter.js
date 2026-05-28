@@ -229,6 +229,25 @@
       famSuche.addEventListener('input', e => filterFamilieListe(e.target.value));
     }
 
+    // Erlaubt direkte Sprünge per URL, z. B. aus der Systematik:
+    // bestimmen.html?familie=Korbblütler  → setzt den passenden Familien-Filter
+    try {
+      const params = new URLSearchParams(window.location.search);
+      const famParam = params.get('familie');
+      if (famParam) {
+        const ziel = document.querySelector(
+          `.chip.familie[data-familie="${famParam.replace(/"/g, '\\"')}"]`
+        );
+        if (ziel && !ziel.classList.contains('aktiv')) {
+          ziel.click();
+          // Filter-Bereich aufklappen + Familien-Box sichtbar machen, falls möglich
+          const det = ziel.closest('details');
+          if (det) det.open = true;
+          ziel.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+      }
+    } catch (e) { /* ignorieren */ }
+
     refresh();
   });
 })();
