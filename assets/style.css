@@ -666,3 +666,30 @@ footer.bottom .lizenz {
 @media (max-width: 460px) {
   .farbe-grid { grid-template-columns: repeat(3, 1fr); }
 }
+
+/* --- Familien-Schild unter dem Tafelbild (führt in die Systematik) --- */
+.familien-schild {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: #e8edf1;
+  border: 1px solid #cdd6dd;
+  border-radius: 10px;
+  padding: 9px 14px;
+  margin: 10px 0 6px;
+  font-size: 0.92rem;
+  color: #3f4d57;
+  text-decoration: none;
+  transition: background .12s ease, border-color .12s ease;
+}
+.familien-schild:hover {
+  background: #d9e1e8;
+  border-color: #5d6f7b;
+}
+.familien-schild .label   { color: #6b7a83; }
+.familien-schild .familie { color: #3f4d57; font-weight: 600; flex: 1; }
+.familien-schild .im-baum {
+  color: #5d6f7b;
+  font-size: 0.86rem;
+  white-space: nowrap;
+}
