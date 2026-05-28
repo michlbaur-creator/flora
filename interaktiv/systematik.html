@@ -182,15 +182,19 @@
   .sys-kachel .label{
     color:var(--ordnen-tief);
     font-weight:600;
-    font-size:1rem;
+    font-size:.86rem;
     line-height:1.2;
+    overflow-wrap:anywhere;
+    hyphens:auto;
+    -webkit-hyphens:auto;
   }
   .sys-kachel .latein{
     color:#8b97a0;
     font-style:italic;
-    font-size:.82rem;
+    font-size:.74rem;
     margin-top:2px;
     line-height:1.15;
+    overflow-wrap:anywhere;
   }
 
   /* Tool-Link auf Familien-Ebene */
@@ -218,8 +222,23 @@
 
   @media (max-width:380px){
     .sys-kacheln{ grid-template-columns:repeat(2, 1fr); }
-    .sys-kachel .foto{ width:70px; height:70px; }
+    .sys-kachel{ padding:12px 10px 10px; }
+    .sys-kachel .foto{ width:64px; height:64px; }
+    .sys-kachel .label{ font-size:.82rem; }
+    .sys-kachel .latein{ font-size:.70rem; }
   }
+
+  /* Zurück-zur-Startseite-Link */
+  .sys-home{
+    display:inline-flex;
+    align-items:center;
+    gap:4px;
+    color:var(--braun-mittel, #6b5340);
+    text-decoration:none;
+    font-size:.92rem;
+    margin:8px 0 6px;
+  }
+  .sys-home:hover{ color:var(--braun-dunkel, #3a2a1b); }
 </style>
 </head>
 <body>
@@ -233,6 +252,7 @@
 </header>
 
 <main id="sys-root">
+  <a class="sys-home" href="../index.html">‹ Zurück zur Startseite</a>
   <h2 class="sys-titel">Pflanzen ordnen</h2>
   <p class="sys-untertitel">Eine kleine Systematik zum Durchklicken.</p>
 
