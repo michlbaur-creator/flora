@@ -313,6 +313,97 @@
       padding-top:max(42px, calc(env(safe-area-inset-top) + 10px));
     }
   }
+
+  /* ===== Erste-Hilfe-Tour ===== */
+  .tour-overlay{
+    position:fixed; inset:0;
+    background:rgba(31,42,50,.62);
+    display:none;
+    z-index:1000;
+    align-items:center;
+    justify-content:center;
+    padding:20px;
+    animation:tour-fade .25s ease;
+  }
+  .tour-overlay.aktiv{ display:flex; }
+  @keyframes tour-fade{ from{opacity:0} to{opacity:1} }
+
+  .tour-bubble{
+    background:#fff;
+    border-radius:14px;
+    padding:18px 18px 14px;
+    max-width:360px;
+    width:100%;
+    box-shadow:0 12px 32px rgba(0,0,0,.28);
+    border:1px solid #cdd6dd;
+  }
+  .tour-zaehler{
+    color:#6b7a83;
+    font-size:.82rem;
+    letter-spacing:.04em;
+    margin-bottom:6px;
+  }
+  .tour-titel{
+    font-family:Georgia, serif;
+    color:var(--ordnen,#5d6f7b);
+    font-size:1.25rem;
+    margin:0 0 6px;
+    line-height:1.2;
+  }
+  .tour-text{
+    color:#3a3a3a;
+    line-height:1.5;
+    margin:0 0 14px;
+    font-size:1rem;
+  }
+  .tour-buttons{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:10px;
+  }
+  .tour-skip{
+    background:none; border:none;
+    color:#6b7a83; cursor:pointer;
+    font:inherit; font-size:.9rem;
+    padding:8px 4px;
+  }
+  .tour-skip:hover{ color:#3f4d57; }
+  .tour-weiter{
+    background:var(--ordnen,#5d6f7b);
+    color:#fff;
+    border:none;
+    border-radius:8px;
+    padding:10px 20px;
+    font:inherit; font-weight:600;
+    cursor:pointer;
+    box-shadow:0 2px 6px rgba(93,111,123,.3);
+  }
+  .tour-weiter:hover{ background:var(--ordnen,#5d6f7b); filter:brightness(.92); }
+
+  /* Schwebender ?-Knopf — jederzeit Tour neu aufrufen */
+  .tour-help{
+    position:fixed;
+    bottom:max(16px, env(safe-area-inset-bottom));
+    right:max(16px, env(safe-area-inset-right));
+    width:44px; height:44px;
+    border-radius:50%;
+    background:#fff;
+    color:var(--ordnen,#5d6f7b);
+    border:1px solid #cdd6dd;
+    font-family:Georgia, serif;
+    font-size:1.35rem;
+    font-weight:700;
+    cursor:pointer;
+    box-shadow:0 4px 14px rgba(63,77,87,.18);
+    z-index:100;
+    display:flex; align-items:center; justify-content:center;
+    transition:transform .12s ease, background .12s ease;
+  }
+  .tour-help:hover{
+    background:var(--ordnen,#5d6f7b); color:#fff;
+    transform:translateY(-2px);
+  }
 </style>
 </head>
 <body>
@@ -721,6 +812,75 @@
       });
     });
   }
+</script>
+
+<!-- Tour-Overlay + schwebender Hilfe-Knopf -->
+<div class="tour-overlay" id="tour-overlay" role="dialog" aria-modal="true" aria-labelledby="tour-titel">
+  <div class="tour-bubble">
+    <div class="tour-zaehler" id="tour-zaehler"></div>
+    <h3 class="tour-titel" id="tour-titel"></h3>
+    <p class="tour-text" id="tour-text"></p>
+    <div class="tour-buttons">
+      <button class="tour-skip" id="tour-skip" type="button">Überspringen</button>
+      <button class="tour-weiter" id="tour-weiter" type="button">Weiter ›</button>
+    </div>
+  </div>
+</div>
+<button class="tour-help" id="tour-help" type="button" aria-label="Kurze Tour anzeigen" title="Kurze Tour anzeigen">?</button>
+
+<script>
+(function(){
+  const TOUR = [
+    { titel: 'Willkommen bei Flora Mibaso!',
+      text: 'Lass mich dir kurz zeigen, was du hier alles findest.' },
+    { titel: 'Pflanzen entdecken',
+      text: 'Über 150 heimische Arten mit Foto, Tafel und Steckbrief.' },
+    { titel: 'Familien ordnen',
+      text: 'Stammbaum durchklicken und im Quiz Verwandte finden.' },
+    { titel: 'Knobeln, Verstehen, Staunen',
+      text: 'Quizze, Lückentexte und interaktive Erklärungen.' },
+    { titel: 'Tipp: als App speichern',
+      text: 'Über das Teilen-Symbol → „Zum Home-Bildschirm“ — und Flora liegt wie eine App auf deinem Handy.' }
+  ];
+
+  const overlay  = document.getElementById('tour-overlay');
+  const elZ      = document.getElementById('tour-zaehler');
+  const elT      = document.getElementById('tour-titel');
+  const elX      = document.getElementById('tour-text');
+  const elNext   = document.getElementById('tour-weiter');
+  const elSkip   = document.getElementById('tour-skip');
+  const elHelp   = document.getElementById('tour-help');
+  let idx = 0;
+
+  function zeige(i){
+    idx = i;
+    const s = TOUR[i];
+    elZ.textContent = (i+1) + ' / ' + TOUR.length;
+    elT.textContent = s.titel;
+    elX.textContent = s.text;
+    elNext.textContent = (i === TOUR.length - 1) ? 'Los geht’s ›' : 'Weiter ›';
+    elSkip.style.visibility = (i === TOUR.length - 1) ? 'hidden' : 'visible';
+  }
+  function starte(){ zeige(0); overlay.classList.add('aktiv'); }
+  function beende(){
+    overlay.classList.remove('aktiv');
+    try { localStorage.setItem('flora-tour-gesehen', '1'); } catch(e){}
+  }
+
+  elNext.addEventListener('click', () => {
+    if (idx < TOUR.length - 1) zeige(idx + 1); else beende();
+  });
+  elSkip.addEventListener('click', beende);
+  overlay.addEventListener('click', (e) => { if (e.target === overlay) beende(); });
+  elHelp.addEventListener('click', starte);
+
+  // Beim Erstbesuch automatisch zeigen
+  try {
+    if (!localStorage.getItem('flora-tour-gesehen')) {
+      setTimeout(starte, 600);
+    }
+  } catch(e) {}
+})();
 </script>
 
 </body>
