@@ -168,6 +168,43 @@
     background:linear-gradient(to bottom, transparent 0%, var(--beige-hell, #f8f3e7) 25%);
     z-index:5;
   }
+
+  /* Sieger-Ehrung */
+  .fq-ergebnis{
+    margin:18px 0 0;
+    padding:22px 18px;
+    border-radius:14px;
+    background:#fff;
+    border:1px solid var(--ordnen-rand);
+    box-shadow:0 1px 4px rgba(63,77,87,.05);
+    text-align:center;
+    display:none;
+  }
+  .fq-ergebnis.aktiv{ display:block; }
+  .fq-ergebnis .score{
+    font-family:Georgia, serif;
+    font-size:2.6rem;
+    font-weight:700;
+    color:var(--ordnen-tief);
+    line-height:1;
+    margin:0 0 10px;
+  }
+  .fq-ergebnis h3{
+    font-family:Georgia, serif;
+    color:var(--ordnen-tief);
+    font-size:1.2rem;
+    margin:0 0 8px;
+  }
+  .fq-ergebnis p{
+    margin:6px 0 0;
+    color:#3a3a3a;
+    line-height:1.5;
+    font-size:1rem;
+  }
+  .fq-ergebnis a{
+    color:var(--ordnen);
+    text-decoration:underline;
+  }
   .fq-btn{
     background:var(--ordnen);
     color:#fff;
@@ -202,6 +239,12 @@
   <div class="fq-aufloesung" id="fq-aufloesung">
     <h3 id="fq-aufloesung-titel"></h3>
     <p id="fq-aufloesung-text"></p>
+  </div>
+
+  <div class="fq-ergebnis" id="fq-ergebnis">
+    <div class="score" id="fq-score"></div>
+    <h3 id="fq-ergebnis-titel"></h3>
+    <p id="fq-ergebnis-text"></p>
   </div>
 
   <div class="fq-buttons">
@@ -260,11 +303,18 @@ const FAMILIEN = {
 /* ---------- Spiel-Logik ---------- */
 
 const elKarten   = document.getElementById('fq-karten');
+const elTitel    = document.querySelector('.fq-titel');
 const elAufl     = document.getElementById('fq-aufloesung');
 const elAuflTit  = document.getElementById('fq-aufloesung-titel');
 const elAuflTxt  = document.getElementById('fq-aufloesung-text');
+const elErg      = document.getElementById('fq-ergebnis');
+const elScore    = document.getElementById('fq-score');
+const elErgTit   = document.getElementById('fq-ergebnis-titel');
+const elErgTxt   = document.getElementById('fq-ergebnis-text');
 const elZaehler  = document.getElementById('fq-zaehler');
 const elNeu      = document.getElementById('fq-neu');
+
+const MAX_RUNDEN = 10;
 
 // Familien mit mindestens 3 Arten → diese sind als Mehrheitsfamilie geeignet
 const FAM_COUNT = {};
@@ -316,7 +366,7 @@ function neueRunde(){
 
   elAufl.classList.remove('aktiv');
   elNeu.disabled = true;
-  elZaehler.textContent = `Runde ${runde} · ${treffer} Treffer`;
+  elZaehler.textContent = `Runde ${runde} / ${MAX_RUNDEN} · ${treffer} Treffer`;
 }
 
 function tippe(idx){
@@ -348,14 +398,67 @@ function tippe(idx){
     `<b>${aussenArt.de}</b> (Familie ${aussenArt.fam}).<br><br>${famText}`;
   elAufl.classList.add('aktiv');
 
+  // Letzte Runde? Dann Button-Beschriftung umstellen
+  if (runde >= MAX_RUNDEN) {
+    elNeu.textContent = 'Auswertung ›';
+  }
   runde++;
   elNeu.disabled = false;
-  elZaehler.textContent = `Runde ${runde-1} · ${treffer} Treffer`;
+  elZaehler.textContent = `Runde ${runde-1} / ${MAX_RUNDEN} · ${treffer} Treffer`;
+}
+
+function zeigeErgebnis(){
+  // Spielfeld ausblenden, Auswertung in den Vordergrund
+  elKarten.style.display = 'none';
+  elAufl.classList.remove('aktiv');
+  elTitel.style.display  = 'none';
+
+  elScore.textContent = `${treffer} / ${MAX_RUNDEN}`;
+  let titel, text;
+  if (treffer === 10){
+    titel = '🏆 Alle zehn richtig!';
+    text  = 'Du sortierst die Pflanzen wie ein alter Botaniker — Linné würde anerkennend nicken.';
+  } else if (treffer >= 8){
+    titel = '🌟 Stark!';
+    text  = 'Die typischen Familien-Merkmale sitzen bestens.';
+  } else if (treffer >= 6){
+    titel = '🌿 Gut gemacht!';
+    text  = 'Solider Familien-Blick — mit ein bisschen Übung wirst du zum Profi.';
+  } else if (treffer >= 4){
+    titel = 'Mittelfeld.';
+    text  = 'Schau dir die <a href="../interaktiv/systematik.html">Systematik</a> nochmal an, dann fällt’s leichter.';
+  } else {
+    titel = 'Aller Anfang …';
+    text  = 'Familien zu lesen will gelernt sein. Der <a href="../interaktiv/systematik.html">Stammbaum</a> hilft beim nächsten Anlauf!';
+  }
+  elErgTit.textContent = titel;
+  elErgTxt.innerHTML   = text;
+  elErg.classList.add('aktiv');
+  elNeu.textContent = 'Neues Spiel ›';
+  elZaehler.textContent = `Endstand · ${treffer} / ${MAX_RUNDEN}`;
+}
+
+function neuesSpiel(){
+  runde = 1;
+  treffer = 0;
+  elErg.classList.remove('aktiv');
+  elKarten.style.display = '';
+  elTitel.style.display  = '';
+  elNeu.textContent = 'Nächste Runde ›';
+  neueRunde();
 }
 
 elNeu.addEventListener('click', () => {
-  elNeu.disabled = true;
-  neueRunde();
+  if (elErg.classList.contains('aktiv')) {
+    // Auswertung sichtbar → Neues Spiel
+    neuesSpiel();
+  } else if (runde > MAX_RUNDEN) {
+    // Letzte Runde gespielt, jetzt Auswertung anzeigen
+    zeigeErgebnis();
+  } else {
+    elNeu.disabled = true;
+    neueRunde();
+  }
   window.scrollTo({ top: 0, behavior: 'smooth' });
 });
 
