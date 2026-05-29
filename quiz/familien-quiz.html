@@ -29,16 +29,22 @@
   #fq-root{
     max-width:680px;
     margin:0 auto;
-    padding:18px 14px 60px;
+    padding:max(10px, env(safe-area-inset-top)) 12px 40px;
   }
 
+  .fq-kopfzeile{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:10px;
+    margin:0 0 6px;
+  }
   .fq-home{
     display:inline-flex;
     align-items:center;
     color:var(--braun-mittel, #6b5340);
     text-decoration:none;
-    font-size:.92rem;
-    margin:8px 0 6px;
+    font-size:.9rem;
   }
   .fq-home:hover{ color:var(--braun-dunkel, #3a2a1b); }
 
@@ -46,22 +52,15 @@
     font-family:Georgia, serif;
     text-align:center;
     color:var(--ordnen-tief);
-    margin:6px 0 4px;
-    font-size:1.55rem;
-    line-height:1.2;
-  }
-  .fq-frage{
-    text-align:center;
-    color:#3a3a3a;
-    margin:0 8px 14px;
-    font-size:1.02rem;
-    line-height:1.4;
+    margin:0 0 10px;
+    font-size:1.1rem;
+    font-weight:600;
+    line-height:1.25;
   }
   .fq-zaehler{
-    text-align:center;
     color:#6b7a83;
-    font-size:.88rem;
-    margin:0 0 14px;
+    font-size:.85rem;
+    white-space:nowrap;
   }
 
   /* 2×2 Karten-Grid */
@@ -130,8 +129,8 @@
 
   /* Auflösungs-Box */
   .fq-aufloesung{
-    margin:18px 0 0;
-    padding:14px 16px;
+    margin:12px 0 0;
+    padding:12px 14px;
     border-radius:12px;
     background:#fff;
     border:1px solid var(--ordnen-rand);
@@ -162,7 +161,7 @@
     display:flex;
     gap:10px;
     justify-content:center;
-    margin-top:14px;
+    margin-top:10px;
   }
   .fq-btn{
     background:var(--ordnen);
@@ -185,20 +184,13 @@
 </style>
 </head>
 <body>
-<header class="top">
-  <div class="wrap top-inner">
-    <div class="titelblock">
-      <h1><a href="../index.html">Flora Mibaso</a></h1>
-      <div class="untertitel">Michael Baurs digitale Naturwerkstatt für die Hosentasche.</div>
-    </div>
-  </div>
-</header>
 
 <main id="fq-root">
-  <a class="fq-home" href="../index.html">‹ Zurück zur Startseite</a>
-  <h2 class="fq-titel">Verwandte finden</h2>
-  <p class="fq-frage">Drei dieser Pflanzen gehören zur gleichen Familie — eine fällt aus dem Rahmen. Welche?</p>
-  <div class="fq-zaehler" id="fq-zaehler">Runde 1 · 0 Treffer</div>
+  <div class="fq-kopfzeile">
+    <a class="fq-home" href="../index.html">‹ Startseite</a>
+    <div class="fq-zaehler" id="fq-zaehler">Runde 1 · 0 Treffer</div>
+  </div>
+  <h2 class="fq-titel">Welche Pflanze passt nicht in die Familie?</h2>
 
   <div class="fq-karten" id="fq-karten"></div>
 
