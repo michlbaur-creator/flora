@@ -162,6 +162,11 @@
     gap:10px;
     justify-content:center;
     margin-top:10px;
+    position:sticky;
+    bottom:0;
+    padding:10px 0 max(10px, env(safe-area-inset-bottom));
+    background:linear-gradient(to bottom, transparent 0%, var(--beige-hell, #f8f3e7) 25%);
+    z-index:5;
   }
   .fq-btn{
     background:var(--ordnen);
@@ -190,7 +195,7 @@
     <a class="fq-home" href="../index.html">‹ Startseite</a>
     <div class="fq-zaehler" id="fq-zaehler">Runde 1 · 0 Treffer</div>
   </div>
-  <h2 class="fq-titel">Welche Pflanze passt nicht in die Familie?</h2>
+  <h2 class="fq-titel">Welche Pflanze passt nicht?</h2>
 
   <div class="fq-karten" id="fq-karten"></div>
 
