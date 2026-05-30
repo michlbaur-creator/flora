@@ -1,0 +1,229 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#d4633e">
+<link rel="manifest" href="../manifest.webmanifest">
+<link rel="icon" href="../assets/icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="../assets/apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Flora Mibaso">
+<title>Flora Incognita – Pflanzen-App im Überblick</title>
+<link rel="stylesheet" href="../assets/style.css">
+<meta name="description" content="Flora Incognita: wissenschaftliche Pflanzenbestimmungs-App für die heimische Flora. Vor- und Nachteile, Installation für Android und iOS.">
+<style>
+  :root{
+    --foto:#d4633e;
+    --foto-tief:#a64a2c;
+    --foto-bg:#fbe8db;
+    --foto-rand:#ebcab5;
+  }
+  body{ background:var(--beige-hell, #f8f3e7); }
+
+  .app-kopf{
+    text-align:center;
+    padding:6px 0 18px;
+  }
+  .app-logo{
+    width:120px; height:120px;
+    border-radius:22px;
+    box-shadow:0 4px 16px rgba(0,0,0,.12);
+    border:1px solid #e0d8c8;
+    margin:0 0 12px;
+  }
+  .app-kopf h1{
+    margin:0 0 4px;
+    color:var(--foto-tief);
+    font-family:Georgia, serif;
+    font-size:1.6rem;
+    letter-spacing:.01em;
+  }
+  .app-untertitel{
+    margin:0;
+    color:#7a6d5c;
+    font-style:italic;
+    font-size:.98rem;
+  }
+
+  .install-row{
+    display:flex;
+    gap:10px;
+    flex-wrap:wrap;
+    justify-content:center;
+    margin:14px 0 22px;
+  }
+  .install-btn{
+    display:inline-flex;
+    align-items:center;
+    gap:10px;
+    background:#1f1f1f;
+    color:#fff;
+    text-decoration:none;
+    padding:10px 18px;
+    border-radius:10px;
+    font-family:inherit;
+    box-shadow:0 2px 8px rgba(0,0,0,.18);
+    transition:transform .12s ease, background .12s ease;
+  }
+  .install-btn:hover{
+    background:#000;
+    transform:translateY(-1px);
+  }
+  .install-btn svg{ width:24px; height:24px; flex-shrink:0; fill:currentColor; }
+  .install-btn .label{ display:flex; flex-direction:column; line-height:1.1; }
+  .install-btn small{ font-size:.72rem; opacity:.85; }
+  .install-btn strong{ font-size:1rem; font-weight:600; }
+
+  .app-text{
+    background:#fff;
+    border:1px solid var(--foto-rand);
+    border-radius:14px;
+    padding:18px 20px;
+    margin:0 0 16px;
+    line-height:1.55;
+    color:#3a3a3a;
+  }
+  .app-text p{ margin:0 0 10px; }
+  .app-text p:last-child{ margin-bottom:0; }
+  .app-text strong{ color:var(--foto-tief); }
+
+  .vor-nach{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:14px;
+    margin:0 0 16px;
+  }
+  @media (max-width:520px){
+    .vor-nach{ grid-template-columns:1fr; }
+  }
+  .vor-nach .karte{
+    background:#fff;
+    border:1px solid var(--foto-rand);
+    border-radius:14px;
+    padding:14px 16px;
+  }
+  .vor-nach h3{
+    margin:0 0 8px;
+    font-family:Georgia, serif;
+    font-size:1.05rem;
+    color:var(--foto-tief);
+  }
+  .vor-nach .vorteile h3{ color:#3a7a4a; }
+  .vor-nach .nachteile h3{ color:#a84236; }
+  .vor-nach ul{
+    margin:0; padding-left:18px;
+    color:#3a3a3a;
+    line-height:1.5;
+    font-size:.95rem;
+  }
+  .vor-nach li{ margin-bottom:4px; }
+
+  .tipp-box{
+    background:var(--foto-bg);
+    border:1px solid var(--foto-rand);
+    border-radius:12px;
+    padding:12px 16px;
+    margin:18px 0 0;
+    color:#5a3e2a;
+    font-style:italic;
+    line-height:1.5;
+  }
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="wrap top-inner">
+    <div class="titelblock">
+      <h1><a href="../index.html">Flora Mibaso</a></h1>
+      <div class="untertitel">Michael Baurs digitale Naturwerkstatt für die Hosentasche.</div>
+    </div>
+  </div>
+</header>
+
+<main class="wrap-narrow">
+  <a class="back" href="../index.html">‹ Zurück zur Startseite</a>
+
+  <div class="app-kopf">
+    <img class="app-logo" src="../images/external-apps/flora-incognita.png" alt="Flora Incognita Logo">
+    <h1>Flora Incognita</h1>
+    <p class="app-untertitel">Wissenschaftliche Pflanzenbestimmung für die heimische Flora</p>
+  </div>
+
+  <div class="install-row">
+    <a class="install-btn" href="https://play.google.com/store/apps/details?id=com.floraincognita.app.floraincognita" target="_blank" rel="noopener">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3.6 2.3c-.3.3-.5.7-.5 1.3v17c0 .5.2 1 .5 1.3l9.9-9.9L3.6 2.3zm12 5.8L5.7 2.6c-.4-.2-.8-.2-1.1-.1l9.4 9.4 1.6-1.8zm4.1 2.4l-2.6-1.5-1.8 1.8 1.8 1.8 2.6-1.5c.8-.4.8-1.7 0-2.6zm-6.4 3.6L4.6 23.5c.3.1.7.1 1.1-.1l9.9-5.5-1.6-2.8z"/></svg>
+      <span class="label"><small>Installieren auf</small><strong>Google Play</strong></span>
+    </a>
+    <a class="install-btn" href="https://apps.apple.com/de/app/flora-incognita/id1297860122" target="_blank" rel="noopener">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M17.6 12.5c0-2.6 2.1-3.8 2.2-3.9-1.2-1.7-3-2-3.7-2-1.6-.2-3 .9-3.8.9-.8 0-2-.9-3.3-.9-1.7 0-3.3 1-4.1 2.5-1.8 3-.5 7.5 1.2 9.9.8 1.2 1.8 2.5 3.1 2.5 1.3-.1 1.7-.8 3.2-.8 1.5 0 1.9.8 3.2.8 1.3 0 2.2-1.2 3-2.4.9-1.4 1.3-2.7 1.3-2.8-.1 0-2.4-.9-2.4-3.8zM15.1 4.8c.7-.8 1.2-2 1-3.1-1 0-2.2.7-2.9 1.5-.6.7-1.2 1.9-1.1 3 1.1.1 2.3-.6 3-1.4z"/></svg>
+      <span class="label"><small>Laden im</small><strong>App Store</strong></span>
+    </a>
+  </div>
+
+  <section class="app-text">
+    <p>Flora Incognita ist eine wissenschaftliche Pflanzenbestimmungs-App, die speziell für die <strong>heimische Flora in Deutschland und Europa</strong> optimiert wurde. Entwickelt von der TU Ilmenau in Kooperation mit dem Max-Planck-Institut für Biogeochemie, nutzt sie moderne KI-gestützte Bilderkennung. Über 30.000 Pflanzenarten sind hinterlegt — eine aktuelle Studie der Entwickler weist eine <strong>Erkennungsgenauigkeit von 98,8 %</strong> aus.</p>
+    <p>Besonders praktisch: Die App führt dich <strong>Schritt für Schritt</strong> durch die Aufnahme — meist erst die Blüte, dann das Blatt, manchmal noch der Habitus. Mehrere Fotos zusammen ergeben eine viel zuverlässigere Bestimmung als ein einzelnes Bild.</p>
+  </section>
+
+  <div class="vor-nach">
+    <div class="karte vorteile">
+      <h3>Vorteile</h3>
+      <ul>
+        <li>Sehr hohe Treffsicherheit bei heimischen Arten</li>
+        <li>Wissenschaftlich fundiert (TU Ilmenau + Max-Planck)</li>
+        <li>Geführter Aufnahmeprozess mit mehreren Bildern</li>
+        <li>Komplett auf Deutsch</li>
+        <li>Kostenlos und werbefrei</li>
+        <li>Speichert eigene Funde mit Karte</li>
+        <li>Teilweise offline nutzbar</li>
+        <li>Beitrag zur Forschung (Citizen Science)</li>
+      </ul>
+    </div>
+    <div class="karte nachteile">
+      <h3>Nachteile</h3>
+      <ul>
+        <li>Nur Pflanzen — keine Tiere, Pilze, Flechten</li>
+        <li>Bei seltenen oder exotischen Arten Grenzen</li>
+        <li>Mehrere Aufnahmen brauchen etwas Geduld</li>
+        <li>Kein direkter Community-Austausch</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="tipp-box">
+    💡 <strong>Tipp:</strong> Flora Incognita und iNaturalist ergänzen sich gut — Flora Incognita für die genaue, geführte Bestimmung heimischer Pflanzen, iNaturalist für schnelle Treffer an allem Lebendigen und die Verbindung zur Forschungs-Community.
+  </div>
+</main>
+
+<footer class="bottom">
+  <div class="wrap footer-text">
+    <p>Diese Sammlung ist das Ergebnis langjähriger Beobachtungen und meiner Leidenschaft für die Pflanzenwelt unserer Region. Hinweise, Korrekturen → <a href="mailto:mibaur@me.com">mibaur@me.com</a>. Meine Fotos dürfen gerne privat verwendet werden (Lizenz: CC BY-NC).</p>
+    <p class="lizenz">© 2026 <a href="../ueber/">Michael Baur</a></p>
+  </div>
+</footer>
+
+<!-- Service-Worker registrieren + automatische Aktualisierung -->
+<script>
+  if ('serviceWorker' in navigator) {
+    let refreshing = false;
+    const hatteController = !!navigator.serviceWorker.controller;
+    navigator.serviceWorker.addEventListener('controllerchange', () => {
+      if (refreshing || !hatteController) return;
+      refreshing = true;
+      window.location.reload();
+    });
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('../sw.js').then((reg) => {
+        reg.update();
+        document.addEventListener('visibilitychange', () => {
+          if (document.visibilityState === 'visible') reg.update();
+        });
+        setInterval(() => reg.update(), 60 * 60 * 1000);
+      }).catch(() => {});
+    });
+  }
+</script>
+
+</body>
+</html>

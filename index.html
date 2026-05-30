@@ -42,6 +42,8 @@
     --phaenomene-bg:#f4ecd6;
     --ordnen:#5d6f7b;           /* ruhiges Steinblau – Struktur, Zuordnen */
     --ordnen-bg:#e8edf1;
+    --foto:#d4633e;             /* warmes Coral-Orange – externe Foto-Apps */
+    --foto-bg:#fbe8db;
   }
 
   *{box-sizing:border-box}
@@ -186,12 +188,14 @@
     line-height:1.1;
   }
   .sektion[data-thema="entdecken"]    .sektion-titel{color:var(--entdecken)}
+  .sektion[data-thema="foto"]         .sektion-titel{color:var(--foto)}
   .sektion[data-thema="ordnen"]       .sektion-titel{color:var(--ordnen)}
   .sektion[data-thema="ausprobieren"] .sektion-titel{color:var(--ausprobieren)}
   .sektion[data-thema="verstehen"]    .sektion-titel{color:var(--verstehen)}
   .sektion[data-thema="phaenomene"]   .sektion-titel{color:var(--phaenomene)}
 
   .sektion[data-thema="entdecken"]    .sektion-titel::after,
+  .sektion[data-thema="foto"]         .sektion-titel::after,
   .sektion[data-thema="ordnen"]       .sektion-titel::after,
   .sektion[data-thema="ausprobieren"] .sektion-titel::after,
   .sektion[data-thema="verstehen"]    .sektion-titel::after,
@@ -203,6 +207,7 @@
     margin-top:8px;
   }
   .sektion[data-thema="entdecken"]    .sektion-titel::after{background:var(--entdecken)}
+  .sektion[data-thema="foto"]         .sektion-titel::after{background:var(--foto)}
   .sektion[data-thema="ordnen"]       .sektion-titel::after{background:var(--ordnen)}
   .sektion[data-thema="ausprobieren"] .sektion-titel::after{background:var(--ausprobieren)}
   .sektion[data-thema="verstehen"]    .sektion-titel::after{background:var(--verstehen)}
@@ -237,6 +242,7 @@
 
   /* Themenspezifisches Hover (Border) */
   .sektion[data-thema="entdecken"]    .kachel:hover{border-color:var(--entdecken)}
+  .sektion[data-thema="foto"]         .kachel:hover{border-color:var(--foto)}
   .sektion[data-thema="ordnen"]       .kachel:hover{border-color:var(--ordnen)}
   .sektion[data-thema="ausprobieren"] .kachel:hover{border-color:var(--ausprobieren)}
   .sektion[data-thema="verstehen"]    .kachel:hover{border-color:var(--verstehen)}
@@ -253,6 +259,7 @@
 
   /* Icon-Farben je Sektion */
   .sektion[data-thema="entdecken"]    .icon{background:var(--entdecken-bg);    color:var(--entdecken)}
+  .sektion[data-thema="foto"]         .icon{background:var(--foto-bg);         color:var(--foto)}
   .sektion[data-thema="ordnen"]       .icon{background:var(--ordnen-bg);       color:var(--ordnen)}
   .sektion[data-thema="ausprobieren"] .icon{background:var(--ausprobieren-bg); color:var(--ausprobieren)}
   .sektion[data-thema="verstehen"]    .icon{background:var(--verstehen-bg);    color:var(--verstehen)}
@@ -265,10 +272,22 @@
     letter-spacing:0.01em;
   }
   .sektion[data-thema="entdecken"]    .kachel h3{color:var(--entdecken)}
+  .sektion[data-thema="foto"]         .kachel h3{color:var(--foto)}
   .sektion[data-thema="ordnen"]       .kachel h3{color:var(--ordnen)}
   .sektion[data-thema="ausprobieren"] .kachel h3{color:var(--ausprobieren)}
   .sektion[data-thema="verstehen"]    .kachel h3{color:var(--verstehen)}
   .sektion[data-thema="phaenomene"]   .kachel h3{color:var(--phaenomene)}
+
+  /* Foto-Apps-Kacheln: App-Logo statt SVG-Icon */
+  .sektion[data-thema="foto"] .kachel .app-icon{
+    width:54px; height:54px;
+    border-radius:14px;
+    object-fit:cover;
+    margin-bottom:14px;
+    flex-shrink:0;
+    background:#fff;
+    border:1px solid var(--foto-bg);
+  }
 
   .kachel p{
     margin:0;
@@ -507,6 +526,26 @@
         </div>
         <h3>Natur zum Mitnehmen</h3>
         <p>PDFs über Frühblüher, Bäume, Sträucher und deren Schmetterlinge.</p>
+      </a>
+
+    </div>
+  </section>
+
+  <!-- FOTO-APPS -->
+  <section class="sektion" data-thema="foto">
+    <h2 class="sektion-titel">Foto-Apps</h2>
+    <div class="kacheln">
+
+      <a class="kachel" href="apps/flora-incognita.html">
+        <img class="app-icon" src="images/external-apps/flora-incognita.png" alt="Flora Incognita Logo">
+        <h3>Flora Incognita</h3>
+        <p>Wissenschaftliche Pflanzenbestimmung speziell für die heimische Flora.</p>
+      </a>
+
+      <a class="kachel" href="apps/inaturalist.html">
+        <img class="app-icon" src="images/external-apps/inaturalist.png" alt="iNaturalist Logo">
+        <h3>iNaturalist</h3>
+        <p>Weltweite Naturplattform mit großer Community — für alles Lebendige.</p>
       </a>
 
     </div>
