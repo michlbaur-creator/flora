@@ -905,5 +905,29 @@
 <!-- GoatCounter: anonyme, cookie-freie Reichweiten-Statistik -->
 <script data-goatcounter="https://mibaso.goatcounter.com/count"
         async src="//gc.zgo.at/count.js"></script>
+
+<style>
+  body.embed > header.top, body.embed > footer.bottom, body.embed > a.back { display:none !important; }
+  body.embed #uebersicht { display:none !important; }
+  body.embed { background:transparent; }
+</style>
+<script>
+(function(){
+  const params = new URLSearchParams(window.location.search);
+  const isEmbed = params.get('embed') === '1' || window.self !== window.top;
+  if (isEmbed) {
+    document.body.classList.add('embed');
+    const sende = () => {
+      const h = Math.max(document.documentElement.scrollHeight, document.body.scrollHeight);
+      window.parent.postMessage({ kreislaufHoehe: h }, '*');
+    };
+    window.addEventListener('load', sende);
+    window.addEventListener('resize', sende);
+    new MutationObserver(sende).observe(document.body, { childList:true, subtree:true, attributes:true });
+    setInterval(sende, 800);
+  }
+})();
+</script>
+
 </body>
 </html>

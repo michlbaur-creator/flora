@@ -11,30 +11,36 @@
 <meta name="apple-mobile-web-app-title" content="Flora Mibaso">
 <title>Der ewige Kreislauf — Lernpfad · Flora Mibaso</title>
 <link rel="stylesheet" href="../assets/style.css">
-<meta name="description" content="Lernpfad in 4 Schritten: Von der Blüte zum Samen — und wieder von vorn. Hinein in die Blüte, Wurzel-Blatt-Blüte, Bestäubung & Befruchtung, Ein Jahr im Apfelbaum.">
+<meta name="description" content="Lernpfad in 5 Schritten: Von der Blüte zum Samen — und wieder von vorn.">
 <style>
   :root{
     --kr:#2F4F3E;
     --kr-hell:#4A6B58;
     --kr-bg:#d1ddd5;
     --kr-rand:#bccab4;
-    --akzent:#C98A1F;
   }
   body{ background:var(--beige-hell, #f8f3e7); }
 
   #kr-root{
     max-width:860px;
     margin:0 auto;
-    padding:14px 12px 80px;
+    padding:max(10px, env(safe-area-inset-top)) 12px 60px;
   }
 
+  /* Kompakte Kopfzeile */
+  .kr-kopfzeile{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:10px;
+    margin:0 0 6px;
+  }
   .kr-home{
     display:inline-flex;
     align-items:center;
     color:var(--braun-mittel, #6b5340);
     text-decoration:none;
     font-size:.9rem;
-    margin:6px 0 4px;
   }
   .kr-home:hover{ color:var(--braun-dunkel, #3a2a1b); }
 
@@ -42,16 +48,17 @@
     font-family:Georgia, serif;
     text-align:center;
     color:var(--kr);
-    margin:6px 0 2px;
-    font-size:1.55rem;
+    margin:0 0 2px;
+    font-size:1.2rem;
+    font-weight:600;
     line-height:1.2;
   }
   .kr-untertitel{
     text-align:center;
-    color:#6b5340;
+    color:#7a6d5c;
     font-style:italic;
-    margin:0 0 18px;
-    font-size:.97rem;
+    margin:0 0 12px;
+    font-size:.88rem;
   }
 
   /* Stepper-Navigation */
@@ -59,9 +66,9 @@
     display:flex;
     align-items:flex-start;
     justify-content:space-between;
-    gap:4px;
-    margin:0 0 18px;
-    padding:0 4px;
+    gap:2px;
+    margin:0 0 14px;
+    padding:0 2px;
   }
   .kr-step{
     flex:1;
@@ -71,14 +78,14 @@
     flex-direction:column;
     align-items:center;
     text-align:center;
-    padding:6px 2px;
+    padding:4px 1px;
     font-family:inherit;
     color:#7a6d5c;
     position:relative;
     transition:color .15s ease;
   }
   .kr-step .nummer{
-    width:34px; height:34px;
+    width:30px; height:30px;
     border-radius:50%;
     background:#fff;
     border:2px solid var(--kr-rand);
@@ -86,13 +93,13 @@
     display:flex; align-items:center; justify-content:center;
     font-weight:600;
     font-family:Georgia, serif;
-    font-size:1.05rem;
-    margin-bottom:6px;
+    font-size:.95rem;
+    margin-bottom:4px;
     transition:all .15s ease;
   }
   .kr-step .label{
-    font-size:.78rem;
-    line-height:1.15;
+    font-size:.7rem;
+    line-height:1.1;
     overflow-wrap:anywhere;
     hyphens:auto;
   }
@@ -114,9 +121,9 @@
   .kr-step:not(:last-child)::after{
     content:"";
     position:absolute;
-    top:23px;
-    left:calc(50% + 22px);
-    right:calc(-50% + 22px);
+    top:21px;
+    left:calc(50% + 18px);
+    right:calc(-50% + 18px);
     height:2px;
     background:var(--kr-rand);
     z-index:-1;
@@ -124,14 +131,13 @@
   .kr-step.fertig:not(:last-child)::after{ background:var(--kr); }
 
   @media (max-width:380px){
-    .kr-step .label{ font-size:.7rem; }
-    .kr-step .nummer{ width:30px; height:30px; font-size:.95rem; }
+    .kr-step .label{ font-size:.62rem; }
+    .kr-step .nummer{ width:26px; height:26px; font-size:.85rem; }
+    .kr-step:not(:last-child)::after{ top:18px; }
   }
 
   /* Schritt-Sektionen */
-  .kr-schritt{
-    display:none;
-  }
+  .kr-schritt{ display:none; }
   .kr-schritt.aktiv{ display:block; }
 
   .kr-frame-wrap{
@@ -145,7 +151,7 @@
     width:100%;
     border:0;
     display:block;
-    min-height:600px;
+    min-height:500px;
     transition:height .25s ease;
   }
 
@@ -154,7 +160,7 @@
     background:#fff;
     border:1px solid var(--kr-rand);
     border-radius:14px;
-    padding:24px 22px;
+    padding:22px 20px;
     text-align:center;
     margin:0 0 14px;
   }
@@ -162,7 +168,7 @@
     margin:0 0 8px;
     color:var(--kr);
     font-family:Georgia, serif;
-    font-size:1.25rem;
+    font-size:1.2rem;
   }
   .kr-bridge p{
     color:#3a3a3a;
@@ -170,7 +176,7 @@
     margin:0 0 16px;
   }
   .kr-bridge .icon-gross{
-    font-size:3rem;
+    font-size:2.6rem;
     margin:0 0 10px;
     line-height:1;
   }
@@ -181,10 +187,10 @@
     background:var(--kr);
     color:#fff;
     text-decoration:none;
-    padding:12px 22px;
+    padding:11px 20px;
     border-radius:10px;
     font-weight:600;
-    font-size:1.02rem;
+    font-size:1rem;
     box-shadow:0 3px 8px rgba(47,79,62,.22);
     transition:transform .12s ease, background .12s ease;
   }
@@ -229,17 +235,12 @@
 </style>
 </head>
 <body>
-<header class="top">
-  <div class="wrap top-inner">
-    <div class="titelblock">
-      <h1><a href="../index.html">Flora Mibaso</a></h1>
-      <div class="untertitel">Michael Baurs digitale Naturwerkstatt für die Hosentasche.</div>
-    </div>
-  </div>
-</header>
 
 <main id="kr-root">
-  <a class="kr-home" href="../index.html">‹ Zurück zur Startseite</a>
+  <div class="kr-kopfzeile">
+    <a class="kr-home" href="../index.html">‹ Startseite</a>
+    <span style="color:#7a6d5c;font-size:.82rem;" id="kr-schritt-anzeige">Schritt 1 / 5</span>
+  </div>
   <h2 class="kr-titel">Der ewige Kreislauf</h2>
   <p class="kr-untertitel">Von der Blüte zum Samen — und wieder von vorn.</p>
 
@@ -251,22 +252,25 @@
     <button class="kr-step" data-schritt="2" aria-label="Schritt 2: Wurzel, Blatt, Blüte">
       <span class="nummer">2</span><span class="label">Wurzel, Blatt, Blüte</span>
     </button>
-    <button class="kr-step" data-schritt="3" aria-label="Schritt 3: Bestäubung & Befruchtung">
-      <span class="nummer">3</span><span class="label">Bestäubung &amp; Befruchtung</span>
+    <button class="kr-step" data-schritt="3" aria-label="Schritt 3: Bestäubung &amp; Befruchtung">
+      <span class="nummer">3</span><span class="label">Bestäubung</span>
     </button>
-    <button class="kr-step" data-schritt="4" aria-label="Schritt 4: Ein Jahr im Apfelbaum">
-      <span class="nummer">4</span><span class="label">Jahr im Apfelbaum</span>
+    <button class="kr-step" data-schritt="4" aria-label="Schritt 4: Selbst entdecken">
+      <span class="nummer">4</span><span class="label">Selbst entdecken</span>
+    </button>
+    <button class="kr-step" data-schritt="5" aria-label="Schritt 5: Ein Jahr im Apfelbaum">
+      <span class="nummer">5</span><span class="label">Jahr im Apfelbaum</span>
     </button>
   </nav>
 
-  <!-- Schritt 1 -->
+  <!-- Schritt 1: Hinein in die Blüte -->
   <section class="kr-schritt" data-schritt="1">
     <div class="kr-frame-wrap">
       <iframe class="kr-frame" data-src="bluete-zoom.html?embed=1" title="Hinein in die Blüte" loading="lazy"></iframe>
     </div>
   </section>
 
-  <!-- Schritt 2: Bridge -->
+  <!-- Schritt 2: Bridge zur bestehenden „Wurzel, Blatt, Blüte"-Seite -->
   <section class="kr-schritt" data-schritt="2">
     <div class="kr-bridge">
       <div class="icon-gross">🌱</div>
@@ -276,15 +280,22 @@
     </div>
   </section>
 
-  <!-- Schritt 3 -->
+  <!-- Schritt 3: Bestäubung & Befruchtung (Animation) -->
   <section class="kr-schritt" data-schritt="3">
     <div class="kr-frame-wrap">
       <iframe class="kr-frame" data-src="bestaeubung-animiert.html?embed=1" title="Bestäubung Schritt für Schritt" loading="lazy"></iframe>
     </div>
   </section>
 
-  <!-- Schritt 4 -->
+  <!-- Schritt 4: Bestäubung selbst entdecken (alte Seite, oberer Bereich ausgeblendet) -->
   <section class="kr-schritt" data-schritt="4">
+    <div class="kr-frame-wrap">
+      <iframe class="kr-frame" data-src="bestaeubung-erklaerung.html?embed=1" title="Bestäubung — jetzt selbst entdecken" loading="lazy"></iframe>
+    </div>
+  </section>
+
+  <!-- Schritt 5: Ein Jahr im Apfelbaum -->
+  <section class="kr-schritt" data-schritt="5">
     <div class="kr-frame-wrap">
       <iframe class="kr-frame" data-src="jahreszeiten-baum.html?embed=1" title="Ein Jahr im Apfelbaum" loading="lazy"></iframe>
     </div>
@@ -306,13 +317,14 @@
 
 <script>
 (function(){
-  const MAX = 4;
+  const MAX = 5;
   let aktuell = 1;
   const stepper = document.querySelectorAll('.kr-step');
   const sektionen = document.querySelectorAll('.kr-schritt');
   const frames = document.querySelectorAll('.kr-frame');
   const btnVor = document.getElementById('kr-vor');
   const btnNach = document.getElementById('kr-naechst');
+  const elZaehler = document.getElementById('kr-schritt-anzeige');
 
   function zeige(n){
     aktuell = Math.max(1, Math.min(MAX, n));
@@ -327,32 +339,26 @@
     // iframe nur laden, wenn nötig (lazy)
     frames.forEach(f => {
       const inAktiv = f.closest('.kr-schritt[data-schritt="' + aktuell + '"]');
-      if (inAktiv && !f.src) {
-        f.src = f.dataset.src;
-      }
+      if (inAktiv && !f.src) { f.src = f.dataset.src; }
     });
     btnVor.disabled = (aktuell === 1);
     btnNach.disabled = (aktuell === MAX);
     btnNach.textContent = (aktuell === MAX) ? 'Geschafft!' : 'Nächster Schritt ›';
-    // Hash für Browser-Back
+    elZaehler.textContent = `Schritt ${aktuell} / ${MAX}`;
     try { history.replaceState(null, '', '#schritt-' + aktuell); } catch(e){}
-    // nach oben scrollen
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
-  // Klick auf Stepper
   stepper.forEach(s => s.addEventListener('click', () => zeige(+s.dataset.schritt)));
   btnVor.addEventListener('click', () => zeige(aktuell - 1));
   btnNach.addEventListener('click', () => zeige(aktuell + 1));
 
-  // Initial: Hash beachten
   const hashStart = (location.hash.match(/schritt-(\d)/) || [])[1];
   zeige(hashStart ? +hashStart : 1);
 
   // Höhe von iframes empfangen
   window.addEventListener('message', (e) => {
     if (e.data && typeof e.data.kreislaufHoehe === 'number') {
-      // den iframe finden, der die Nachricht geschickt hat
       frames.forEach(f => {
         if (f.contentWindow === e.source) {
           f.style.height = (e.data.kreislaufHoehe + 16) + 'px';
