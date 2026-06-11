@@ -770,6 +770,8 @@ let stats = null;             // { art:{r,g}, fam:{r,g}, wissen:{r,g} }
 let restSekunden = 0;
 let timerId = null;
 let autoWeiterId = null;
+let sperrBis = 0;             // kurze Eingabesperre nach Fragenwechsel (gegen Geistertipps)
+let antwortZeit = 0;          // Zeitpunkt der letzten Antwort
 
 // ═══════════════════════════════════════════════════
 //  TEST STARTEN
@@ -826,6 +828,7 @@ function zeigeStatus(){
 // ═══════════════════════════════════════════════════
 function zeigeFrage(){
   beantwortet = false;
+  sperrBis = Date.now() + 400;   // direkt nach dem Wechsel keine Tipps annehmen
   const f = aktuelleFrage;
   zeigeStatus();
 
@@ -919,8 +922,9 @@ function fotoFehler(){
 //  ANTWORT PRÜFEN
 // ═══════════════════════════════════════════════════
 function pruefeAntwort(istRichtig, geklickt, aufloesung, istRichtigerBtn){
-  if (beantwortet) return;
+  if (beantwortet || Date.now() < sperrBis) return;
   beantwortet = true;
+  antwortZeit = Date.now();
 
   const typ = aktuelleFrage.typ;
   stats[typ].g++;
@@ -951,10 +955,21 @@ function pruefeAntwort(istRichtig, geklickt, aufloesung, istRichtigerBtn){
   }
 }
 
+// Blitz-Modus: Tippen nach der Antwort schaltet sofort weiter,
+// statt auf den Auto-Weiter-Timer zu warten.
+document.getElementById('gt-frage').addEventListener('click', () => {
+  if (modus !== 'blitz' || !beantwortet || !autoWeiterId) return;
+  if (Date.now() - antwortZeit < 300) return;  // nicht der Antwort-Tipp selbst
+  clearTimeout(autoWeiterId);
+  autoWeiterId = null;
+  naechsteFrage();
+});
+
 // ═══════════════════════════════════════════════════
 //  WEITER / ERGEBNIS
 // ═══════════════════════════════════════════════════
 function naechsteFrage(){
+  if (autoWeiterId) { clearTimeout(autoWeiterId); }
   autoWeiterId = null;
   if (modus === 'blitz') {
     if (restSekunden <= 0) return;
