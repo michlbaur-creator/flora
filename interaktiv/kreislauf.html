@@ -198,6 +198,12 @@
     background:#1f3a2a;
     transform:translateY(-2px);
   }
+  .kr-bridge .bridge-copy{
+    margin:18px 0 0;
+    font-size:.78rem;
+    color:#9a8d7c;
+  }
+  .kr-bridge .bridge-copy a{ color:inherit; }
 
   /* Schritt-Navigation unten */
   .kr-nav-unten{
@@ -207,13 +213,16 @@
     gap:10px;
     margin:14px 0 0;
   }
+  /* Einheitliche Buttongröße im ganzen Lernpfad */
   .kr-nav-unten button{
     background:var(--kr);
     color:#fff;
     border:none;
     border-radius:10px;
-    padding:10px 18px;
-    font:inherit;
+    padding:7px 14px;
+    min-width:96px;
+    font-family:inherit;
+    font-size:.88rem;
     font-weight:600;
     cursor:pointer;
     box-shadow:0 2px 6px rgba(47,79,62,.22);
@@ -230,8 +239,6 @@
     color:var(--kr);
     border:1.5px solid var(--kr-rand);
     box-shadow:none;
-    padding:7px 12px;
-    font-size:.88rem;
     font-weight:500;
   }
   .kr-nav-unten button.zurueck:hover{ background:var(--kr-bg); }
@@ -280,6 +287,7 @@
       <h2>Wer macht hier eigentlich was?</h2>
       <p>Jetzt, wo du die Blüte von innen kennst, lohnt sich der Blick auf die ganze Pflanze: Wurzel, Blatt und Blüte erfüllen je eigene Aufgaben.<br>Probier den Anatomie-Check — du tippst auf die grünen Punkte und entdeckst, was wo passiert.</p>
       <a class="bridge-knopf" href="pflanze-verstehen.html">Wurzel, Blatt, Blüte erkunden <span>›</span></a>
+      <p class="bridge-copy">© 2026 <a href="../ueber/">Michael Baur</a> · Flora Mibaso</p>
     </div>
   </section>
 
@@ -314,7 +322,7 @@
 <footer class="bottom" style="margin-top:32px;">
   <div class="wrap footer-text">
     <p>Diese Sammlung ist das Ergebnis langjähriger Beobachtungen und meiner Leidenschaft für die Pflanzenwelt unserer Region. Hinweise, Korrekturen → <a href="mailto:mibaur@me.com">mibaur@me.com</a>. Meine Fotos dürfen gerne privat verwendet werden (Lizenz: CC BY-NC).</p>
-    <p class="lizenz">© 2026 <a href="../ueber/">Michael Baur</a></p>
+    <p class="lizenz">© 2026 <a href="../ueber/">Michael Baur</a> · Flora Mibaso</p>
   </div>
 </footer>
 
@@ -418,7 +426,7 @@
       });
       setInterval(() => reg.update(), 60 * 60 * 1000);
     }).catch(() => {});
-  })();
+  });
 })();
 </script>
 

@@ -54,21 +54,64 @@
     margin:0 0 6px;
   }
   .monat strong{ font-weight:normal; font-size:1.2rem; }
+  /* Gut sichtbarer Regler-Knopf in warmem Rotbraun */
   input[type="range"]{
+    -webkit-appearance:none;
+    appearance:none;
     width:100%;
-    accent-color:var(--gruen);
     height:34px;
+    background:transparent;
     cursor:pointer;
+  }
+  input[type="range"]::-webkit-slider-runnable-track{
+    height:8px;
+    border-radius:4px;
+    background:#cfd9cd;
+  }
+  input[type="range"]::-webkit-slider-thumb{
+    -webkit-appearance:none;
+    width:26px; height:26px;
+    border-radius:50%;
+    background:#9c3b2a;
+    border:3px solid #fff;
+    box-shadow:0 1px 6px rgba(0,0,0,.35);
+    margin-top:-9px;
+    cursor:grab;
+  }
+  input[type="range"]::-webkit-slider-thumb:active{ cursor:grabbing; }
+  input[type="range"]::-moz-range-track{
+    height:8px;
+    border-radius:4px;
+    background:#cfd9cd;
+  }
+  input[type="range"]::-moz-range-thumb{
+    width:26px; height:26px;
+    border-radius:50%;
+    background:#9c3b2a;
+    border:3px solid #fff;
+    box-shadow:0 1px 6px rgba(0,0,0,.35);
+    cursor:grab;
   }
   input[type="range"]:focus-visible{ outline:3px solid #E3B23C; outline-offset:2px; border-radius:6px; }
   .jahreszeiten{
     display:flex;
     justify-content:space-between;
+    margin-top:2px;
+  }
+  /* Jahreszeiten als direkte Sprungmarken */
+  .jz-link{
+    background:none;
+    border:none;
+    padding:2px 4px;
+    font-family:inherit;
     font-size:.85rem;
     color:var(--gruen-hell);
     font-style:italic;
-    margin-top:-2px;
+    cursor:pointer;
+    border-bottom:1px dotted var(--gruen-hell);
+    transition:color .15s;
   }
+  .jz-link:hover, .jz-link:focus-visible{ color:#9c3b2a; border-bottom-color:#9c3b2a; outline:none; }
 
   /* ---------- Textfeld ---------- */
   .erklaerung{ padding:12px 22px 18px; min-height:108px; }
@@ -78,6 +121,7 @@
   @keyframes einblenden{ from{opacity:0; transform:translateY(5px);} to{opacity:1; transform:none;} }
 
   footer{ text-align:center; font-size:.85rem; color:var(--gruen-hell); padding:14px 10px 26px; }
+  footer > a{ color:inherit; }
 
   /* fallende Blätter */
   .fallblatt{ animation:fallen 5s linear infinite; }
@@ -142,7 +186,11 @@
       <input type="range" id="slider" min="0" max="100" value="0" step="0.5"
              aria-label="Jahresverlauf von Januar bis Dezember">
       <div class="jahreszeiten">
-        <span>Winter</span><span>Frühling</span><span>Sommer</span><span>Herbst</span><span>Winter</span>
+        <button class="jz-link" data-pos="3"  type="button">Winter</button>
+        <button class="jz-link" data-pos="33" type="button">Frühling</button>
+        <button class="jz-link" data-pos="66" type="button">Sommer</button>
+        <button class="jz-link" data-pos="85" type="button">Herbst</button>
+        <button class="jz-link" data-pos="98" type="button">Winter</button>
       </div>
     </div>
 
@@ -153,7 +201,7 @@
   </div>
 </main>
 
-<footer>© 2026 Michael Baur · Flora Mibaso</footer>
+<footer>© 2026 <a href="../ueber/">Michael Baur</a> · Flora Mibaso</footer>
 
 <script>
 (function(){
@@ -343,6 +391,14 @@
     if (document.activeElement === slider) return; /* Regler regelt selbst */
     if (e.key === "ArrowRight") { slider.value = Math.min(100, parseFloat(slider.value) + 2); male(); }
     if (e.key === "ArrowLeft")  { slider.value = Math.max(0, parseFloat(slider.value) - 2); male(); }
+  });
+
+  /* Jahreszeiten-Sprungmarken: Klick springt zur passenden Stelle im Jahr */
+  document.querySelectorAll(".jz-link").forEach(function(knopf){
+    knopf.addEventListener("click", function(){
+      slider.value = knopf.dataset.pos;
+      male();
+    });
   });
 
   male();
