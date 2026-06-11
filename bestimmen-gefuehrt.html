@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#2F4F3E">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="assets/icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Flora Mibaso">
+<link rel="stylesheet" href="assets/style.css">
+<meta name="description" content="Geführter Bestimmungsschlüssel: Schritt-für-Schritt zur passenden Pflanze über Blüte, Standort und Blühzeit.">
+<title>Frag dich durch — Geführte Bestimmung · Flora Mibaso</title>
+<style>
+  #fmkey{
+    --gruen:#2F4F3E; --gruen-hell:#4A6B58; --creme:#F7F3E8; --karte:#FFFDF6;
+    --linie:#D9D0BC; --akzent:#C98A1F; --text:#33402F;
+    --w:#FFFFFF; --ge:#E9C233; --bl:#5C86C2; --vi:#9166A8; --ro:#C9566B; --gr:#8AA06A;
+    font-family:Georgia,'Times New Roman',serif; color:var(--text);
+    max-width:760px; margin:0 auto; padding:0 12px 40px; line-height:1.55;
+    -webkit-text-size-adjust:100%;
+  }
+  #fmkey *{box-sizing:border-box;}
+  #fmkey .kopf{ text-align:center; padding:22px 10px 6px; }
+  #fmkey .kopf h1{ margin:0; font-size:1.5rem; font-weight:normal; color:var(--gruen); letter-spacing:.4px; }
+  #fmkey .kopf p{ margin:6px 0 0; font-style:italic; color:var(--gruen-hell); }
+
+  /* Chips: gewählte Antworten */
+  #fmkey .chips{ display:flex; flex-wrap:wrap; gap:8px; justify-content:center; margin:16px 0 4px; }
+  #fmkey .chip{
+    font-family:inherit; font-size:.9rem; background:var(--karte);
+    border:1.5px solid var(--linie); border-radius:999px; padding:6px 12px;
+    color:var(--gruen-hell); cursor:pointer; display:inline-flex; align-items:center; gap:6px;
+  }
+  #fmkey .chip.gesetzt{ border-color:var(--gruen); color:var(--gruen); background:#EFF3E9; }
+  #fmkey .chip .x{ font-size:1.05rem; line-height:1; opacity:.6; }
+  #fmkey .chip:focus-visible{ outline:3px solid var(--akzent); outline-offset:2px; }
+
+  /* Frage-Karte */
+  #fmkey .frage{
+    background:var(--karte); border:1px solid var(--linie); border-radius:16px;
+    padding:20px 18px; margin-top:14px; box-shadow:0 2px 8px rgba(47,79,62,.08);
+  }
+  #fmkey .frage h2{ margin:0 0 4px; font-size:1.2rem; font-weight:normal; color:var(--gruen); }
+  #fmkey .frage .hinweis{ margin:0 0 16px; font-size:.92rem; color:var(--gruen-hell); font-style:italic; }
+
+  #fmkey .optionen{ display:grid; gap:10px; }
+  #fmkey .optionen.spalten2{ grid-template-columns:1fr 1fr; }
+  #fmkey .optionen.spalten3{ grid-template-columns:1fr 1fr 1fr; }
+  #fmkey .opt{
+    font-family:inherit; font-size:1.02rem; text-align:left;
+    background:var(--w); border:1.5px solid var(--linie); border-radius:12px;
+    padding:13px 14px; cursor:pointer; color:var(--text);
+    display:flex; align-items:center; gap:12px; min-height:56px; transition:border-color .15s, background .15s;
+  }
+  #fmkey .opt:hover{ border-color:var(--gruen); background:#FBFAF2; }
+  #fmkey .opt:focus-visible{ outline:3px solid var(--akzent); outline-offset:2px; }
+  #fmkey .opt .ikon{ flex:0 0 auto; width:42px; height:42px; }
+  #fmkey .opt .farbpunkt{ flex:0 0 auto; width:26px; height:26px; border-radius:50%; border:1.5px solid rgba(0,0,0,.18); }
+  #fmkey .opt .txt b{ font-weight:normal; }
+  #fmkey .opt .txt small{ display:block; font-size:.82rem; color:var(--gruen-hell); margin-top:1px; }
+  #fmkey .opt .anz{ margin-left:auto; font-size:.85rem; color:var(--gruen-hell); white-space:nowrap; }
+  #fmkey .opt[disabled]{ opacity:.35; cursor:default; }
+
+  /* Monate */
+  #fmkey .monate{ display:grid; grid-template-columns:repeat(6,1fr); gap:8px; }
+  #fmkey .mon{
+    font-family:inherit; font-size:.95rem; background:var(--w);
+    border:1.5px solid var(--linie); border-radius:10px; padding:12px 4px; cursor:pointer; color:var(--text);
+  }
+  #fmkey .mon:hover{ border-color:var(--gruen); }
+  #fmkey .mon:focus-visible{ outline:3px solid var(--akzent); outline-offset:2px; }
+
+  #fmkey .steuerzeile{ display:flex; justify-content:space-between; align-items:center; margin-top:16px; gap:10px; flex-wrap:wrap; }
+  #fmkey .linkbtn{
+    font-family:inherit; font-size:.95rem; background:none; border:none;
+    color:var(--gruen-hell); text-decoration:underline; cursor:pointer; padding:6px 2px;
+  }
+  #fmkey .linkbtn:focus-visible{ outline:3px solid var(--akzent); outline-offset:2px; }
+
+  /* Treffer-Banner */
+  #fmkey .treffer{
+    text-align:center; font-size:1.05rem; color:var(--gruen);
+    background:#EFF3E9; border:1px solid #CFE0C0; border-radius:12px;
+    padding:12px; margin-top:16px;
+  }
+  #fmkey .treffer b{ font-size:1.25rem; }
+
+  /* Kandidatenliste */
+  #fmkey .liste{ margin-top:16px; display:grid; gap:10px; }
+  #fmkey .art{
+    display:flex; align-items:center; gap:12px; text-decoration:none; color:var(--text);
+    background:var(--karte); border:1px solid var(--linie); border-radius:12px; padding:11px 14px;
+    transition:border-color .15s, transform .1s;
+  }
+  #fmkey .art:hover{ border-color:var(--gruen); transform:translateY(-1px); }
+  #fmkey .art:focus-visible{ outline:3px solid var(--akzent); outline-offset:2px; }
+  #fmkey .art .punkte{ flex:0 0 auto; display:flex; gap:3px; }
+  #fmkey .art .punkte span{ width:15px; height:15px; border-radius:50%; border:1px solid rgba(0,0,0,.16); }
+  #fmkey .art .info{ min-width:0; }
+  #fmkey .art .info .dn{ font-size:1.05rem; color:var(--gruen); }
+  #fmkey .art .info .wn{ font-style:italic; font-size:.86rem; color:var(--gruen-hell); }
+  #fmkey .art .info .meta{ font-size:.82rem; color:var(--gruen-hell); margin-top:2px; }
+  #fmkey .art .pfeil{ margin-left:auto; color:var(--gruen-hell); font-size:1.2rem; }
+
+  #fmkey .leer{ text-align:center; color:var(--gruen-hell); padding:18px; font-style:italic; }
+  #fmkey .fuss{ text-align:center; font-size:.82rem; color:var(--gruen-hell); margin-top:26px; }
+  #fmkey .neustart{
+    display:block; margin:18px auto 0; font-family:inherit; font-size:1rem;
+    border:1.5px solid var(--gruen); background:var(--gruen); color:var(--creme);
+    border-radius:999px; padding:11px 26px; cursor:pointer;
+  }
+  #fmkey .neustart:focus-visible{ outline:3px solid var(--akzent); outline-offset:2px; }
+  @media (max-width:430px){
+    #fmkey .optionen.spalten3{ grid-template-columns:1fr 1fr; }
+    #fmkey .monate{ grid-template-columns:repeat(4,1fr); }
+  }
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="wrap top-inner">
+    <div class="titelblock">
+      <h1><a href="index.html">Flora Mibaso</a></h1>
+      <div class="untertitel">Michael Baurs digitale Naturwerkstatt für die Hosentasche.</div>
+    </div>
+  </div>
+</header>
+<div id="fmkey">
+  <a class="back" href="index.html" style="display:inline-block;margin:12px 0 0;color:#6b5340;text-decoration:none;font-size:.95rem;">‹ Zurück zur Startseite</a>
+  <div class="kopf">
+    <h1>Frag dich durch</h1>
+    <p>Ein paar Fragen — und du landest bei der passenden Pflanze.</p>
+  </div>
+
+  <div class="chips" id="chips"></div>
+  <div id="buehne"></div>
+
+  <button class="neustart" id="neustart" hidden>Von vorn beginnen ↺</button>
+  <p class="fuss">Geführte Bestimmung von 146 Arten</p>
+</div>
+
+<footer class="bottom">
+  <div class="wrap footer-text">
+    <p>Diese Sammlung ist das Ergebnis langjähriger Beobachtungen und meiner Leidenschaft für die Pflanzenwelt unserer Region. Hinweise, Korrekturen → <a href="mailto:mibaur@me.com">mibaur@me.com</a>. Meine Fotos dürfen gerne privat verwendet werden (Lizenz: CC BY-NC).</p>
+    <p class="lizenz">© 2026 <a href="ueber/">Michael Baur</a></p>
+  </div>
+</footer>
+
+<script>
+const ARTEN = [{"slug":"galanthus-nivalis","name":"Schneeglöckchen","wiss":"Galanthus nivalis","famDe":"Amaryllisgewächse","famLat":"Amaryllidaceae","leb":"wald","monate":[1,2,3],"farbe":["weiss"],"form":"glocke","url":"arten/galanthus-nivalis.html"},{"slug":"anemone-nemorosa","name":"Buschwindröschen","wiss":"Anemone nemorosa","famDe":"Hahnenfußgewächse","famLat":"Ranunculaceae","leb":"wald","monate":[3,4],"farbe":["weiss"],"form":"radiaer","url":"arten/anemone-nemorosa.html"},{"slug":"ficaria-verna","name":"Scharbockskraut","wiss":"Ficaria verna","famDe":"Hahnenfußgewächse","famLat":"Ranunculaceae","leb":"wald","monate":[2,3,4],"farbe":["gelb"],"form":"radiaer","url":"arten/ficaria-verna.html"},{"slug":"allium-ursinum","name":"Bärlauch","wiss":"Allium ursinum","famDe":"Amaryllisgewächse","famLat":"Amaryllidaceae","leb":"wald","monate":[4,5],"farbe":["weiss"],"form":"stern_dolde","url":"arten/allium-ursinum.html"},{"slug":"corydalis-cava","name":"Hohler Lerchensporn","wiss":"Corydalis cava","famDe":"Mohngewächse","famLat":"Papaveraceae","leb":"wald","monate":[3,4],"farbe":["violett","weiss"],"form":"unregelmaessig","url":"arten/corydalis-cava.html"},{"slug":"corydalis-solida","name":"Gefingerter Lerchensporn","wiss":"Corydalis solida","famDe":"Mohngewächse","famLat":"Papaveraceae","leb":"wald","monate":[3,4],"farbe":["violett"],"form":"unregelmaessig","url":"arten/corydalis-solida.html"},{"slug":"gagea-lutea","name":"Wald-Gelbstern","wiss":"Gagea lutea","famDe":"Liliengewächse","famLat":"Liliaceae","leb":"wald","monate":[3,4],"farbe":["gelb"],"form":"radiaer","url":"arten/gagea-lutea.html"},{"slug":"anemone-ranunculoides","name":"Gelbes Windröschen","wiss":"Anemone ranunculoides","famDe":"Hahnenfußgewächse","famLat":"Ranunculaceae","leb":"wald","monate":[3,4],"farbe":["gelb"],"form":"radiaer","url":"arten/anemone-ranunculoides.html"},{"slug":"oxalis-acetosella","name":"Wald-Sauerklee","wiss":"Oxalis acetosella","famDe":"Sauerkleegewächse","famLat":"Oxalidaceae","leb":"wald","monate":[4,5],"farbe":["weiss"],"form":"radiaer","url":"arten/oxalis-acetosella.html"},{"slug":"pulmonaria-officinalis","name":"Lungenkraut","wiss":"Pulmonaria officinalis","famDe":"Raublattgewächse","famLat":"Boraginaceae","leb":"wald","monate":[3,4],"farbe":["violett","rot"],"form":"trichter","url":"arten/pulmonaria-officinalis.html"},{"slug":"hepatica-nobilis","name":"Leberblümchen","wiss":"Hepatica nobilis","famDe":"Hahnenfußgewächse","famLat":"Ranunculaceae","leb":"wald","monate":[2,3],"farbe":["blau"],"form":"radiaer","url":"arten/hepatica-nobilis.html"},{"slug":"leucojum-vernum","name":"Märzbecher","wiss":"Leucojum vernum","famDe":"Amaryllisgewächse","famLat":"Amaryllidaceae","leb":"wald","monate":[2,3],"farbe":["weiss"],"form":"glocke","url":"arten/leucojum-vernum.html"},{"slug":"lathyrus-vernus","name":"Frühlings-Platterbse","wiss":"Lathyrus vernus","famDe":"Schmetterlingsblütler","famLat":"Fabaceae","leb":"wald","monate":[3,4,5],"farbe":["violett"],"form":"schmetterling","url":"arten/lathyrus-vernus.html"},{"slug":"eranthis-hyemalis","name":"Winterling","wiss":"Eranthis hyemalis","famDe":"Hahnenfußgewächse","famLat":"Ranunculaceae","leb":"wald","monate":[1,2,3],"farbe":["gelb"],"form":"radiaer","url":"arten/eranthis-hyemalis.html"},{"slug":"lamium-galeobdolon","name":"Goldnessel","wiss":"Lamium galeobdolon","famDe":"Lippenblütler","famLat":"Lamiaceae","leb":"wald","monate":[4,5,6],"farbe":["gelb"],"form":"lippe","url":"arten/lamium-galeobdolon.html"},{"slug":"scilla-bifolia","name":"Gewöhnliche Sternhyazinthe","wiss":"Scilla bifolia","famDe":"Spargelgewächse","famLat":"Asparagaceae","leb":"wald","monate":[2,3,4],"farbe":["blau"],"form":"radiaer","url":"arten/scilla-bifolia.html"},{"slug":"ranunculus-auricomus","name":"Gold-Hahnenfuß","wiss":"Ranunculus auricomus","famDe":"Hahnenfußgewächse","famLat":"Ranunculaceae","leb":"wald","monate":[4,5],"farbe":["gelb"],"form":"radiaer","url":"arten/ranunculus-auricomus.html"},{"slug":"ajuga-reptans","name":"Kriechender Günsel","wiss":"Ajuga reptans","famDe":"Lippenblütler","famLat":"Lamiaceae","leb":"wald","monate":[4,5,6],"farbe":["blau","violett"],"form":"lippe","url":"arten/ajuga-reptans.html"},{"slug":"viola-odorata","name":"Wohlriechendes Veilchen","wiss":"Viola odorata","famDe":"Veilchengewächse","famLat":"Violaceae","leb":"wald","monate":[2,3,4],"farbe":["violett"],"form":"unregelmaessig","url":"arten/viola-odorata.html"},{"slug":"alliaria-petiolata","name":"Knoblauchsrauke","wiss":"Alliaria petiolata","famDe":"Kreuzblütler","famLat":"Brassicaceae","leb":"wald","monate":[4,5,6],"farbe":["weiss"],"form":"kreuz","url":"arten/alliaria-petiolata.html"},{"slug":"stellaria-holostea","name":"Große Sternmiere","wiss":"Stellaria holostea","famDe":"Nelkengewächse","famLat":"Caryophyllaceae","leb":"wald","monate":[4,5,6],"farbe":["weiss"],"form":"radiaer","url":"arten/stellaria-holostea.html"},{"slug":"bellis-perennis","name":"Gänseblümchen","wiss":"Bellis perennis","famDe":"Korbblütler","famLat":"Asteraceae","leb":"wiese","monate":[2,3,4,5,6,7,8,9,10,11],"farbe":["weiss"],"form":"koerbchen","url":"arten/bellis-perennis.html"},{"slug":"cardamine-pratensis","name":"Wiesen-Schaumkraut","wiss":"Cardamine pratensis","famDe":"Kreuzblütler","famLat":"Brassicaceae","leb":"wiese","monate":[4,5],"farbe":["violett","weiss"],"form":"kreuz","url":"arten/cardamine-pratensis.html"},{"slug":"taraxacum-officinale","name":"Löwenzahn","wiss":"Taraxacum officinale","famDe":"Korbblütler","famLat":"Asteraceae","leb":"wiese","monate":[3,4,5,6,7,8,9,10],"farbe":["gelb"],"form":"koerbchen","url":"arten/taraxacum-officinale.html"},{"slug":"veronica-chamaedrys","name":"Gamander-Ehrenpreis","wiss":"Veronica chamaedrys","famDe":"Wegerichgewächse","famLat":"Plantaginaceae","leb":"wiese","monate":[3,4,5,6,7],"farbe":["blau"],"form":"radiaer","url":"arten/veronica-chamaedrys.html"},{"slug":"viola-tricolor","name":"Wildes Stiefmütterchen","wiss":"Viola tricolor","famDe":"Veilchengewächse","famLat":"Violaceae","leb":"wiese","monate":[3,4,5,6,7,8,9,10],"farbe":["violett","gelb"],"form":"unregelmaessig","url":"arten/viola-tricolor.html"},{"slug":"thlaspi-arvense","name":"Acker-Hellerkraut","wiss":"Thlaspi arvense","famDe":"Kreuzblütler","famLat":"Brassicaceae","leb":"wiese","monate":[3,4,5,6,7,8,9,10],"farbe":["weiss"],"form":"kreuz","url":"arten/thlaspi-arvense.html"},{"slug":"stellaria-media","name":"Vogelmiere","wiss":"Stellaria media","famDe":"Nelkengewächse","famLat":"Caryophyllaceae","leb":"wiese","monate":[1,2,3,4,5,6,7,8,9,10,11,12],"farbe":["weiss"],"form":"radiaer","url":"arten/stellaria-media.html"},{"slug":"lamium-purpureum","name":"Rote Taubnessel","wiss":"Lamium purpureum","famDe":"Lippenblütler","famLat":"Lamiaceae","leb":"wiese","monate":[3,4,5,6,7,8,9,10],"farbe":["rot","violett"],"form":"lippe","url":"arten/lamium-purpureum.html"},{"slug":"caltha-palustris","name":"Sumpfdotterblume","wiss":"Caltha palustris","famDe":"Hahnenfußgewächse","famLat":"Ranunculaceae","leb":"wiese","monate":[3,4,5],"farbe":["gelb"],"form":"radiaer","url":"arten/caltha-palustris.html"},{"slug":"tussilago-farfara","name":"Huflattich","wiss":"Tussilago farfara","famDe":"Korbblütler","famLat":"Asteraceae","leb":"wiese","monate":[2,3,4],"farbe":["gelb"],"form":"koerbchen","url":"arten/tussilago-farfara.html"},{"slug":"primula-veris","name":"Schlüsselblume","wiss":"Primula veris","famDe":"Primelgewächse","famLat":"Primulaceae","leb":"wiese","monate":[4,5],"farbe":["gelb"],"form":"roehre","url":"arten/primula-veris.html"},{"slug":"muscari-botryoides","name":"Traubenhyazinthe","wiss":"Muscari botryoides","famDe":"Spargelgewächse","famLat":"Asparagaceae","leb":"wiese","monate":[3,4,5],"farbe":["blau"],"form":"glocke","url":"arten/muscari-botryoides.html"},{"slug":"scilla-siberica","name":"Blaustern","wiss":"Scilla siberica","famDe":"Spargelgewächse","famLat":"Asparagaceae","leb":"wiese","monate":[2,3,4],"farbe":["blau"],"form":"radiaer","url":"arten/scilla-siberica.html"},{"slug":"potentilla-neumanniana","name":"Frühlings-Fingerkraut","wiss":"Potentilla neumanniana","famDe":"Rosengewächse","famLat":"Rosaceae","leb":"wiese","monate":[3,4,5],"farbe":["gelb"],"form":"radiaer","url":"arten/potentilla-neumanniana.html"},{"slug":"draba-verna","name":"Frühlings-Hungerblümchen","wiss":"Draba verna","famDe":"Kreuzblütler","famLat":"Brassicaceae","leb":"wiese","monate":[2,3,4],"farbe":["weiss"],"form":"kreuz","url":"arten/draba-verna.html"},{"slug":"pulsatilla-vulgaris","name":"Küchenschelle","wiss":"Pulsatilla vulgaris","famDe":"Hahnenfußgewächse","famLat":"Ranunculaceae","leb":"wiese","monate":[3,4],"farbe":["violett"],"form":"glocke","url":"arten/pulsatilla-vulgaris.html"},{"slug":"veronica-persica","name":"Persischer Ehrenpreis","wiss":"Veronica persica","famDe":"Wegerichgewächse","famLat":"Plantaginaceae","leb":"wiese","monate":[2,3,4,5,6,7,8,9,10],"farbe":["blau"],"form":"radiaer","url":"arten/veronica-persica.html"},{"slug":"cardamine-hirsuta","name":"Viermänniges Schaumkraut","wiss":"Cardamine hirsuta","famDe":"Kreuzblütler","famLat":"Brassicaceae","leb":"wiese","monate":[2,3,4,5],"farbe":["weiss"],"form":"kreuz","url":"arten/cardamine-hirsuta.html"},{"slug":"lamium-album","name":"Weiße Taubnessel","wiss":"Lamium album","famDe":"Lippenblütler","famLat":"Lamiaceae","leb":"wiese","monate":[3,4,5,6,7,8,9,10],"farbe":["weiss"],"form":"lippe","url":"arten/lamium-album.html"},{"slug":"campanula-rapunculus","name":"Rapunzel-Glockenblume","wiss":"Campanula rapunculus","famDe":"Glockenblumengewächse","famLat":"Campanulaceae","leb":"wiese","monate":[6,7,8],"farbe":["blau","violett"],"form":"glocke","url":"arten/campanula-rapunculus.html"},{"slug":"campanula-trachelium","name":"Nesselblättrige Glockenblume","wiss":"Campanula trachelium","famDe":"Glockenblumengewächse","famLat":"Campanulaceae","leb":"wald","monate":[7,8,9],"farbe":["violett","blau"],"form":"glocke","url":"arten/campanula-trachelium.html"},{"slug":"centaurea-jacea","name":"Wiesen-Flockenblume","wiss":"Centaurea jacea","famDe":"Korbblütler","famLat":"Asteraceae","leb":"wiese","monate":[6,7,8,9,10],"farbe":["violett","rot"],"form":"koerbchen","url":"arten/centaurea-jacea.html"},{"slug":"cichorium-intybus","name":"Gewöhnliche Wegwarte","wiss":"Cichorium intybus","famDe":"Korbblütler","famLat":"Asteraceae","leb":"wiese","monate":[7,8,9,10],"farbe":["blau"],"form":"koerbchen","url":"arten/cichorium-intybus.html"},{"slug":"echium-vulgare","name":"Gewöhnlicher Natternkopf","wiss":"Echium vulgare","famDe":"Raublattgewächse","famLat":"Boraginaceae","leb":"wiese","monate":[5,6,7,8,9,10],"farbe":["blau","violett"],"form":"trichter","url":"arten/echium-vulgare.html"},{"slug":"geranium-palustre","name":"Sumpf-Storchschnabel","wiss":"Geranium palustre","famDe":"Storchschnabelgewächse","famLat":"Geraniaceae","leb":"wiese","monate":[6,7,8,9],"farbe":["rot","violett"],"form":"radiaer","url":"arten/geranium-palustre.html"},{"slug":"geranium-pratense","name":"Wiesen-Storchschnabel","wiss":"Geranium pratense","famDe":"Storchschnabelgewächse","famLat":"Geraniaceae","leb":"wiese","monate":[6,7,8],"farbe":["blau","violett"],"form":"radiaer","url":"arten/geranium-pratense.html"},{"slug":"malva-moschata","name":"Moschus-Malve","wiss":"Malva moschata","famDe":"Malvengewächse","famLat":"Malvaceae","leb":"wiese","monate":[6,7,8,9],"farbe":["rot","weiss"],"form":"radiaer","url":"arten/malva-moschata.html"},{"slug":"polemonium-caeruleum","name":"Jakobsleiter","wiss":"Polemonium caeruleum","famDe":"Sperrkrautgewächse","famLat":"Polemoniaceae","leb":"wiese","monate":[6,7,8],"farbe":["blau"],"form":"glocke","url":"arten/polemonium-caeruleum.html"},{"slug":"bistorta-officinalis","name":"Wiesen-Knöterich","wiss":"Bistorta officinalis","famDe":"Knöterichgewächse","famLat":"Polygonaceae","leb":"wiese","monate":[5,6,7,8],"farbe":["rot"],"form":"aehre","url":"arten/bistorta-officinalis.html"},{"slug":"centaurium-erythraea","name":"Echtes Tausendgüldenkraut","wiss":"Centaurium erythraea","famDe":"Enziangewächse","famLat":"Gentianaceae","leb":"wiese","monate":[7,8,9],"farbe":["rot"],"form":"roehre","url":"arten/centaurium-erythraea.html"},{"slug":"cirsium-arvense","name":"Acker-Kratzdistel","wiss":"Cirsium arvense","famDe":"Korbblütler","famLat":"Asteraceae","leb":"wiese","monate":[6,7,8,9],"farbe":["violett","rot"],"form":"koerbchen","url":"arten/cirsium-arvense.html"},{"slug":"dianthus-deltoides","name":"Heide-Nelke","wiss":"Dianthus deltoides","famDe":"Nelkengewächse","famLat":"Caryophyllaceae","leb":"wiese","monate":[6,7,8,9],"farbe":["rot"],"form":"radiaer","url":"arten/dianthus-deltoides.html"},{"slug":"digitalis-purpurea","name":"Roter Fingerhut","wiss":"Digitalis purpurea","famDe":"Wegerichgewächse","famLat":"Plantaginaceae","leb":"wald","monate":[6,7,8],"farbe":["rot","violett"],"form":"glocke","url":"arten/digitalis-purpurea.html"},{"slug":"epilobium-hirsutum","name":"Zottiges Weidenröschen","wiss":"Epilobium hirsutum","famDe":"Nachtkerzengewächse","famLat":"Onagraceae","leb":"wiese","monate":[7,8,9],"farbe":["rot"],"form":"radiaer","url":"arten/epilobium-hirsutum.html"},{"slug":"eupatorium-cannabinum","name":"Gewöhnlicher Wasserdost","wiss":"Eupatorium cannabinum","famDe":"Korbblütler","famLat":"Asteraceae","leb":"wiese","monate":[7,8,9],"farbe":["rot"],"form":"koerbchen","url":"arten/eupatorium-cannabinum.html"},{"slug":"geranium-robertianum","name":"Ruprechtskraut","wiss":"Geranium robertianum","famDe":"Storchschnabelgewächse","famLat":"Geraniaceae","leb":"wald","monate":[5,6,7,8,9,10],"farbe":["rot"],"form":"radiaer","url":"arten/geranium-robertianum.html"},{"slug":"impatiens-glandulifera","name":"Drüsiges Springkraut","wiss":"Impatiens glandulifera","famDe":"Balsaminengewächse","famLat":"Balsaminaceae","leb":"wiese","monate":[7,8,9,10],"farbe":["rot"],"form":"unregelmaessig","url":"arten/impatiens-glandulifera.html"},{"slug":"lythrum-salicaria","name":"Blut-Weiderich","wiss":"Lythrum salicaria","famDe":"Weiderichgewächse","famLat":"Lythraceae","leb":"wiese","monate":[7,8,9],"farbe":["rot","violett"],"form":"radiaer","url":"arten/lythrum-salicaria.html"},{"slug":"sanguisorba-officinalis","name":"Großer Wiesenknopf","wiss":"Sanguisorba officinalis","famDe":"Rosengewächse","famLat":"Rosaceae","leb":"wiese","monate":[6,7,8,9],"farbe":["rot"],"form":"koepfchen","url":"arten/sanguisorba-officinalis.html"},{"slug":"silene-dioica","name":"Rote Lichtnelke","wiss":"Silene dioica","famDe":"Nelkengewächse","famLat":"Caryophyllaceae","leb":"wald","monate":[5,6,7,8,9],"farbe":["rot"],"form":"radiaer","url":"arten/silene-dioica.html"},{"slug":"stachys-palustris","name":"Sumpf-Ziest","wiss":"Stachys palustris","famDe":"Lippenblütler","famLat":"Lamiaceae","leb":"wiese","monate":[7,8,9],"farbe":["rot","violett"],"form":"lippe","url":"arten/stachys-palustris.html"},{"slug":"trifolium-pratense","name":"Wiesen-Klee","wiss":"Trifolium pratense","famDe":"Schmetterlingsblütler","famLat":"Fabaceae","leb":"wiese","monate":[5,6,7,8,9],"farbe":["rot","violett"],"form":"schmetterling","url":"arten/trifolium-pratense.html"},{"slug":"achillea-millefolium","name":"Schafgarbe","wiss":"Achillea millefolium","famDe":"Korbblütler","famLat":"Asteraceae","leb":"wiese","monate":[6,7,8,9,10],"farbe":["weiss"],"form":"koerbchen","url":"arten/achillea-millefolium.html"},{"slug":"potentilla-anserina","name":"Gänsefingerkraut","wiss":"Potentilla anserina","famDe":"Rosengewächse","famLat":"Rosaceae","leb":"wiese","monate":[5,6,7,8],"farbe":["gelb"],"form":"radiaer","url":"arten/potentilla-anserina.html"},{"slug":"artemisia-vulgaris","name":"Beifuß","wiss":"Artemisia vulgaris","famDe":"Korbblütler","famLat":"Asteraceae","leb":"wiese","monate":[7,8,9],"farbe":["gruen"],"form":"unscheinbar","url":"arten/artemisia-vulgaris.html"},{"slug":"circaea-lutetiana","name":"Hexenkraut","wiss":"Circaea lutetiana","famDe":"Nachtkerzengewächse","famLat":"Onagraceae","leb":"wald","monate":[6,7,8],"farbe":["weiss"],"form":"unscheinbar","url":"arten/circaea-lutetiana.html"},{"slug":"crepis-biennis","name":"Wiesen-Pippau","wiss":"Crepis biennis","famDe":"Korbblütler","famLat":"Asteraceae","leb":"wiese","monate":[5,6,7],"farbe":["gelb"],"form":"koerbchen","url":"arten/crepis-biennis.html"},{"slug":"daucus-carota","name":"Wilde Möhre","wiss":"Daucus carota","famDe":"Doldenblütler","famLat":"Apiaceae","leb":"wiese","monate":[6,7,8,9],"farbe":["weiss"],"form":"dolde","url":"arten/daucus-carota.html"},{"slug":"erigeron-annuus","name":"Einjähriges Berufkraut","wiss":"Erigeron annuus","famDe":"Korbblütler","famLat":"Asteraceae","leb":"wiese","monate":[6,7,8,9,10],"farbe":["weiss"],"form":"koerbchen","url":"arten/erigeron-annuus.html"},{"slug":"filipendula-ulmaria","name":"Mädesüß","wiss":"Filipendula ulmaria","famDe":"Rosengewächse","famLat":"Rosaceae","leb":"wiese","monate":[6,7,8],"farbe":["weiss"],"form":"doldenrispe","url":"arten/filipendula-ulmaria.html"},{"slug":"galeopsis-tetrahit","name":"Stechender Hohlzahn","wiss":"Galeopsis tetrahit","famDe":"Lippenblütler","famLat":"Lamiaceae","leb":"wiese","monate":[7,8,9,10],"farbe":["rot","weiss"],"form":"lippe","url":"arten/galeopsis-tetrahit.html"},{"slug":"galium-verum","name":"Echtes Labkraut","wiss":"Galium verum","famDe":"Rötegewächse","famLat":"Rubiaceae","leb":"wiese","monate":[6,7,8,9],"farbe":["gelb"],"form":"radiaer","url":"arten/galium-verum.html"},{"slug":"geum-urbanum","name":"Echte Nelkenwurz","wiss":"Geum urbanum","famDe":"Rosengewächse","famLat":"Rosaceae","leb":"wald","monate":[5,6,7,8],"farbe":["gelb"],"form":"radiaer","url":"arten/geum-urbanum.html"},{"slug":"heracleum-sphondylium","name":"Wiesen-Bärenklau","wiss":"Heracleum sphondylium","famDe":"Doldenblütler","famLat":"Apiaceae","leb":"wiese","monate":[6,7,8,9],"farbe":["weiss"],"form":"dolde","url":"arten/heracleum-sphondylium.html"},{"slug":"hypericum-perforatum","name":"Echtes Johanniskraut","wiss":"Hypericum perforatum","famDe":"Hartheugewächse","famLat":"Hypericaceae","leb":"wiese","monate":[6,7,8],"farbe":["gelb"],"form":"radiaer","url":"arten/hypericum-perforatum.html"},{"slug":"impatiens-nolitangere","name":"Großes Springkraut","wiss":"Impatiens nolitangere","famDe":"Balsaminengewächse","famLat":"Balsaminaceae","leb":"wald","monate":[7,8,9],"farbe":["gelb"],"form":"unregelmaessig","url":"arten/impatiens-nolitangere.html"},{"slug":"impatiens-parviflora","name":"Kleinblütiges Springkraut","wiss":"Impatiens parviflora","famDe":"Balsaminengewächse","famLat":"Balsaminaceae","leb":"wald","monate":[6,7,8,9],"farbe":["gelb"],"form":"unregelmaessig","url":"arten/impatiens-parviflora.html"},{"slug":"jacobaea-vulgaris","name":"Jakobs-Greiskraut","wiss":"Jacobaea vulgaris","famDe":"Korbblütler","famLat":"Asteraceae","leb":"wiese","monate":[6,7,8,9],"farbe":["gelb"],"form":"koerbchen","url":"arten/jacobaea-vulgaris.html"},{"slug":"lapsana-communis","name":"Rainkohl","wiss":"Lapsana communis","famDe":"Korbblütler","famLat":"Asteraceae","leb":"wiese","monate":[6,7,8,9],"farbe":["gelb"],"form":"koerbchen","url":"arten/lapsana-communis.html"},{"slug":"lathyrus-pratensis","name":"Wiesen-Platterbse","wiss":"Lathyrus pratensis","famDe":"Schmetterlingsblütler","famLat":"Fabaceae","leb":"wiese","monate":[5,6,7,8],"farbe":["gelb"],"form":"schmetterling","url":"arten/lathyrus-pratensis.html"},{"slug":"linaria-vulgaris","name":"Echtes Leinkraut","wiss":"Linaria vulgaris","famDe":"Wegerichgewächse","famLat":"Plantaginaceae","leb":"wiese","monate":[6,7,8,9],"farbe":["gelb"],"form":"lippe","url":"arten/linaria-vulgaris.html"},{"slug":"lysimachia-vulgaris","name":"Gemeiner Gilbweiderich","wiss":"Lysimachia vulgaris","famDe":"Primelgewächse","famLat":"Primulaceae","leb":"wiese","monate":[6,7,8],"farbe":["gelb"],"form":"radiaer","url":"arten/lysimachia-vulgaris.html"},{"slug":"pastinaca-sativa","name":"Pastinak","wiss":"Pastinaca sativa","famDe":"Doldenblütler","famLat":"Apiaceae","leb":"wiese","monate":[6,7,8,9],"farbe":["gelb"],"form":"dolde","url":"arten/pastinaca-sativa.html"},{"slug":"plantago-lanceolata","name":"Spitz-Wegerich","wiss":"Plantago lanceolata","famDe":"Wegerichgewächse","famLat":"Plantaginaceae","leb":"wiese","monate":[4,5,6,7,8,9],"farbe":["gruen"],"form":"unscheinbar","url":"arten/plantago-lanceolata.html"},{"slug":"saponaria-officinalis","name":"Gewöhnliches Seifenkraut","wiss":"Saponaria officinalis","famDe":"Nelkengewächse","famLat":"Caryophyllaceae","leb":"wiese","monate":[6,7,8,9],"farbe":["rot","weiss"],"form":"radiaer","url":"arten/saponaria-officinalis.html"},{"slug":"silene-vulgaris","name":"Aufgeblasenes Leimkraut","wiss":"Silene vulgaris","famDe":"Nelkengewächse","famLat":"Caryophyllaceae","leb":"wiese","monate":[5,6,7,8,9],"farbe":["weiss"],"form":"radiaer","url":"arten/silene-vulgaris.html"},{"slug":"tanacetum-vulgare","name":"Rainfarn","wiss":"Tanacetum vulgare","famDe":"Korbblütler","famLat":"Asteraceae","leb":"wiese","monate":[7,8,9,10],"farbe":["gelb"],"form":"koerbchen","url":"arten/tanacetum-vulgare.html"},{"slug":"torilis-japonica","name":"Klettenkerbel","wiss":"Torilis japonica","famDe":"Doldenblütler","famLat":"Apiaceae","leb":"wiese","monate":[6,7,8,9],"farbe":["weiss"],"form":"dolde","url":"arten/torilis-japonica.html"},{"slug":"trifolium-repens","name":"Weiß-Klee","wiss":"Trifolium repens","famDe":"Schmetterlingsblütler","famLat":"Fabaceae","leb":"wiese","monate":[5,6,7,8,9,10],"farbe":["weiss"],"form":"schmetterling","url":"arten/trifolium-repens.html"},{"slug":"cardamine-bulbifera","name":"Zwiebel-Zahnwurz","wiss":"Cardamine bulbifera","famDe":"Kreuzblütler","famLat":"Brassicaceae","leb":"wald","monate":[4,5,6],"farbe":["violett","weiss"],"form":"kreuz","url":"arten/cardamine-bulbifera.html"},{"slug":"doronicum-pardalianches","name":"Kriechende Gämswurz","wiss":"Doronicum pardalianches","famDe":"Korbblütler","famLat":"Asteraceae","leb":"wald","monate":[4,5,6],"farbe":["gelb"],"form":"koerbchen","url":"arten/doronicum-pardalianches.html"},{"slug":"lunaria-annua","name":"Einjähriges Silberblatt","wiss":"Lunaria annua","famDe":"Kreuzblütler","famLat":"Brassicaceae","leb":"wald","monate":[4,5,6],"farbe":["violett"],"form":"kreuz","url":"arten/lunaria-annua.html"},{"slug":"silene-latifolia","name":"Weiße Lichtnelke","wiss":"Silene latifolia","famDe":"Nelkengewächse","famLat":"Caryophyllaceae","leb":"wiese","monate":[5,6,7,8,9],"farbe":["weiss"],"form":"radiaer","url":"arten/silene-latifolia.html"},{"slug":"tripleurospermum-inodorum","name":"Geruchlose Kamille","wiss":"Tripleurospermum inodorum","famDe":"Korbblütler","famLat":"Asteraceae","leb":"wiese","monate":[5,6,7,8,9,10],"farbe":["weiss"],"form":"koerbchen","url":"arten/tripleurospermum-inodorum.html"},{"slug":"achillea-ptarmica","name":"Sumpf-Schafgarbe","wiss":"Achillea ptarmica","famDe":"Korbblütler","famLat":"Asteraceae","leb":"wiese","monate":[7,8,9],"farbe":["weiss"],"form":"koerbchen","url":"arten/achillea-ptarmica.html"},{"slug":"barbarea-vulgaris","name":"Gewöhnliches Barbarakraut","wiss":"Barbarea vulgaris","famDe":"Kreuzblütler","famLat":"Brassicaceae","leb":"wiese","monate":[4,5,6],"farbe":["gelb"],"form":"kreuz","url":"arten/barbarea-vulgaris.html"},{"slug":"cerastium-fontanum","name":"Gewöhnliches Hornkraut","wiss":"Cerastium fontanum","famDe":"Nelkengewächse","famLat":"Caryophyllaceae","leb":"wiese","monate":[4,5,6,7,8,9,10],"farbe":["weiss"],"form":"radiaer","url":"arten/cerastium-fontanum.html"},{"slug":"chelidonium-majus","name":"Schöllkraut","wiss":"Chelidonium majus","famDe":"Mohngewächse","famLat":"Papaveraceae","leb":"wald","monate":[5,6,7,8,9],"farbe":["gelb"],"form":"kreuz","url":"arten/chelidonium-majus.html"},{"slug":"convolvulus-arvensis","name":"Acker-Winde","wiss":"Convolvulus arvensis","famDe":"Windengewächse","famLat":"Convolvulaceae","leb":"wiese","monate":[6,7,8,9],"farbe":["weiss","rot"],"form":"glocke","url":"arten/convolvulus-arvensis.html"},{"slug":"cytisus-scoparius","name":"Besenginster","wiss":"Cytisus scoparius","famDe":"Schmetterlingsblütler","famLat":"Fabaceae","leb":"wiese","monate":[5,6],"farbe":["gelb"],"form":"schmetterling","url":"arten/cytisus-scoparius.html"},{"slug":"euphorbia-cyparissias","name":"Zypressen-Wolfsmilch","wiss":"Euphorbia cyparissias","famDe":"Wolfsmilchgewächse","famLat":"Euphorbiaceae","leb":"wiese","monate":[4,5,6],"farbe":["gelb","gruen"],"form":"unscheinbar","url":"arten/euphorbia-cyparissias.html"},{"slug":"galium-odoratum","name":"Waldmeister","wiss":"Galium odoratum","famDe":"Rötegewächse","famLat":"Rubiaceae","leb":"wald","monate":[4,5,6],"farbe":["weiss"],"form":"radiaer","url":"arten/galium-odoratum.html"},{"slug":"glechoma-hederacea","name":"Gundermann","wiss":"Glechoma hederacea","famDe":"Lippenblütler","famLat":"Lamiaceae","leb":"wiese","monate":[4,5,6],"farbe":["blau","violett"],"form":"lippe","url":"arten/glechoma-hederacea.html"},{"slug":"hypochaeris-radicata","name":"Gewöhnliches Ferkelkraut","wiss":"Hypochaeris radicata","famDe":"Korbblütler","famLat":"Asteraceae","leb":"wiese","monate":[6,7,8,9,10],"farbe":["gelb"],"form":"koerbchen","url":"arten/hypochaeris-radicata.html"},{"slug":"leucanthemum-vulgare","name":"Wiesen-Margerite","wiss":"Leucanthemum vulgare","famDe":"Korbblütler","famLat":"Asteraceae","leb":"wiese","monate":[5,6,7,8,9,10],"farbe":["weiss"],"form":"koerbchen","url":"arten/leucanthemum-vulgare.html"},{"slug":"lotus-corniculatus","name":"Gewöhnlicher Hornklee","wiss":"Lotus corniculatus","famDe":"Schmetterlingsblütler","famLat":"Fabaceae","leb":"wiese","monate":[5,6,7,8,9],"farbe":["gelb"],"form":"schmetterling","url":"arten/lotus-corniculatus.html"},{"slug":"lychnis-flos-cuculi","name":"Kuckucks-Lichtnelke","wiss":"Lychnis flos-cuculi","famDe":"Nelkengewächse","famLat":"Caryophyllaceae","leb":"wiese","monate":[5,6,7],"farbe":["rot"],"form":"radiaer","url":"arten/lychnis-flos-cuculi.html"},{"slug":"polygonatum-multiflorum","name":"Vielblütige Weißwurz","wiss":"Polygonatum multiflorum","famDe":"Spargelgewächse","famLat":"Asparagaceae","leb":"wald","monate":[5,6],"farbe":["weiss"],"form":"glocke","url":"arten/polygonatum-multiflorum.html"},{"slug":"rumex-acetosa","name":"Wiesen-Sauerampfer","wiss":"Rumex acetosa","famDe":"Knöterichgewächse","famLat":"Polygonaceae","leb":"wiese","monate":[5,6,7],"farbe":["gruen","rot"],"form":"unscheinbar","url":"arten/rumex-acetosa.html"},{"slug":"senecio-vulgaris","name":"Gewöhnliches Greiskraut","wiss":"Senecio vulgaris","famDe":"Korbblütler","famLat":"Asteraceae","leb":"wiese","monate":[1,2,3,4,5,6,7,8,9,10,11,12],"farbe":["gelb"],"form":"koerbchen","url":"arten/senecio-vulgaris.html"},{"slug":"solidago-canadensis","name":"Kanadische Goldrute","wiss":"Solidago canadensis","famDe":"Korbblütler","famLat":"Asteraceae","leb":"wiese","monate":[7,8,9,10],"farbe":["gelb"],"form":"koerbchen","url":"arten/solidago-canadensis.html"},{"slug":"symphytum-officinale","name":"Echter Beinwell","wiss":"Symphytum officinale","famDe":"Raublattgewächse","famLat":"Boraginaceae","leb":"wiese","monate":[5,6,7,8,9],"farbe":["violett","weiss"],"form":"glocke","url":"arten/symphytum-officinale.html"},{"slug":"viola-reichenbachiana","name":"Wald-Veilchen","wiss":"Viola reichenbachiana","famDe":"Veilchengewächse","famLat":"Violaceae","leb":"wald","monate":[3,4,5],"farbe":["violett"],"form":"unregelmaessig","url":"arten/viola-reichenbachiana.html"},{"slug":"aegopodium-podagraria","name":"Giersch","wiss":"Aegopodium podagraria","famDe":"Doldenblütler","famLat":"Apiaceae","leb":"wiese","monate":[6,7,8],"farbe":["weiss"],"form":"dolde","url":"arten/aegopodium-podagraria.html"},{"slug":"alchemilla-vulgaris","name":"Gewöhnlicher Frauenmantel","wiss":"Alchemilla vulgaris","famDe":"Rosengewächse","famLat":"Rosaceae","leb":"wiese","monate":[5,6,7,8],"farbe":["gruen","gelb"],"form":"unscheinbar","url":"arten/alchemilla-vulgaris.html"},{"slug":"chrysosplenium-alternifolium","name":"Wechselblättriges Milzkraut","wiss":"Chrysosplenium alternifolium","famDe":"Steinbrechgewächse","famLat":"Saxifragaceae","leb":"wald","monate":[3,4,5],"farbe":["gelb","gruen"],"form":"unscheinbar","url":"arten/chrysosplenium-alternifolium.html"},{"slug":"convallaria-majalis","name":"Maiglöckchen","wiss":"Convallaria majalis","famDe":"Spargelgewächse","famLat":"Asparagaceae","leb":"wald","monate":[5,6],"farbe":["weiss"],"form":"glocke","url":"arten/convallaria-majalis.html"},{"slug":"fragaria-vesca","name":"Wald-Erdbeere","wiss":"Fragaria vesca","famDe":"Rosengewächse","famLat":"Rosaceae","leb":"wiese","monate":[5,6,7],"farbe":["weiss"],"form":"radiaer","url":"arten/fragaria-vesca.html"},{"slug":"hesperis-matronalis","name":"Gewöhnliche Nachtviole","wiss":"Hesperis matronalis","famDe":"Kreuzblütler","famLat":"Brassicaceae","leb":"wiese","monate":[5,6,7],"farbe":["violett","weiss"],"form":"kreuz","url":"arten/hesperis-matronalis.html"},{"slug":"lonicera-periclymenum","name":"Wald-Geißblatt","wiss":"Lonicera periclymenum","famDe":"Geißblattgewächse","famLat":"Caprifoliaceae","leb":"wald","monate":[6,7,8],"farbe":["weiss","gelb"],"form":"roehre","url":"arten/lonicera-periclymenum.html"},{"slug":"lupinus-polyphyllus","name":"Vielblättrige Lupine","wiss":"Lupinus polyphyllus","famDe":"Schmetterlingsblütler","famLat":"Fabaceae","leb":"wiese","monate":[6,7,8],"farbe":["blau","violett"],"form":"schmetterling","url":"arten/lupinus-polyphyllus.html"},{"slug":"matricaria-chamomilla","name":"Echte Kamille","wiss":"Matricaria chamomilla","famDe":"Korbblütler","famLat":"Asteraceae","leb":"wiese","monate":[5,6,7,8,9],"farbe":["weiss"],"form":"koerbchen","url":"arten/matricaria-chamomilla.html"},{"slug":"menyanthes-trifoliata","name":"Fieberklee","wiss":"Menyanthes trifoliata","famDe":"Bitterkleegewächse","famLat":"Menyanthaceae","leb":"wiese","monate":[4,5,6],"farbe":["weiss"],"form":"radiaer","url":"arten/menyanthes-trifoliata.html"},{"slug":"myosotis-arvensis","name":"Acker-Vergissmeinnicht","wiss":"Myosotis arvensis","famDe":"Raublattgewächse","famLat":"Boraginaceae","leb":"wiese","monate":[4,5,6,7,8,9,10],"farbe":["blau"],"form":"radiaer","url":"arten/myosotis-arvensis.html"},{"slug":"prunella-vulgaris","name":"Gewöhnliche Braunelle","wiss":"Prunella vulgaris","famDe":"Lippenblütler","famLat":"Lamiaceae","leb":"wiese","monate":[6,7,8,9],"farbe":["violett","blau"],"form":"lippe","url":"arten/prunella-vulgaris.html"},{"slug":"ranunculus-acris","name":"Scharfer Hahnenfuß","wiss":"Ranunculus acris","famDe":"Hahnenfußgewächse","famLat":"Ranunculaceae","leb":"wiese","monate":[5,6,7],"farbe":["gelb"],"form":"radiaer","url":"arten/ranunculus-acris.html"},{"slug":"stachys-sylvatica","name":"Wald-Ziest","wiss":"Stachys sylvatica","famDe":"Lippenblütler","famLat":"Lamiaceae","leb":"wald","monate":[6,7,8],"farbe":["rot","violett"],"form":"lippe","url":"arten/stachys-sylvatica.html"},{"slug":"stellaria-nemorum","name":"Hain-Sternmiere","wiss":"Stellaria nemorum","famDe":"Nelkengewächse","famLat":"Caryophyllaceae","leb":"wald","monate":[5,6,7],"farbe":["weiss"],"form":"radiaer","url":"arten/stellaria-nemorum.html"},{"slug":"urtica-dioica","name":"Große Brennnessel","wiss":"Urtica dioica","famDe":"Brennnesselgewächse","famLat":"Urticaceae","leb":"wiese","monate":[6,7,8,9,10],"farbe":["gruen"],"form":"unscheinbar","url":"arten/urtica-dioica.html"},{"slug":"vicia-sepium","name":"Zaun-Wicke","wiss":"Vicia sepium","famDe":"Schmetterlingsblütler","famLat":"Fabaceae","leb":"wiese","monate":[5,6,7],"farbe":["violett"],"form":"schmetterling","url":"arten/vicia-sepium.html"},{"slug":"viola-arvensis","name":"Acker-Stiefmütterchen","wiss":"Viola arvensis","famDe":"Veilchengewächse","famLat":"Violaceae","leb":"wiese","monate":[5,6,7,8,9,10],"farbe":["weiss","gelb"],"form":"unregelmaessig","url":"arten/viola-arvensis.html"},{"slug":"chamaenerion-angustifolium","name":"Schmalblättriges Weidenröschen","wiss":"Chamaenerion angustifolium","famDe":"Nachtkerzengewächse","famLat":"Onagraceae","leb":"wald","monate":[6,7,8,9],"farbe":["rot","violett"],"form":"radiaer","url":"arten/chamaenerion-angustifolium.html"},{"slug":"geranium-dissectum","name":"Schlitzblättriger Storchschnabel","wiss":"Geranium dissectum","famDe":"Storchschnabelgewächse","famLat":"Geraniaceae","leb":"wiese","monate":[5,6,7,8,9],"farbe":["rot","violett"],"form":"radiaer","url":"arten/geranium-dissectum.html"},{"slug":"geranium-sanguineum","name":"Blutroter Storchschnabel","wiss":"Geranium sanguineum","famDe":"Storchschnabelgewächse","famLat":"Geraniaceae","leb":"wiese","monate":[5,6,7,8],"farbe":["rot","violett"],"form":"radiaer","url":"arten/geranium-sanguineum.html"},{"slug":"ajuga-genevensis","name":"Genfer Günsel","wiss":"Ajuga genevensis","famDe":"Lippenblütler","famLat":"Lamiaceae","leb":"wiese","monate":[4,5,6],"farbe":["blau"],"form":"lippe","url":"arten/ajuga-genevensis.html"},{"slug":"capsella-bursa-pastoris","name":"Hirtentäschel","wiss":"Capsella bursa-pastoris","famDe":"Kreuzblütler","famLat":"Brassicaceae","leb":"wiese","monate":[3,4,5,6,7,8,9,10],"farbe":["weiss"],"form":"kreuz","url":"arten/capsella-bursa-pastoris.html"},{"slug":"chaerophyllum-temulum","name":"Zierlicher Kälberkropf","wiss":"Chaerophyllum temulum","famDe":"Doldenblütler","famLat":"Apiaceae","leb":"wald","monate":[5,6,7],"farbe":["weiss"],"form":"dolde","url":"arten/chaerophyllum-temulum.html"},{"slug":"cymbalaria-muralis","name":"Zimbelkraut","wiss":"Cymbalaria muralis","famDe":"Wegerichgewächse","famLat":"Plantaginaceae","leb":"wiese","monate":[5,6,7,8,9],"farbe":["violett","blau"],"form":"lippe","url":"arten/cymbalaria-muralis.html"},{"slug":"galium-album","name":"Weißes Labkraut","wiss":"Galium album","famDe":"Rötegewächse","famLat":"Rubiaceae","leb":"wiese","monate":[6,7,8],"farbe":["weiss"],"form":"radiaer","url":"arten/galium-album.html"},{"slug":"hippocrepis-comosa","name":"Hufeisenklee","wiss":"Hippocrepis comosa","famDe":"Schmetterlingsblütler","famLat":"Fabaceae","leb":"wiese","monate":[5,6,7],"farbe":["gelb"],"form":"schmetterling","url":"arten/hippocrepis-comosa.html"},{"slug":"orobanche-vulgaris","name":"Gewöhnliche Sommerwurz","wiss":"Orobanche vulgaris","famDe":"Sommerwurzgewächse","famLat":"Orobanchaceae","leb":"wiese","monate":[6,7],"farbe":["violett"],"form":"lippe","url":"arten/orobanche-vulgaris.html"},{"slug":"polygala-vulgaris","name":"Gewöhnliches Kreuzblümchen","wiss":"Polygala vulgaris","famDe":"Kreuzblümchengewächse","famLat":"Polygalaceae","leb":"wiese","monate":[5,6,7],"farbe":["blau","violett"],"form":"unregelmaessig","url":"arten/polygala-vulgaris.html"},{"slug":"polygonatum-odoratum","name":"Salomonssiegel","wiss":"Polygonatum odoratum","famDe":"Spargelgewächse","famLat":"Asparagaceae","leb":"wald","monate":[5,6],"farbe":["weiss"],"form":"glocke","url":"arten/polygonatum-odoratum.html"},{"slug":"rhinanthus-alectorolophus","name":"Zottiger Klappertopf","wiss":"Rhinanthus alectorolophus","famDe":"Sommerwurzgewächse","famLat":"Orobanchaceae","leb":"wiese","monate":[5,6,7],"farbe":["gelb"],"form":"lippe","url":"arten/rhinanthus-alectorolophus.html"},{"slug":"salvia-pratensis","name":"Wiesen-Salbei","wiss":"Salvia pratensis","famDe":"Lippenblütler","famLat":"Lamiaceae","leb":"wiese","monate":[5,6,7],"farbe":["blau","violett"],"form":"lippe","url":"arten/salvia-pratensis.html"}];
+
+/* Form-Schubladen: Detailform -> Laien-Kategorie. 'vielgestaltig' passt immer. */
+const FORM_GRUPPE = {
+  koerbchen:'koerbchen', koepfchen:'koerbchen',
+  dolde:'dolde', doldenrispe:'dolde', stern_dolde:'dolde',
+  lippe:'lippe', schmetterling:'schmetterling',
+  glocke:'glocke', roehre:'glocke', trichter:'glocke',
+  radiaer:'radiaer', kreuz:'kreuz', unregelmaessig:'unregelmaessig',
+  unscheinbar:'unscheinbar', aehre:'unscheinbar'
+};
+
+const FARBEN = [
+  {id:'weiss',  label:'Weiß',           farbe:'var(--w)'},
+  {id:'gelb',   label:'Gelb',           farbe:'var(--ge)'},
+  {id:'blau',   label:'Blau',           farbe:'var(--bl)'},
+  {id:'violett',label:'Violett / Lila', farbe:'var(--vi)'},
+  {id:'rot',    label:'Rot / Rosa',     farbe:'var(--ro)'},
+  {id:'gruen',  label:'Grünlich / unscheinbar', farbe:'var(--gr)'}
+];
+
+/* kleine SVG-Icons für die Blütenformen */
+const I = {
+  koerbchen:`<svg class="ikon" viewBox="0 0 42 42"><circle cx="21" cy="21" r="7" fill="#E3B23C"/>${
+     Array.from({length:12},(_,i)=>{const a=i/12*6.283;return `<ellipse cx="${21+Math.cos(a)*13}" cy="${21+Math.sin(a)*13}" rx="4.5" ry="2.4" fill="#F2D98B" stroke="#D9A93C" stroke-width=".6" transform="rotate(${a*57.3} ${21+Math.cos(a)*13} ${21+Math.sin(a)*13})"/>`}).join('')}</svg>`,
+  dolde:`<svg class="ikon" viewBox="0 0 42 42"><g stroke="#8FA876" stroke-width="1" fill="none">${
+     [[21,8],[12,12],[30,12],[8,20],[34,20],[21,16]].map(p=>`<line x1="21" y1="36" x2="${p[0]}" y2="${p[1]}"/>`).join('')}</g>${
+     [[21,8],[12,12],[30,12],[8,20],[34,20],[21,16]].map(p=>`<circle cx="${p[0]}" cy="${p[1]}" r="3.4" fill="#fff" stroke="#C9B98F" stroke-width=".7"/>`).join('')}</svg>`,
+  lippe:`<svg class="ikon" viewBox="0 0 42 42"><path d="M10 22 Q21 6 32 22 Q21 18 10 22Z" fill="#D98FA6" stroke="#B86B85" stroke-width=".8"/><path d="M11 23 Q21 40 31 23 Q21 30 11 23Z" fill="#E9A6B3" stroke="#B86B85" stroke-width=".8"/></svg>`,
+  schmetterling:`<svg class="ikon" viewBox="0 0 42 42"><path d="M9 16 Q21 6 33 16 Q21 14 9 16Z" fill="#E0B84A" stroke="#C19A2E" stroke-width=".7"/><path d="M12 19 Q21 16 30 19 L27 27 Q21 25 15 27Z" fill="#ECC85E" stroke="#C19A2E" stroke-width=".7"/><path d="M16 27 Q21 33 26 27 Q21 31 16 27Z" fill="#F2D98B" stroke="#C19A2E" stroke-width=".7"/></svg>`,
+  glocke:`<svg class="ikon" viewBox="0 0 42 42"><path d="M14 10 Q14 33 21 36 Q28 33 28 10 Q21 14 14 10Z" fill="#9FB6DC" stroke="#5C86C2" stroke-width="1"/><line x1="21" y1="10" x2="21" y2="6" stroke="#8FA876" stroke-width="1.4"/></svg>`,
+  radiaer:`<svg class="ikon" viewBox="0 0 42 42">${
+     Array.from({length:5},(_,i)=>{const a=i/5*6.283-1.57;return `<ellipse cx="${21+Math.cos(a)*9}" cy="${21+Math.sin(a)*9}" rx="5" ry="8" fill="#F4D27A" stroke="#D9A93C" stroke-width=".7" transform="rotate(${a*57.3+90} ${21+Math.cos(a)*9} ${21+Math.sin(a)*9})"/>`}).join('')}<circle cx="21" cy="21" r="4" fill="#C98A1F"/></svg>`,
+  kreuz:`<svg class="ikon" viewBox="0 0 42 42">${
+     [[21,12],[21,30],[12,21],[30,21]].map(p=>`<ellipse cx="${p[0]}" cy="${p[1]}" rx="5.5" ry="8" fill="#fff" stroke="#C9B98F" stroke-width=".9" transform="rotate(${p[0]==21?0:90} ${p[0]} ${p[1]})"/>`).join('')}<circle cx="21" cy="21" r="3" fill="#E3B23C"/></svg>`,
+  unregelmaessig:`<svg class="ikon" viewBox="0 0 42 42"><path d="M21 8 Q15 14 21 20 Q27 14 21 8Z" fill="#A77ABF" stroke="#8159A0" stroke-width=".7"/><path d="M12 16 Q10 24 19 23 Q20 17 12 16Z" fill="#B98FCB" stroke="#8159A0" stroke-width=".7"/><path d="M30 16 Q32 24 23 23 Q22 17 30 16Z" fill="#B98FCB" stroke="#8159A0" stroke-width=".7"/><path d="M15 24 Q21 38 27 24 Q21 30 15 24Z" fill="#C9A6D8" stroke="#8159A0" stroke-width=".7"/><circle cx="21" cy="22" r="2.4" fill="#E3B23C"/></svg>`,
+  unscheinbar:`<svg class="ikon" viewBox="0 0 42 42"><line x1="21" y1="36" x2="21" y2="8" stroke="#8FA876" stroke-width="1.6"/>${
+     Array.from({length:7},(_,i)=>`<circle cx="${21+(i%2?3:-3)}" cy="${11+i*3.4}" r="2.2" fill="#B7C49A" stroke="#8FA876" stroke-width=".5"/>`).join('')}</svg>`
+};
+
+const FORMEN = [
+  {id:'koerbchen', label:'Körbchen', sub:'viele winzige Blüten dicht gepackt — wie Gänseblümchen oder Löwenzahn'},
+  {id:'dolde', label:'Dolde / Schirm', sub:'viele kleine Blüten in flachem Schirm — wie Wilde Möhre'},
+  {id:'radiaer', label:'Sternförmig', sub:'klar zählbare Blütenblätter, gleichmäßig — wie Hahnenfuß, Nelke'},
+  {id:'kreuz', label:'Vier Blütenblätter', sub:'vier Blätter über Kreuz — wie Schaumkraut'},
+  {id:'lippe', label:'Lippenblüte', sub:'mit Ober- und Unterlippe — wie Taubnessel'},
+  {id:'schmetterling', label:'Schmetterlingsblüte', sub:'wie bei Erbse, Klee, Wicke'},
+  {id:'glocke', label:'Glocke / Röhre', sub:'glockig oder röhrig — wie Glockenblume, Fingerhut'},
+  {id:'unregelmaessig', label:'Gespornt / unregelmäßig', sub:'wie Veilchen, Lerchensporn'},
+  {id:'unscheinbar', label:'Unscheinbar / grünlich', sub:'kaum als Blüte erkennbar — wie Brennnessel, Wegerich'}
+];
+
+const MONATE = ['Jan','Feb','Mär','Apr','Mai','Jun','Jul','Aug','Sep','Okt','Nov','Dez'];
+const FARBNAME = {weiss:'Weiß',gelb:'Gelb',blau:'Blau',violett:'Violett',rot:'Rot/Rosa',gruen:'Grünlich'};
+const LEBNAME = {wald:'Wald',wiese:'Wiese'};
+
+let wahl = { farbe:null, leb:null, monat:null, form:null };
+let zeigeListe = false;
+
+/* ---- Filter: eine Art passt, solange sie NICHT eindeutig ausgeschlossen ist ---- */
+function passt(a, w){
+  if(w.farbe && !a.farbe.includes('vielgestaltig') && !a.farbe.includes(w.farbe)) return false;
+  if(w.leb && a.leb!==w.leb) return false;
+  if(w.monat && !a.monate.includes(w.monat)) return false;
+  if(w.form){
+    const g = FORM_GRUPPE[a.form] || 'vielgestaltig';
+    if(a.form!=='vielgestaltig' && g!==w.form) return false;
+  }
+  return true;
+}
+function gefiltert(w){ return ARTEN.filter(a=>passt(a,w)); }
+/* wie viele blieben, wenn wir zusätzlich Kriterium k=v setzen */
+function rest(k,v){ const w={...wahl,[k]:v}; return gefiltert(w).length; }
+
+const buehne = document.getElementById('buehne');
+const chipBox = document.getElementById('chips');
+const neu = document.getElementById('neustart');
+
+function reihenfolge(){
+  /* nächste offene Frage in sinnvoller Reihenfolge */
+  if(!wahl.farbe) return 'farbe';
+  if(!wahl.leb)   return 'leb';
+  if(!wahl.monat) return 'monat';
+  if(!wahl.form)  return 'form';
+  return null;
+}
+
+function render(){
+  const treffer = gefiltert(wahl);
+  renderChips();
+  neu.hidden = !(wahl.farbe||wahl.leb||wahl.monat||wahl.form);
+
+  const naechste = reihenfolge();
+  buehne.innerHTML = '';
+
+  /* Auto: wenig übrig ODER alle Fragen beantwortet ODER Nutzer will Liste */
+  const fertig = !naechste || treffer.length<=6 || zeigeListe;
+
+  if(naechste && !zeigeListe){
+    buehne.appendChild(frageKarte(naechste, treffer.length));
+  }
+  if(fertig){
+    buehne.appendChild(ergebnis(treffer));
+  }
+}
+
+function frageKarte(art, n){
+  const k = document.createElement('div');
+  k.className = 'frage';
+  let h='';
+  if(art==='farbe'){
+    h = `<h2>Welche Farbe hat die Blüte?</h2><p class="hinweis">Bei mehrfarbigen Blüten die auffälligste Farbe wählen.</p>
+         <div class="optionen spalten2">` +
+      FARBEN.map(f=>{const r=rest('farbe',f.id); return `<button class="opt" data-k="farbe" data-v="${f.id}" ${r?'':'disabled'}>
+        <span class="farbpunkt" style="background:${f.farbe}"></span>
+        <span class="txt"><b>${f.label}</b></span><span class="anz">${r}</span></button>`}).join('') + `</div>`;
+  } else if(art==='leb'){
+    h = `<h2>Wo wächst sie?</h2><p class="hinweis">Der typische Standort. Im Zweifel überspringen.</p>
+         <div class="optionen spalten2">` +
+      ['wald','wiese'].map(l=>{const r=rest('leb',l); return `<button class="opt" data-k="leb" data-v="${l}" ${r?'':'disabled'}>
+        <span class="ikon">${l==='wald'?baumIkon():wieseIkon()}</span>
+        <span class="txt"><b>${l==='wald'?'Wald / Gehölz':'Wiese / offenes Land'}</b></span><span class="anz">${r}</span></button>`}).join('') + `</div>`;
+  } else if(art==='monat'){
+    h = `<h2>In welchem Monat blüht sie?</h2><p class="hinweis">Der Monat, in dem du sie blühen siehst.</p>
+         <div class="monate">` +
+      MONATE.map((m,i)=>{const r=rest('monat',i+1); return `<button class="mon" data-k="monat" data-v="${i+1}" ${r?'':'disabled'}>${m}<br><small style="color:var(--gruen-hell)">${r}</small></button>`}).join('') + `</div>`;
+  } else if(art==='form'){
+    h = `<h2>Wie sieht die Blüte aus?</h2><p class="hinweis">Welche Form passt am besten? Die Bilder helfen.</p>
+         <div class="optionen">` +
+      FORMEN.map(f=>{const r=rest('form',f.id); return `<button class="opt" data-k="form" data-v="${f.id}" ${r?'':'disabled'}>
+        ${I[f.id]}<span class="txt"><b>${f.label}</b><small>${f.sub}</small></span><span class="anz">${r}</span></button>`}).join('') + `</div>`;
+  }
+  h += `<div class="steuerzeile">
+          <button class="linkbtn" data-skip="${art}">Diese Frage überspringen ›</button>
+          <button class="linkbtn" id="zeigJetzt">${n} Arten jetzt ansehen ▾</button>
+        </div>`;
+  k.innerHTML = h;
+  return k;
+}
+
+function ergebnis(treffer){
+  const wrap = document.createElement('div');
+  if(treffer.length===0){
+    wrap.innerHTML = `<div class="treffer">Keine Art passt zu dieser Kombination.</div>
+      <p class="leer">Vielleicht passt eine Antwort nicht ganz — tippe oben auf eine Auswahl, um sie zu ändern.</p>`;
+    return wrap;
+  }
+  const naechste = reihenfolge();
+  const banner = treffer.length===1
+    ? `<div class="treffer">Das ist sehr wahrscheinlich:<br><b>${treffer[0].name}</b></div>`
+    : `<div class="treffer">Noch <b>${treffer.length}</b> mögliche ${treffer.length===1?'Art':'Arten'}${naechste&&!zeigeListe?' — beantworte mehr Fragen oder vergleiche direkt:':':'}</div>`;
+  const liste = treffer.slice().sort((a,b)=>a.name.localeCompare(b.name,'de')).map(a=>{
+    const punkte = a.farbe.filter(f=>f!=='vielgestaltig').map(f=>{
+      const ff = FARBEN.find(x=>x.id===f); return `<span style="background:${ff?ff.farbe:'#ccc'}"></span>`;}).join('');
+    const mon = `${MONATE[a.monate[0]-1]}–${MONATE[a.monate[a.monate.length-1]-1]}`;
+    return `<a class="art" href="${a.url}" >
+      <span class="punkte">${punkte}</span>
+      <span class="info"><span class="dn">${a.name}</span>
+        <span class="wn">${a.wiss}</span>
+        <span class="meta">${a.famDe} · ${LEBNAME[a.leb]} · ${mon}</span></span>
+      <span class="pfeil">›</span></a>`;
+  }).join('');
+  wrap.innerHTML = banner + `<div class="liste">${liste}</div>`;
+  return wrap;
+}
+
+function renderChips(){
+  const teile = [];
+  const echt = v => v && v!=='__skip__';
+  if(echt(wahl.farbe)) teile.push(['farbe', 'Farbe: '+FARBNAME[wahl.farbe]]);
+  if(echt(wahl.leb))   teile.push(['leb', 'Standort: '+LEBNAME[wahl.leb]]);
+  if(echt(wahl.monat)) teile.push(['monat', 'Monat: '+MONATE[wahl.monat-1]]);
+  if(echt(wahl.form))  teile.push(['form', 'Form: '+(FORMEN.find(f=>f.id===wahl.form)||{}).label]);
+  chipBox.innerHTML = teile.length
+    ? teile.map(t=>`<button class="chip gesetzt" data-clear="${t[0]}">${t[1]} <span class="x">×</span></button>`).join('')
+    : '';
+}
+
+/* ---- Klicks ---- */
+document.getElementById('fmkey').addEventListener('click', e=>{
+  const opt = e.target.closest('[data-k]');
+  if(opt && !opt.disabled){ wahl[opt.dataset.k] = opt.dataset.k==='monat'?+opt.dataset.v:opt.dataset.v; zeigeListe=false; render(); return; }
+  const skip = e.target.closest('[data-skip]');
+  if(skip){ // Frage überspringen: auf 'übersprungen' setzen, damit Reihenfolge weitergeht
+    wahl[skip.dataset.skip] = wahl[skip.dataset.skip] || '__skip__'; render(); return; }
+  if(e.target.id==='zeigJetzt'){ zeigeListe=true; render(); return; }
+  const clr = e.target.closest('[data-clear]');
+  if(clr){ wahl[clr.dataset.clear]=null; zeigeListe=false; render(); return; }
+});
+neu.addEventListener('click', ()=>{ wahl={farbe:null,leb:null,monat:null,form:null}; zeigeListe=false; render(); window.scrollTo({top:0,behavior:'smooth'}); });
+
+/* überspringen: passt() ignoriert '__skip__' automatisch (kein Treffer-Filter) */
+const _passt = passt;
+passt = function(a,w){
+  const w2 = {...w};
+  for(const k in w2) if(w2[k]==='__skip__') w2[k]=null;
+  return _passt(a,w2);
+};
+
+function baumIkon(){return `<svg viewBox="0 0 42 42"><rect x="19" y="24" width="4" height="13" fill="#6E513B"/><circle cx="21" cy="18" r="13" fill="#6B8F5E"/><circle cx="13" cy="20" r="8" fill="#7EA468"/><circle cx="29" cy="20" r="8" fill="#7EA468"/></svg>`;}
+function wieseIkon(){return `<svg viewBox="0 0 42 42"><g stroke="#7EA468" stroke-width="2" fill="none" stroke-linecap="round"><path d="M8 37 Q7 26 9 20"/><path d="M15 37 Q16 24 14 18"/><path d="M21 37 Q20 22 22 15"/><path d="M28 37 Q29 26 27 20"/><path d="M34 37 Q33 28 35 22"/></g><circle cx="22" cy="13" r="3.5" fill="#E3B23C"/><circle cx="14" cy="17" r="3" fill="#fff" stroke="#C9B98F"/></svg>`;}
+
+render();
+</script>
+
+<!-- GoatCounter: anonyme, cookie-freie Reichweiten-Statistik -->
+<script data-goatcounter="https://mibaso.goatcounter.com/count"
+        async src="//gc.zgo.at/count.js"></script>
+
+<!-- Service-Worker registrieren + automatische Aktualisierung -->
+<script>
+  if ('serviceWorker' in navigator) {
+    let refreshing = false;
+    const hatteController = !!navigator.serviceWorker.controller;
+    navigator.serviceWorker.addEventListener('controllerchange', () => {
+      if (refreshing || !hatteController) return;
+      refreshing = true;
+      window.location.reload();
+    });
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('sw.js').then((reg) => {
+        reg.update();
+        document.addEventListener('visibilitychange', () => {
+          if (document.visibilityState === 'visible') reg.update();
+        });
+        setInterval(() => reg.update(), 60 * 60 * 1000);
+      }).catch(() => {});
+    });
+  }
+</script>
+
+</body>
+</html>
