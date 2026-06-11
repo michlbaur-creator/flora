@@ -44,6 +44,8 @@
     --ordnen-bg:#e8edf1;
     --foto:#d4633e;             /* warmes Coral-Orange – externe Foto-Apps */
     --foto-bg:#fbe8db;
+    --testen:#7d4a5a;           /* gedecktes Beerenrot – Prüfung, Ernte */
+    --testen-bg:#f3e4e9;
   }
 
   *{box-sizing:border-box}
@@ -193,13 +195,15 @@
   .sektion[data-thema="ausprobieren"] .sektion-titel{color:var(--ausprobieren)}
   .sektion[data-thema="verstehen"]    .sektion-titel{color:var(--verstehen)}
   .sektion[data-thema="phaenomene"]   .sektion-titel{color:var(--phaenomene)}
+  .sektion[data-thema="testen"]       .sektion-titel{color:var(--testen)}
 
   .sektion[data-thema="entdecken"]    .sektion-titel::after,
   .sektion[data-thema="foto"]         .sektion-titel::after,
   .sektion[data-thema="ordnen"]       .sektion-titel::after,
   .sektion[data-thema="ausprobieren"] .sektion-titel::after,
   .sektion[data-thema="verstehen"]    .sektion-titel::after,
-  .sektion[data-thema="phaenomene"]   .sektion-titel::after{
+  .sektion[data-thema="phaenomene"]   .sektion-titel::after,
+  .sektion[data-thema="testen"]       .sektion-titel::after{
     content:"";
     display:block;
     width:42px;height:3px;
@@ -212,6 +216,7 @@
   .sektion[data-thema="ausprobieren"] .sektion-titel::after{background:var(--ausprobieren)}
   .sektion[data-thema="verstehen"]    .sektion-titel::after{background:var(--verstehen)}
   .sektion[data-thema="phaenomene"]   .sektion-titel::after{background:var(--phaenomene)}
+  .sektion[data-thema="testen"]       .sektion-titel::after{background:var(--testen)}
 
   /* Kachel-Raster */
   .kacheln{
@@ -247,6 +252,7 @@
   .sektion[data-thema="ausprobieren"] .kachel:hover{border-color:var(--ausprobieren)}
   .sektion[data-thema="verstehen"]    .kachel:hover{border-color:var(--verstehen)}
   .sektion[data-thema="phaenomene"]   .kachel:hover{border-color:var(--phaenomene)}
+  .sektion[data-thema="testen"]       .kachel:hover{border-color:var(--testen)}
 
   .kachel .icon{
     width:54px;height:54px;
@@ -264,6 +270,7 @@
   .sektion[data-thema="ausprobieren"] .icon{background:var(--ausprobieren-bg); color:var(--ausprobieren)}
   .sektion[data-thema="verstehen"]    .icon{background:var(--verstehen-bg);    color:var(--verstehen)}
   .sektion[data-thema="phaenomene"]   .icon{background:var(--phaenomene-bg);   color:var(--phaenomene)}
+  .sektion[data-thema="testen"]       .icon{background:var(--testen-bg);       color:var(--testen)}
 
   .kachel h3{
     margin:0 0 6px;
@@ -277,6 +284,7 @@
   .sektion[data-thema="ausprobieren"] .kachel h3{color:var(--ausprobieren)}
   .sektion[data-thema="verstehen"]    .kachel h3{color:var(--verstehen)}
   .sektion[data-thema="phaenomene"]   .kachel h3{color:var(--phaenomene)}
+  .sektion[data-thema="testen"]       .kachel h3{color:var(--testen)}
 
   /* Foto-Apps-Kacheln: App-Logo statt SVG-Icon */
   .sektion[data-thema="foto"] .kachel .app-icon{
@@ -762,6 +770,28 @@
         </div>
         <h3>Warum „regnet" es unter Weiden?</h3>
         <p>Die heimlichen Regenmacher.</p>
+      </a>
+
+    </div>
+  </section>
+
+  <!-- TESTEN -->
+  <section class="sektion" data-thema="testen">
+    <h2 class="sektion-titel">Testen</h2>
+    <div class="kacheln">
+
+      <a class="kachel" href="quiz/gesamttest.html">
+        <div class="icon" aria-hidden="true">
+          <!-- Klemmbrett mit Häkchen und Blatt: der Test -->
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="5" y="4" width="14" height="17" rx="2"/>
+            <path d="M9 4a3 3 0 0 1 6 0"/>
+            <path d="M8.5 12.5l2.2 2.2 4.8-5"/>
+            <path d="M9 18c2.5 0 4.5-1 6-3-3 0-5 .8-6 3z"/>
+          </svg>
+        </div>
+        <h3>Der große Flora-Test</h3>
+        <p>Gemischte Fragen aus allen Bereichen — rund fünf Minuten quer durch die App.</p>
       </a>
 
     </div>

@@ -1,0 +1,1150 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#7d4a5a">
+<link rel="manifest" href="../manifest.webmanifest">
+<link rel="icon" href="../assets/icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="../assets/apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Flora Mibaso">
+<title>Der große Flora-Test – quer durch alle Themen</title>
+<link rel="stylesheet" href="../assets/style.css">
+<meta name="description" content="Der große Flora-Test: gemischte Quizfragen aus allen Bereichen der App — Pflanzen erkennen, Familien zuordnen, Naturwissen. Ideal für den Unterricht.">
+<style>
+  :root{
+    --testen:#7d4a5a;          /* gedecktes Beerenrot */
+    --testen-tief:#5e3543;
+    --testen-bg:#f3e4e9;
+    --testen-rand:#dcc4cd;
+    --gruen-ok:#3a7a4a;
+    --gruen-ok-bg:#dfeede;
+    --rot-fehler:#a84236;
+    --rot-fehler-bg:#f5dcd8;
+  }
+
+  body{ background:var(--beige-hell, #f8f3e7); }
+
+  #gt-root{
+    max-width:680px;
+    margin:0 auto;
+    padding:max(10px, env(safe-area-inset-top)) 12px 40px;
+  }
+
+  .gt-kopfzeile{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:10px;
+    margin:0 0 6px;
+  }
+  .gt-home{
+    display:inline-flex;
+    align-items:center;
+    color:var(--braun-mittel, #6b5340);
+    text-decoration:none;
+    font-size:.9rem;
+  }
+  .gt-home:hover{ color:var(--braun-dunkel, #3a2a1b); }
+  .gt-status{
+    color:#7b6a72;
+    font-size:.85rem;
+    white-space:nowrap;
+    font-variant-numeric:tabular-nums;
+  }
+  .gt-status .gt-uhr{ font-weight:700; color:var(--testen-tief); }
+  .gt-status .gt-uhr.knapp{ color:var(--rot-fehler); }
+
+  .gt-titel{
+    font-family:Georgia, serif;
+    text-align:center;
+    color:var(--testen-tief);
+    margin:0 0 12px;
+    font-size:1.15rem;
+    font-weight:600;
+    line-height:1.25;
+  }
+
+  .gt-karte-box{
+    background:#fff;
+    border:1px solid var(--testen-rand);
+    border-radius:16px;
+    box-shadow:0 2px 12px rgba(94,53,67,.08);
+    padding:18px 16px 20px;
+  }
+
+  /* ── Startscreen ── */
+  #gt-start p{
+    color:var(--text-leise, #6b5340);
+    line-height:1.5;
+    margin:0 0 16px;
+    text-align:center;
+    font-size:.95rem;
+  }
+  .gt-modus-liste{
+    display:grid;
+    gap:10px;
+  }
+  .gt-modus{
+    display:flex;
+    flex-direction:column;
+    align-items:flex-start;
+    gap:2px;
+    background:var(--testen-bg);
+    border:2px solid var(--testen-rand);
+    border-radius:12px;
+    padding:12px 16px;
+    cursor:pointer;
+    font-family:inherit;
+    text-align:left;
+    transition:border-color .15s, transform .1s;
+  }
+  .gt-modus:hover{ border-color:var(--testen); transform:translateY(-1px); }
+  .gt-modus strong{ color:var(--testen-tief); font-size:1.02rem; }
+  .gt-modus span{ color:#7b6a72; font-size:.84rem; }
+
+  /* ── Fragescreen ── */
+  #gt-frage{ display:none; }
+
+  #gt-fortschritt-wrap{
+    height:6px;
+    background:#eee2e7;
+    border-radius:3px;
+    overflow:hidden;
+    margin-bottom:12px;
+  }
+  #gt-fortschritt{
+    height:100%;
+    width:0%;
+    background:var(--testen);
+    transition:width .4s ease;
+  }
+
+  .gt-bereich-chip{
+    display:inline-block;
+    font-size:.74rem;
+    letter-spacing:.03em;
+    text-transform:uppercase;
+    color:var(--testen-tief);
+    background:var(--testen-bg);
+    border-radius:999px;
+    padding:3px 10px;
+    margin-bottom:8px;
+  }
+
+  #gt-fragetext{
+    font-size:1rem;
+    color:#3a2a30;
+    margin:0 0 12px;
+    line-height:1.4;
+  }
+
+  /* Foto (Arten-Frage) */
+  #gt-foto-wrap{
+    display:none;
+    position:relative;
+    width:100%;
+    padding-top:62%;
+    background:#1a1416;
+    border-radius:12px;
+    overflow:hidden;
+    margin-bottom:12px;
+  }
+  #gt-foto{
+    position:absolute; inset:0;
+    width:100%; height:100%;
+    object-fit:cover;
+    transition:opacity .25s;
+  }
+  #gt-foto-spinner{
+    position:absolute;
+    inset:0;
+    display:flex; align-items:center; justify-content:center;
+    color:#b9a3ac;
+    font-size:.9rem;
+    font-style:italic;
+  }
+
+  /* Antwort-Buttons (Text) */
+  #gt-antworten{
+    display:grid;
+    gap:8px;
+  }
+  #gt-antworten.zweispaltig{ grid-template-columns:1fr 1fr; }
+  .gt-antwort{
+    background:#faf6f1;
+    border:2px solid #e4d8db;
+    border-radius:10px;
+    padding:10px 12px;
+    font-size:.92rem;
+    font-family:inherit;
+    color:#3a2a30;
+    cursor:pointer;
+    text-align:center;
+    line-height:1.3;
+    transition:border-color .15s, background .15s, transform .1s;
+  }
+  .gt-antwort:hover:not(:disabled){
+    border-color:var(--testen);
+    background:var(--testen-bg);
+    transform:translateY(-1px);
+  }
+  .gt-antwort:disabled{ cursor:default; }
+  .gt-antwort.richtig{
+    background:var(--gruen-ok-bg);
+    border-color:var(--gruen-ok);
+    color:var(--gruen-ok);
+    font-weight:700;
+  }
+  .gt-antwort.falsch{
+    background:var(--rot-fehler-bg);
+    border-color:var(--rot-fehler);
+    color:var(--rot-fehler);
+  }
+  .gt-antwort em{ font-size:.78rem; color:#9b8a91; font-style:italic; }
+
+  /* Bild-Karten (Familien-Frage) */
+  .gt-antwort.mit-bild{
+    padding:8px;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:6px;
+  }
+  .gt-antwort.mit-bild img{
+    width:100%;
+    aspect-ratio:4/3;
+    object-fit:cover;
+    border-radius:8px;
+    display:block;
+  }
+  .gt-antwort.mit-bild .gt-bildname{ font-size:.84rem; }
+
+  #gt-feedback{
+    min-height:22px;
+    text-align:center;
+    font-size:.92rem;
+    font-style:italic;
+    color:#7b6a72;
+    margin:10px 0 4px;
+  }
+  #gt-feedback.ok{ color:var(--gruen-ok); }
+  #gt-feedback.fehler{ color:var(--rot-fehler); }
+
+  #gt-weiter{
+    display:none;
+    width:100%;
+    margin-top:6px;
+    padding:11px;
+    background:var(--testen);
+    color:#fff;
+    border:none;
+    border-radius:10px;
+    font-size:.98rem;
+    font-family:inherit;
+    cursor:pointer;
+    transition:background .2s;
+  }
+  #gt-weiter:hover{ background:var(--testen-tief); }
+
+  /* ── Ergebnis ── */
+  #gt-ergebnis{ display:none; text-align:center; }
+  #gt-ergebnis h2{
+    font-family:Georgia, serif;
+    color:var(--testen-tief);
+    font-size:1.25rem;
+    margin:0 0 4px;
+  }
+  #gt-score{
+    font-size:2.6rem;
+    font-weight:700;
+    color:var(--testen);
+    margin:6px 0 2px;
+    font-variant-numeric:tabular-nums;
+  }
+  #gt-ergebnis-msg{
+    color:var(--text-leise, #6b5340);
+    font-style:italic;
+    margin:0 0 18px;
+    line-height:1.5;
+  }
+
+  .gt-bereiche{
+    text-align:left;
+    display:grid;
+    gap:12px;
+    margin-bottom:22px;
+  }
+  .gt-bereich-zeile{
+    display:grid;
+    grid-template-columns:1fr auto;
+    gap:4px 10px;
+    align-items:center;
+  }
+  .gt-bereich-zeile .gtb-name{
+    font-size:.92rem;
+    color:#3a2a30;
+    font-weight:600;
+  }
+  .gt-bereich-zeile .gtb-wert{
+    font-size:.88rem;
+    color:#7b6a72;
+    font-variant-numeric:tabular-nums;
+    text-align:right;
+  }
+  .gtb-balken-wrap{
+    grid-column:1 / -1;
+    height:8px;
+    background:#eee2e7;
+    border-radius:4px;
+    overflow:hidden;
+  }
+  .gtb-balken{
+    height:100%;
+    background:var(--testen);
+    border-radius:4px;
+    transition:width .6s ease;
+  }
+  .gtb-ueben{
+    grid-column:1 / -1;
+    font-size:.84rem;
+  }
+  .gtb-ueben a{
+    color:var(--testen-tief);
+    text-decoration:none;
+    border-bottom:1px dotted var(--testen-rand);
+  }
+  .gtb-ueben a:hover{ color:var(--testen); }
+
+  .gt-btn{
+    display:inline-block;
+    padding:11px 26px;
+    background:var(--testen);
+    color:#fff;
+    border:none;
+    border-radius:10px;
+    font-size:.98rem;
+    font-family:inherit;
+    cursor:pointer;
+    text-decoration:none;
+    transition:background .2s;
+  }
+  .gt-btn:hover{ background:var(--testen-tief); }
+
+  /* ── Feuerwerk bei perfektem Ergebnis ── */
+  #gt-feuerwerk{
+    display:none;
+    position:relative;
+    height:140px;
+    overflow:hidden;
+    margin:-4px 0 2px;
+  }
+  .gt-funke{
+    position:absolute;
+    width:6px; height:6px;
+    border-radius:50%;
+    opacity:0;
+    animation:gt-explosion 1.5s ease-out forwards;
+  }
+  @keyframes gt-explosion{
+    0%   { transform:translate(0,0) scale(.5); opacity:1; }
+    65%  { opacity:1; }
+    100% { transform:translate(var(--dx), var(--dy)) scale(1.1); opacity:0; }
+  }
+  .gt-sieger{
+    font-size:1.02rem;
+    font-weight:700;
+    color:var(--testen-tief);
+    background:var(--testen-bg);
+    border:2px solid var(--testen);
+    border-radius:10px;
+    padding:12px 16px;
+    margin:6px 0 14px;
+    animation:gt-bounce .7s cubic-bezier(.36,.07,.19,.97) forwards;
+  }
+  @keyframes gt-bounce{
+    0%   { transform:scale(.3); }
+    55%  { transform:scale(1.15); }
+    75%  { transform:scale(.92); }
+    90%  { transform:scale(1.05); }
+    100% { transform:scale(1); }
+  }
+
+  .gt-fussnote{
+    text-align:center;
+    margin-top:14px;
+    font-size:.78rem;
+    color:#a39299;
+  }
+  .gt-fussnote a{ color:var(--testen-tief); text-decoration:none; }
+
+  @media (max-width:480px){
+    #gt-antworten.zweispaltig{ gap:6px; }
+    .gt-antwort{ font-size:.86rem; padding:8px 8px; }
+  }
+</style>
+</head>
+<body>
+
+<div id="gt-root">
+
+  <div class="gt-kopfzeile">
+    <a class="gt-home" href="../">← Startseite</a>
+    <span class="gt-status" id="gt-status"></span>
+  </div>
+
+  <h1 class="gt-titel">🌿 Der große Flora-Test</h1>
+
+  <div class="gt-karte-box">
+
+    <!-- ══ START ══ -->
+    <div id="gt-start">
+      <p>Einmal quer durch die ganze App: Pflanzen erkennen, Verwandte finden und Naturwissen — bunt gemischt. Wie viel bleibt hängen?</p>
+      <div class="gt-modus-liste">
+        <button class="gt-modus" onclick="startTest('kurz')">
+          <strong>Kurzer Test</strong>
+          <span>9 Fragen · ca. 3 Minuten · ohne Zeitdruck</span>
+        </button>
+        <button class="gt-modus" onclick="startTest('standard')">
+          <strong>Standard-Test</strong>
+          <span>15 Fragen · ca. 5 Minuten · ohne Zeitdruck</span>
+        </button>
+        <button class="gt-modus" onclick="startTest('blitz')">
+          <strong>Blitz-Test</strong>
+          <span>5 Minuten Countdown · so viele Fragen wie möglich</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- ══ FRAGE ══ -->
+    <div id="gt-frage">
+      <div id="gt-fortschritt-wrap"><div id="gt-fortschritt"></div></div>
+      <span class="gt-bereich-chip" id="gt-chip"></span>
+      <p id="gt-fragetext"></p>
+      <div id="gt-foto-wrap">
+        <span id="gt-foto-spinner">Lädt …</span>
+        <img id="gt-foto" alt="Pflanzenfoto" style="opacity:0"
+             onload="fotoGeladen()" onerror="fotoFehler()">
+      </div>
+      <div id="gt-antworten"></div>
+      <div id="gt-feedback"></div>
+      <button id="gt-weiter" onclick="naechsteFrage()">Weiter →</button>
+    </div>
+
+    <!-- ══ ERGEBNIS ══ -->
+    <div id="gt-ergebnis">
+      <div id="gt-feuerwerk" aria-hidden="true"></div>
+      <h2>Ergebnis</h2>
+      <div id="gt-score"></div>
+      <div id="gt-sieger-platz"></div>
+      <p id="gt-ergebnis-msg"></p>
+      <div class="gt-bereiche" id="gt-bereiche"></div>
+      <button class="gt-btn" onclick="zurueckZumStart()">Auf ein Neues! 🌿</button>
+    </div>
+
+  </div>
+
+  <p class="gt-fussnote">
+    Fragen aus allen Bereichen von <a href="../">Flora Mibaso</a> · Fotos: CC BY-NC
+  </p>
+
+</div>
+
+<script>
+// ═══════════════════════════════════════════════════
+//  DATEN
+//  ARTEN: alle Arten mit Familie (für Erkennen + Verwandte)
+//  FOTO_SLUGS: Arten, zu denen ein Galerie-Foto existiert
+//  WISSEN: Multiple-Choice-Fragen aus dem Naturquiz
+// ═══════════════════════════════════════════════════
+const ARTEN = [
+{"slug":"galanthus-nivalis","fam":"Amaryllisgewächse","de":"Schneeglöckchen","wiss":"Galanthus nivalis"},
+{"slug":"anemone-nemorosa","fam":"Hahnenfußgewächse","de":"Buschwindröschen","wiss":"Anemone nemorosa"},
+{"slug":"ficaria-verna","fam":"Hahnenfußgewächse","de":"Scharbockskraut","wiss":"Ficaria verna"},
+{"slug":"allium-ursinum","fam":"Amaryllisgewächse","de":"Bärlauch","wiss":"Allium ursinum"},
+{"slug":"corydalis-cava","fam":"Mohngewächse","de":"Hohler Lerchensporn","wiss":"Corydalis cava"},
+{"slug":"corydalis-solida","fam":"Mohngewächse","de":"Gefingerter Lerchensporn","wiss":"Corydalis solida"},
+{"slug":"gagea-lutea","fam":"Liliengewächse","de":"Wald-Gelbstern","wiss":"Gagea lutea"},
+{"slug":"anemone-ranunculoides","fam":"Hahnenfußgewächse","de":"Gelbes Windröschen","wiss":"Anemone ranunculoides"},
+{"slug":"oxalis-acetosella","fam":"Sauerkleegewächse","de":"Wald-Sauerklee","wiss":"Oxalis acetosella"},
+{"slug":"pulmonaria-officinalis","fam":"Raublattgewächse","de":"Lungenkraut","wiss":"Pulmonaria officinalis"},
+{"slug":"hepatica-nobilis","fam":"Hahnenfußgewächse","de":"Leberblümchen","wiss":"Hepatica nobilis"},
+{"slug":"leucojum-vernum","fam":"Amaryllisgewächse","de":"Märzbecher","wiss":"Leucojum vernum"},
+{"slug":"lathyrus-vernus","fam":"Schmetterlingsblütler","de":"Frühlings-Platterbse","wiss":"Lathyrus vernus"},
+{"slug":"eranthis-hyemalis","fam":"Hahnenfußgewächse","de":"Winterling","wiss":"Eranthis hyemalis"},
+{"slug":"lamium-galeobdolon","fam":"Lippenblütler","de":"Goldnessel","wiss":"Lamium galeobdolon"},
+{"slug":"scilla-bifolia","fam":"Spargelgewächse","de":"Gewöhnliche Sternhyazinthe","wiss":"Scilla bifolia"},
+{"slug":"ranunculus-auricomus","fam":"Hahnenfußgewächse","de":"Gold-Hahnenfuß","wiss":"Ranunculus auricomus"},
+{"slug":"ajuga-reptans","fam":"Lippenblütler","de":"Kriechender Günsel","wiss":"Ajuga reptans"},
+{"slug":"viola-odorata","fam":"Veilchengewächse","de":"Wohlriechendes Veilchen","wiss":"Viola odorata"},
+{"slug":"alliaria-petiolata","fam":"Kreuzblütler","de":"Knoblauchsrauke","wiss":"Alliaria petiolata"},
+{"slug":"stellaria-holostea","fam":"Nelkengewächse","de":"Große Sternmiere","wiss":"Stellaria holostea"},
+{"slug":"bellis-perennis","fam":"Korbblütler","de":"Gänseblümchen","wiss":"Bellis perennis"},
+{"slug":"cardamine-pratensis","fam":"Kreuzblütler","de":"Wiesen-Schaumkraut","wiss":"Cardamine pratensis"},
+{"slug":"taraxacum-officinale","fam":"Korbblütler","de":"Löwenzahn","wiss":"Taraxacum officinale"},
+{"slug":"veronica-chamaedrys","fam":"Wegerichgewächse","de":"Gamander-Ehrenpreis","wiss":"Veronica chamaedrys"},
+{"slug":"viola-tricolor","fam":"Veilchengewächse","de":"Wildes Stiefmütterchen","wiss":"Viola tricolor"},
+{"slug":"thlaspi-arvense","fam":"Kreuzblütler","de":"Acker-Hellerkraut","wiss":"Thlaspi arvense"},
+{"slug":"stellaria-media","fam":"Nelkengewächse","de":"Vogelmiere","wiss":"Stellaria media"},
+{"slug":"lamium-purpureum","fam":"Lippenblütler","de":"Rote Taubnessel","wiss":"Lamium purpureum"},
+{"slug":"caltha-palustris","fam":"Hahnenfußgewächse","de":"Sumpfdotterblume","wiss":"Caltha palustris"},
+{"slug":"tussilago-farfara","fam":"Korbblütler","de":"Huflattich","wiss":"Tussilago farfara"},
+{"slug":"primula-veris","fam":"Primelgewächse","de":"Schlüsselblume","wiss":"Primula veris"},
+{"slug":"muscari-botryoides","fam":"Spargelgewächse","de":"Traubenhyazinthe","wiss":"Muscari botryoides"},
+{"slug":"scilla-siberica","fam":"Spargelgewächse","de":"Blaustern","wiss":"Scilla siberica"},
+{"slug":"potentilla-neumanniana","fam":"Rosengewächse","de":"Frühlings-Fingerkraut","wiss":"Potentilla neumanniana"},
+{"slug":"draba-verna","fam":"Kreuzblütler","de":"Frühlings-Hungerblümchen","wiss":"Erophila verna"},
+{"slug":"pulsatilla-vulgaris","fam":"Hahnenfußgewächse","de":"Küchenschelle","wiss":"Pulsatilla vulgaris"},
+{"slug":"veronica-persica","fam":"Wegerichgewächse","de":"Persischer Ehrenpreis","wiss":"Veronica persica"},
+{"slug":"cardamine-hirsuta","fam":"Kreuzblütler","de":"Viermänniges Schaumkraut","wiss":"Cardamine hirsuta"},
+{"slug":"lamium-album","fam":"Lippenblütler","de":"Weiße Taubnessel","wiss":"Lamium album"},
+{"slug":"campanula-rapunculus","fam":"Glockenblumengewächse","de":"Rapunzel-Glockenblume","wiss":"Campanula rapunculus"},
+{"slug":"campanula-trachelium","fam":"Glockenblumengewächse","de":"Nesselblättrige Glockenblume","wiss":"Campanula trachelium"},
+{"slug":"centaurea-jacea","fam":"Korbblütler","de":"Wiesen-Flockenblume","wiss":"Centaurea jacea"},
+{"slug":"cichorium-intybus","fam":"Korbblütler","de":"Gewöhnliche Wegwarte","wiss":"Cichorium intybus"},
+{"slug":"echium-vulgare","fam":"Raublattgewächse","de":"Gewöhnlicher Natternkopf","wiss":"Echium vulgare"},
+{"slug":"geranium-palustre","fam":"Storchschnabelgewächse","de":"Sumpf-Storchschnabel","wiss":"Geranium palustre"},
+{"slug":"geranium-pratense","fam":"Storchschnabelgewächse","de":"Wiesen-Storchschnabel","wiss":"Geranium pratense"},
+{"slug":"malva-moschata","fam":"Malvengewächse","de":"Moschus-Malve","wiss":"Malva moschata"},
+{"slug":"polemonium-caeruleum","fam":"Sperrkrautgewächse","de":"Jakobsleiter","wiss":"Polemonium caeruleum"},
+{"slug":"bistorta-officinalis","fam":"Knöterichgewächse","de":"Wiesen-Knöterich","wiss":"Bistorta officinalis"},
+{"slug":"centaurium-erythraea","fam":"Enziangewächse","de":"Echtes Tausendgüldenkraut","wiss":"Centaurium erythraea"},
+{"slug":"cirsium-arvense","fam":"Korbblütler","de":"Acker-Kratzdistel","wiss":"Cirsium arvense"},
+{"slug":"dianthus-deltoides","fam":"Nelkengewächse","de":"Heide-Nelke","wiss":"Dianthus deltoides"},
+{"slug":"digitalis-purpurea","fam":"Wegerichgewächse","de":"Roter Fingerhut","wiss":"Digitalis purpurea"},
+{"slug":"epilobium-hirsutum","fam":"Nachtkerzengewächse","de":"Zottiges Weidenröschen","wiss":"Epilobium hirsutum"},
+{"slug":"eupatorium-cannabinum","fam":"Korbblütler","de":"Gewöhnlicher Wasserdost","wiss":"Eupatorium cannabinum"},
+{"slug":"geranium-robertianum","fam":"Storchschnabelgewächse","de":"Ruprechtskraut","wiss":"Geranium robertianum"},
+{"slug":"impatiens-glandulifera","fam":"Balsaminengewächse","de":"Drüsiges Springkraut","wiss":"Impatiens glandulifera"},
+{"slug":"lythrum-salicaria","fam":"Weiderichgewächse","de":"Blut-Weiderich","wiss":"Lythrum salicaria"},
+{"slug":"sanguisorba-officinalis","fam":"Rosengewächse","de":"Großer Wiesenknopf","wiss":"Sanguisorba officinalis"},
+{"slug":"silene-dioica","fam":"Nelkengewächse","de":"Rote Lichtnelke","wiss":"Silene dioica"},
+{"slug":"stachys-palustris","fam":"Lippenblütler","de":"Sumpf-Ziest","wiss":"Stachys palustris"},
+{"slug":"trifolium-pratense","fam":"Schmetterlingsblütler","de":"Wiesen-Klee","wiss":"Trifolium pratense"},
+{"slug":"achillea-millefolium","fam":"Korbblütler","de":"Schafgarbe","wiss":"Achillea millefolium"},
+{"slug":"potentilla-anserina","fam":"Rosengewächse","de":"Gänsefingerkraut","wiss":"Potentilla anserina"},
+{"slug":"artemisia-vulgaris","fam":"Korbblütler","de":"Beifuß","wiss":"Artemisia vulgaris"},
+{"slug":"circaea-lutetiana","fam":"Nachtkerzengewächse","de":"Hexenkraut","wiss":"Circaea lutetiana"},
+{"slug":"crepis-biennis","fam":"Korbblütler","de":"Wiesen-Pippau","wiss":"Crepis biennis"},
+{"slug":"daucus-carota","fam":"Doldenblütler","de":"Wilde Möhre","wiss":"Daucus carota"},
+{"slug":"erigeron-annuus","fam":"Korbblütler","de":"Einjähriges Berufkraut","wiss":"Erigeron annuus"},
+{"slug":"filipendula-ulmaria","fam":"Rosengewächse","de":"Mädesüß","wiss":"Filipendula ulmaria"},
+{"slug":"galeopsis-tetrahit","fam":"Lippenblütler","de":"Stechender Hohlzahn","wiss":"Galeopsis tetrahit"},
+{"slug":"galium-verum","fam":"Rötegewächse","de":"Echtes Labkraut","wiss":"Galium verum"},
+{"slug":"geum-urbanum","fam":"Rosengewächse","de":"Echte Nelkenwurz","wiss":"Geum urbanum"},
+{"slug":"heracleum-sphondylium","fam":"Doldenblütler","de":"Wiesen-Bärenklau","wiss":"Heracleum sphondylium"},
+{"slug":"hypericum-perforatum","fam":"Hartheugewächse","de":"Echtes Johanniskraut","wiss":"Hypericum perforatum"},
+{"slug":"impatiens-nolitangere","fam":"Balsaminengewächse","de":"Großes Springkraut","wiss":"Impatiens noli-tangere"},
+{"slug":"impatiens-parviflora","fam":"Balsaminengewächse","de":"Kleinblütiges Springkraut","wiss":"Impatiens parviflora"},
+{"slug":"jacobaea-vulgaris","fam":"Korbblütler","de":"Jakobs-Greiskraut","wiss":"Jacobaea vulgaris"},
+{"slug":"lapsana-communis","fam":"Korbblütler","de":"Rainkohl","wiss":"Lapsana communis"},
+{"slug":"lathyrus-pratensis","fam":"Schmetterlingsblütler","de":"Wiesen-Platterbse","wiss":"Lathyrus pratensis"},
+{"slug":"linaria-vulgaris","fam":"Wegerichgewächse","de":"Echtes Leinkraut","wiss":"Linaria vulgaris"},
+{"slug":"lysimachia-vulgaris","fam":"Primelgewächse","de":"Gemeiner Gilbweiderich","wiss":"Lysimachia vulgaris"},
+{"slug":"pastinaca-sativa","fam":"Doldenblütler","de":"Pastinak","wiss":"Pastinaca sativa"},
+{"slug":"plantago-lanceolata","fam":"Wegerichgewächse","de":"Spitz-Wegerich","wiss":"Plantago lanceolata"},
+{"slug":"saponaria-officinalis","fam":"Nelkengewächse","de":"Gewöhnliches Seifenkraut","wiss":"Saponaria officinalis"},
+{"slug":"silene-vulgaris","fam":"Nelkengewächse","de":"Aufgeblasenes Leimkraut","wiss":"Silene vulgaris"},
+{"slug":"tanacetum-vulgare","fam":"Korbblütler","de":"Rainfarn","wiss":"Tanacetum vulgare"},
+{"slug":"torilis-japonica","fam":"Doldenblütler","de":"Klettenkerbel","wiss":"Torilis japonica"},
+{"slug":"trifolium-repens","fam":"Schmetterlingsblütler","de":"Weiß-Klee","wiss":"Trifolium repens"},
+{"slug":"cardamine-bulbifera","fam":"Kreuzblütler","de":"Zwiebel-Zahnwurz","wiss":"Cardamine bulbifera"},
+{"slug":"doronicum-pardalianches","fam":"Korbblütler","de":"Kriechende Gämswurz","wiss":"Doronicum pardalianches"},
+{"slug":"lunaria-annua","fam":"Kreuzblütler","de":"Einjähriges Silberblatt","wiss":"Lunaria annua"},
+{"slug":"silene-latifolia","fam":"Nelkengewächse","de":"Weiße Lichtnelke","wiss":"Silene latifolia"},
+{"slug":"tripleurospermum-inodorum","fam":"Korbblütler","de":"Geruchlose Kamille","wiss":"Tripleurospermum inodorum"},
+{"slug":"achillea-ptarmica","fam":"Korbblütler","de":"Sumpf-Schafgarbe","wiss":"Achillea ptarmica"},
+{"slug":"barbarea-vulgaris","fam":"Kreuzblütler","de":"Gewöhnliches Barbarakraut","wiss":"Barbarea vulgaris"},
+{"slug":"cerastium-fontanum","fam":"Nelkengewächse","de":"Gewöhnliches Hornkraut","wiss":"Cerastium fontanum"},
+{"slug":"chelidonium-majus","fam":"Mohngewächse","de":"Schöllkraut","wiss":"Chelidonium majus"},
+{"slug":"convolvulus-arvensis","fam":"Windengewächse","de":"Acker-Winde","wiss":"Convolvulus arvensis"},
+{"slug":"cytisus-scoparius","fam":"Schmetterlingsblütler","de":"Besenginster","wiss":"Cytisus scoparius"},
+{"slug":"euphorbia-cyparissias","fam":"Wolfsmilchgewächse","de":"Zypressen-Wolfsmilch","wiss":"Euphorbia cyparissias"},
+{"slug":"galium-odoratum","fam":"Rötegewächse","de":"Waldmeister","wiss":"Galium odoratum"},
+{"slug":"glechoma-hederacea","fam":"Lippenblütler","de":"Gundermann","wiss":"Glechoma hederacea"},
+{"slug":"hypochaeris-radicata","fam":"Korbblütler","de":"Gewöhnliches Ferkelkraut","wiss":"Hypochaeris radicata"},
+{"slug":"leucanthemum-vulgare","fam":"Korbblütler","de":"Wiesen-Margerite","wiss":"Leucanthemum vulgare"},
+{"slug":"lotus-corniculatus","fam":"Schmetterlingsblütler","de":"Gewöhnlicher Hornklee","wiss":"Lotus corniculatus"},
+{"slug":"lychnis-flos-cuculi","fam":"Nelkengewächse","de":"Kuckucks-Lichtnelke","wiss":"Lychnis flos-cuculi"},
+{"slug":"polygonatum-multiflorum","fam":"Spargelgewächse","de":"Vielblütige Weißwurz","wiss":"Polygonatum multiflorum"},
+{"slug":"rumex-acetosa","fam":"Knöterichgewächse","de":"Wiesen-Sauerampfer","wiss":"Rumex acetosa"},
+{"slug":"senecio-vulgaris","fam":"Korbblütler","de":"Gewöhnliches Greiskraut","wiss":"Senecio vulgaris"},
+{"slug":"solidago-canadensis","fam":"Korbblütler","de":"Kanadische Goldrute","wiss":"Solidago canadensis"},
+{"slug":"symphytum-officinale","fam":"Raublattgewächse","de":"Echter Beinwell","wiss":"Symphytum officinale"},
+{"slug":"viola-reichenbachiana","fam":"Veilchengewächse","de":"Wald-Veilchen","wiss":"Viola reichenbachiana"},
+{"slug":"aegopodium-podagraria","fam":"Doldenblütler","de":"Giersch","wiss":"Aegopodium podagraria"},
+{"slug":"alchemilla-vulgaris","fam":"Rosengewächse","de":"Gewöhnlicher Frauenmantel","wiss":"Alchemilla vulgaris"},
+{"slug":"chrysosplenium-alternifolium","fam":"Steinbrechgewächse","de":"Wechselblättriges Milzkraut","wiss":"Chrysosplenium alternifolium"},
+{"slug":"convallaria-majalis","fam":"Spargelgewächse","de":"Maiglöckchen","wiss":"Convallaria majalis"},
+{"slug":"fragaria-vesca","fam":"Rosengewächse","de":"Wald-Erdbeere","wiss":"Fragaria vesca"},
+{"slug":"hesperis-matronalis","fam":"Kreuzblütler","de":"Gewöhnliche Nachtviole","wiss":"Hesperis matronalis"},
+{"slug":"lonicera-periclymenum","fam":"Geißblattgewächse","de":"Wald-Geißblatt","wiss":"Lonicera periclymenum"},
+{"slug":"lupinus-polyphyllus","fam":"Schmetterlingsblütler","de":"Vielblättrige Lupine","wiss":"Lupinus polyphyllus"},
+{"slug":"matricaria-chamomilla","fam":"Korbblütler","de":"Echte Kamille","wiss":"Matricaria chamomilla"},
+{"slug":"menyanthes-trifoliata","fam":"Bitterkleegewächse","de":"Fieberklee","wiss":"Menyanthes trifoliata"},
+{"slug":"myosotis-arvensis","fam":"Raublattgewächse","de":"Acker-Vergissmeinnicht","wiss":"Myosotis arvensis"},
+{"slug":"prunella-vulgaris","fam":"Lippenblütler","de":"Gewöhnliche Braunelle","wiss":"Prunella vulgaris"},
+{"slug":"ranunculus-acris","fam":"Hahnenfußgewächse","de":"Scharfer Hahnenfuß","wiss":"Ranunculus acris"},
+{"slug":"stachys-sylvatica","fam":"Lippenblütler","de":"Wald-Ziest","wiss":"Stachys sylvatica"},
+{"slug":"stellaria-nemorum","fam":"Nelkengewächse","de":"Hain-Sternmiere","wiss":"Stellaria nemorum"},
+{"slug":"urtica-dioica","fam":"Brennnesselgewächse","de":"Große Brennnessel","wiss":"Urtica dioica"},
+{"slug":"vicia-sepium","fam":"Schmetterlingsblütler","de":"Zaun-Wicke","wiss":"Vicia sepium"},
+{"slug":"viola-arvensis","fam":"Veilchengewächse","de":"Acker-Stiefmütterchen","wiss":"Viola arvensis"},
+{"slug":"chamaenerion-angustifolium","fam":"Nachtkerzengewächse","de":"Schmalblättriges Weidenröschen","wiss":"Chamaenerion angustifolium"},
+{"slug":"geranium-dissectum","fam":"Storchschnabelgewächse","de":"Schlitzblättriger Storchschnabel","wiss":"Geranium dissectum"},
+{"slug":"geranium-sanguineum","fam":"Storchschnabelgewächse","de":"Blutroter Storchschnabel","wiss":"Geranium sanguineum"},
+{"slug":"ajuga-genevensis","fam":"Lippenblütler","de":"Genfer Günsel","wiss":"Ajuga genevensis"},
+{"slug":"capsella-bursa-pastoris","fam":"Kreuzblütler","de":"Hirtentäschel","wiss":"Capsella bursa-pastoris"},
+{"slug":"chaerophyllum-temulum","fam":"Doldenblütler","de":"Zierlicher Kälberkropf","wiss":"Chaerophyllum temulum"},
+{"slug":"cymbalaria-muralis","fam":"Wegerichgewächse","de":"Zimbelkraut","wiss":"Cymbalaria muralis"},
+{"slug":"galium-album","fam":"Rötegewächse","de":"Weißes Labkraut","wiss":"Galium album"},
+{"slug":"hippocrepis-comosa","fam":"Schmetterlingsblütler","de":"Hufeisenklee","wiss":"Hippocrepis comosa"},
+{"slug":"orobanche-vulgaris","fam":"Sommerwurzgewächse","de":"Gewöhnliche Sommerwurz","wiss":"Orobanche vulgaris"},
+{"slug":"polygala-vulgaris","fam":"Kreuzblümchengewächse","de":"Gewöhnliches Kreuzblümchen","wiss":"Polygala vulgaris"},
+{"slug":"polygonatum-odoratum","fam":"Spargelgewächse","de":"Salomonssiegel","wiss":"Polygonatum odoratum"},
+{"slug":"rhinanthus-alectorolophus","fam":"Sommerwurzgewächse","de":"Zottiger Klappertopf","wiss":"Rhinanthus alectorolophus"},
+{"slug":"salvia-pratensis","fam":"Lippenblütler","de":"Wiesen-Salbei","wiss":"Salvia pratensis"}
+];
+
+const FOTO_SLUGS = new Set(["galanthus-nivalis","anemone-nemorosa","ficaria-verna","corydalis-solida","gagea-lutea","anemone-ranunculoides","oxalis-acetosella","pulmonaria-officinalis","hepatica-nobilis","leucojum-vernum","lathyrus-vernus","eranthis-hyemalis","lamium-galeobdolon","scilla-bifolia","ranunculus-auricomus","ajuga-reptans","viola-odorata","alliaria-petiolata","stellaria-holostea","bellis-perennis","cardamine-pratensis","taraxacum-officinale","veronica-chamaedrys","viola-tricolor","thlaspi-arvense","stellaria-media","lamium-purpureum","caltha-palustris","tussilago-farfara","primula-veris","muscari-botryoides","potentilla-neumanniana","draba-verna","pulsatilla-vulgaris","veronica-persica","cardamine-hirsuta","lamium-album","campanula-rapunculus","campanula-trachelium","centaurea-jacea","cichorium-intybus","echium-vulgare","geranium-palustre","geranium-pratense","malva-moschata","polemonium-caeruleum","bistorta-officinalis","centaurium-erythraea","cirsium-arvense","dianthus-deltoides","digitalis-purpurea","epilobium-hirsutum","eupatorium-cannabinum","geranium-robertianum","impatiens-glandulifera","lythrum-salicaria","sanguisorba-officinalis","silene-dioica","stachys-palustris","trifolium-pratense","achillea-millefolium","potentilla-anserina","artemisia-vulgaris","circaea-lutetiana","crepis-biennis","daucus-carota","erigeron-annuus","filipendula-ulmaria","galeopsis-tetrahit","galium-verum","geum-urbanum","heracleum-sphondylium","hypericum-perforatum","impatiens-nolitangere","impatiens-parviflora","jacobaea-vulgaris","lapsana-communis","lathyrus-pratensis","linaria-vulgaris","lysimachia-vulgaris","pastinaca-sativa","plantago-lanceolata","saponaria-officinalis","silene-vulgaris","tanacetum-vulgare","torilis-japonica","trifolium-repens","cardamine-bulbifera","doronicum-pardalianches","lunaria-annua","silene-latifolia","tripleurospermum-inodorum"]);
+
+const WISSEN = [
+{"q":"Warum sind viele Nachtblüher weiß?","opts":["Weiß speichert Wärme","Nachtfalter sehen helle Blüten besser","Weiße Blüten enthalten mehr Nektar","Weiß schützt vor Regen"],"ans":1},
+{"q":"Warum haben manche Blüten lange Röhren?","opts":["Zum Wasserspeichern","Damit nur bestimmte Bestäuber hineinkommen","Damit sie stabiler stehen","Wegen der Temperatur"],"ans":1},
+{"q":"Warum sind Ahornsamen geflügelt?","opts":["Damit Tiere sie erkennen","Zur Fotosynthese","Damit sie weiter getragen werden","Zum Schutz"],"ans":2},
+{"q":"Warum schließen Pflanzen ihre Spaltöffnungen bei Hitze?","opts":["Zum Schutz vor Insekten","Um Wasser zu sparen","Damit kein Pollen entweicht","Zur Kühlung"],"ans":1},
+{"q":"Welche Aufgabe hat Chlorophyll?","opts":["Wasser speichern","Licht aufnehmen","Samen schützen","Duft erzeugen"],"ans":1},
+{"q":"Warum bleiben viele Nadelbäume im Winter grün?","opts":["Sie verlieren weniger Wasser","Sie spüren keinen Frost","Sie haben mehr Wurzeln","Wegen des Harzes"],"ans":0},
+{"q":"Warum ist Fremdbestäubung oft vorteilhaft?","opts":["Samen werden größer","Mehr genetische Vielfalt entsteht","Die Blüte hält länger","Pflanzen sparen Energie"],"ans":1},
+{"q":"Warum produzieren Windbestäuber extrem viel Pollen?","opts":["Die Verteilung ist ungenau","Pollen ist billig","Damit Tiere kommen","Wegen der Sonne"],"ans":0},
+{"q":"Woher nehmen Frühblüher ihre Energie?","opts":["Aus dem Regen","Aus Reserven im Boden","Aus der Luft","Von Pilzen"],"ans":1},
+{"q":"Warum verschwinden Frühblüher im Sommer?","opts":["Sie sterben dauerhaft","Der Boden wird zu dunkel","Wegen der Hitze","Sie frieren"],"ans":1},
+{"q":"Warum sind Blätter dünn und flach?","opts":["Damit Regen abläuft","Damit viel Licht aufgenommen wird","Damit Tiere sie nicht sehen","Wegen des Windes"],"ans":1},
+{"q":"Welche Pflanzen nutzen Ameisen zur Samenverbreitung?","opts":["Pflanzen mit ölhaltigen Samenanhängseln","Wasserpflanzen","Nadelbäume","Gräser"],"ans":0},
+{"q":"Warum sind viele Beeren auffällig gefärbt?","opts":["Damit Tiere sie verbreiten","Zur Tarnung","Wegen der Wärme","Zum Schutz"],"ans":0},
+{"q":"Warum blühen Pflanzen nicht alle gleichzeitig?","opts":["Wegen unterschiedlicher Strategien","Wegen der Bodenfarbe","Wegen des Regens","Wegen der Temperatur"],"ans":0},
+{"q":"Welche Tiere bestäuben manche Nachtblüher?","opts":["Fledermäuse","Maulwürfe","Frösche","Libellen"],"ans":0},
+{"q":"Woher stammt der größte Teil der Masse eines Baumes?","opts":["Aus dem Boden","Aus Wasser","Aus Mineralstoffen","Aus Kohlendioxid der Luft"],"ans":3},
+{"q":"Warum besuchen Bienen manche Blüten immer wieder?","opts":["Wegen der Farbe","Weil sie sich gute Nahrungsquellen merken","Weil Pflanzen sie rufen","Wegen des Regens"],"ans":1},
+{"q":"Warum sind Windbestäuber oft grün und unscheinbar?","opts":["Weil sie keine Tiere anlocken müssen","Weil sie krank sind","Wegen des Waldes","Wegen der Temperatur"],"ans":0},
+{"q":"Eine Kartoffel ist botanisch gesehen …","opts":["eine Wurzel","eine Frucht","eine verdickte Sprossknolle","ein Samen"],"ans":2},
+{"q":"Warum wachsen Pflanzen zum Licht?","opts":["Wegen der Wärme","Durch ungleiches Wachstum","Weil die Sonne zieht","Wegen des Windes"],"ans":1},
+{"q":"Warum ist es im Laubwald im Frühling heller?","opts":["Wegen der Sonne","Weil die Bäume noch wenig Blätter tragen","Wegen der Luftfeuchtigkeit","Wegen des Bodens"],"ans":1},
+{"q":"Warum platzen manche Früchte explosionsartig auf?","opts":["Wegen der Sonne","Um Samen weit zu schleudern","Wegen des Windes","Zur Kühlung"],"ans":1},
+{"q":"Warum produzieren Pflanzen giftige Stoffe?","opts":["Gegen Sonne","Gegen Fressfeinde","Für schönere Blüten","Gegen Wind"],"ans":1},
+{"q":"Was passiert oft, wenn eine Pflanzenart verschwindet?","opts":["Nichts","Nur die Samen fehlen","Oft verschwinden auch spezialisierte Tiere","Der Boden wird hart"],"ans":2},
+{"q":"Warum sind Wildblumenwiesen wichtig?","opts":["Wegen der Farben","Weil dort Nahrung und Lebensräume vorhanden sind","Wegen des Bodens","Wegen der Sonne"],"ans":1},
+{"q":"Können Pflanzen miteinander kommunizieren?","opts":["Nein","Teilweise über Duftstoffe","Nur im Wald","Nur nachts"],"ans":1},
+{"q":"Warum bleiben manche Samen jahrzehntelang keimfähig?","opts":["Sie schlafen","Sie warten auf günstige Bedingungen","Wegen des Mondes","Ohne Sauerstoff"],"ans":1},
+{"q":"Welche Aussage stimmt über die Zellatmung der Pflanzen?","opts":["Pflanzen atmen nur nachts","Pflanzen brauchen keinen Sauerstoff","Pflanzen betreiben auch Zellatmung","Pflanzen erzeugen immer Sauerstoff"],"ans":2},
+{"q":"Sind Erdbeeren botanisch echte Beeren?","opts":["Ja","Nein","Nur teilweise","Nur im Sommer"],"ans":1},
+{"q":"Warum können Pflanzen trotz fehlender Muskeln Bewegungen ausführen?","opts":["Durch aktives Muskelgewebe","Durch Veränderungen des Zelldrucks","Weil sie Knochen besitzen","Durch Luftströmungen"],"ans":1},
+{"q":"Warum ist die Fotosynthese für fast alle Lebewesen indirekt lebenswichtig?","opts":["Weil Pflanzen Schatten spenden","Weil dabei Sauerstoff und energiereiche Stoffe entstehen","Weil Pflanzen Wärme erzeugen","Weil Tiere Pflanzen mögen"],"ans":1},
+{"q":"Welche Aussage zur Bestäubung ist richtig?","opts":["Bestäubung und Befruchtung sind dasselbe","Nach der Bestäubung kann die Befruchtung stattfinden","Bestäubung erfolgt erst nach der Samenbildung","Bestäubung geschieht nur durch Insekten"],"ans":1},
+{"q":"Warum sind viele Waldpflanzen besonders empfindlich gegenüber Bodenverdichtung?","opts":["Ihre Wurzeln brauchen lockeren, luftigen Boden","Weil sie kein Wasser mögen","Weil sie keine Pilze vertragen","Weil sie nur auf Sand wachsen"],"ans":0},
+{"q":"Warum sind Flechten ein Sonderfall in der Natur?","opts":["Sie bestehen aus mehreren Baumarten","Sie sind eine Lebensgemeinschaft aus Pilz und Alge","Sie können nicht wachsen","Sie betreiben keine Fotosynthese"],"ans":1},
+{"q":"Warum besitzen viele Samen eine harte Schale?","opts":["Zur besseren Fotosynthese","Zum Schutz vor Austrocknung und Fraß","Damit sie schneller keimen","Zur besseren Bestäubung"],"ans":1},
+{"q":"Warum können manche Pflanzen auf nährstoffarmen Böden leben?","opts":["Sie benötigen extrem wenige Nährstoffe","Sie gehen oft enge Lebensgemeinschaften mit Pilzen ein","Weil sie Steine fressen","Weil sie keinen Stickstoff brauchen"],"ans":1},
+{"q":"Warum sind Moore wichtige Kohlenstoffspeicher?","opts":["Weil dort besonders viel Sand liegt","Weil abgestorbenes Material nur sehr langsam zersetzt wird","Weil Moore kaum Pflanzen besitzen","Weil Tiere dort keinen Sauerstoff brauchen"],"ans":1},
+{"q":"Warum gelten Blütenpflanzen evolutionär als besonders erfolgreich?","opts":["Weil sie immer groß sind","Weil sie Tiere zur gezielten Bestäubung nutzen können","Weil sie keinen Regen brauchen","Weil sie keine Samen bilden"],"ans":1},
+{"q":"Warum sterben viele Zimmerpflanzen häufiger an zu viel Wasser als an Trockenheit?","opts":["Weil Wurzeln Sauerstoff brauchen","Weil Erde Pflanzen verbrennt","Weil Blätter Wasser meiden","Weil Pflanzen nur Regenwasser vertragen"],"ans":0},
+{"q":"Warum profitieren viele Pflanzen von Pilzen im Boden?","opts":["Pilze liefern zusätzliche Mineralstoffe und Wasser","Pilze erzeugen Sonnenlicht","Pilze ersetzen die Wurzeln","Pilze bestäuben Blüten"],"ans":0},
+{"q":"Warum verändern viele Früchte beim Reifen ihre Farbe?","opts":["Um Bestäuber anzulocken","Damit Tiere die reifen Früchte besser erkennen","Weil die Samen frieren","Weil Chlorophyll giftig wird"],"ans":1},
+{"q":"Welche Aussage über die Zellatmung der Pflanzen stimmt?","opts":["Pflanzen betreiben nur tagsüber Zellatmung","Pflanzen betreiben ständig Zellatmung","Pflanzen benötigen keinen Sauerstoff","Nur Wurzeln betreiben Zellatmung"],"ans":1},
+{"q":"Warum sind invasive Pflanzenarten oft problematisch?","opts":["Weil sie immer giftig sind","Weil sie heimische Arten verdrängen können","Weil sie keine Blüten besitzen","Weil sie nur im Winter wachsen"],"ans":1},
+{"q":"Warum ist Biodiversität für Ökosysteme wichtig?","opts":["Artenreiche Systeme reagieren oft stabiler auf Veränderungen","Weil viele Arten schöner aussehen","Weil Monokulturen mehr Sauerstoff produzieren","Weil Tiere nur in Wäldern leben"],"ans":0},
+{"q":"Aus welchen drei Teilen besteht der Stempel?","opts":["Narbe, Griffel und Fruchtknoten","Kelchblatt, Blütenblatt und Stängel","Staubbeutel, Pollen und Nektar","Wurzel, Spross und Blüte"],"ans":0},
+{"q":"Wo wird der Pollen gebildet?","opts":["In den Staubbeuteln","Auf der klebrigen Narbe","Im Fruchtknoten","In den Kelchblättern"],"ans":0},
+{"q":"Welche Aufgabe hat die klebrige Narbe?","opts":["Sie lockt Insekten mit Duft an","Sie fängt Pollenkörner auf und hält sie fest","Sie speichert den Nektar","Sie schützt die Knospe"],"ans":1},
+{"q":"Wohin wächst der Pollenschlauch nach der Bestäubung?","opts":["Nach oben zu den Blütenblättern","Durch den Griffel hinab zur Samenanlage","In den Stängel","Zur Nachbarblüte"],"ans":1},
+{"q":"Was geschieht bei der Befruchtung?","opts":["Pollen landet auf der Narbe","Männliche und weibliche Keimzelle verschmelzen","Die Blüte öffnet sich","Die Frucht fällt ab"],"ans":1},
+{"q":"Was wird nach der Befruchtung aus der Samenanlage?","opts":["Ein Samen","Ein Blütenblatt","Ein neues Pollenkorn","Ein Dorn"],"ans":0},
+{"q":"Was wird aus der Wand des Fruchtknotens?","opts":["Die Frucht, die den Samen umhüllt","Ein neues Blatt","Die Wurzel","Der Stängel"],"ans":0},
+{"q":"Was steckt in einem Samen?","opts":["Nur Wasser","Der Keimling mit dem Bauplan für eine neue Pflanze","Fertige Blütenblätter","Ein Pollenkorn"],"ans":1},
+{"q":"Welche drei Zutaten braucht die Pflanze für die Fotosynthese?","opts":["Licht, Wasser und Kohlendioxid","Zucker, Salz und Erde","Sauerstoff, Nektar und Wärme","Pollen, Wasser und Wind"],"ans":0},
+{"q":"Was stellt die Pflanze bei der Fotosynthese her?","opts":["Zucker — und Sauerstoff wird frei","Erde und Mineralstoffe","Nektar und Duftstoffe","Kohlendioxid und Wasser"],"ans":0},
+{"q":"Welches Gas geben Pflanzen bei der Fotosynthese ab?","opts":["Sauerstoff","Kohlendioxid","Stickstoff","Wasserdampf"],"ans":0},
+{"q":"In welchen Zellbestandteilen gewinnt die Zelle Energie aus Zucker?","opts":["In den Mitochondrien — den Kraftwerken der Zelle","In den Blütenblättern","In der Zellwand","Im Zellkern"],"ans":0},
+{"q":"Welche „Energiewährung\" entsteht bei der Zellatmung?","opts":["ATP","DNA","CO₂","H₂O"],"ans":0},
+{"q":"Was passiert nachts in der Pflanze?","opts":["Fotosynthese und Atmung laufen weiter","Nur die Atmung läuft weiter — Fotosynthese braucht Licht","Die Pflanze stellt alles ab","Nur die Fotosynthese läuft weiter"],"ans":1},
+{"q":"Was „verbrennt\" die Pflanzenzelle bei der Atmung?","opts":["Zucker mit Sauerstoff","Wasser mit Licht","Pollen mit Nektar","Erde mit Mineralstoffen"],"ans":0}
+];
+
+// ═══════════════════════════════════════════════════
+//  BEREICHE — Zuordnung für die Auswertung
+// ═══════════════════════════════════════════════════
+const BEREICHE = {
+  art:    { name: "Pflanzen erkennen",  ueben: "pflanzenquiz.html",  uebenName: "Vier Pflanzen — aber nur eine passt" },
+  fam:    { name: "Verwandte finden",   ueben: "familien-quiz.html", uebenName: "Familien-Quiz" },
+  wissen: { name: "Naturwissen",        ueben: "naturquiz.html",     uebenName: "Naturquiz" }
+};
+
+const BLITZ_SEKUNDEN = 5 * 60;
+
+// ═══════════════════════════════════════════════════
+//  HILFSFUNKTIONEN
+// ═══════════════════════════════════════════════════
+function shuffle(arr){
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+function zufaellig(arr){ return arr[Math.floor(Math.random() * arr.length)]; }
+
+const FOTO_ARTEN = ARTEN.filter(a => FOTO_SLUGS.has(a.slug));
+
+// Familien mit mindestens 3 Arten (für die Verwandten-Frage)
+const FAM_COUNT = {};
+ARTEN.forEach(a => { FAM_COUNT[a.fam] = (FAM_COUNT[a.fam] || 0) + 1; });
+const MEHRHEITS_FAMILIEN = Object.keys(FAM_COUNT).filter(f => FAM_COUNT[f] >= 3);
+
+// ═══════════════════════════════════════════════════
+//  FRAGEN BAUEN
+// ═══════════════════════════════════════════════════
+const benutzt = { art: new Set(), wissen: new Set() };
+
+function baueArtFrage(){
+  let pool = FOTO_ARTEN.filter(a => !benutzt.art.has(a.slug));
+  if (pool.length === 0) { benutzt.art.clear(); pool = FOTO_ARTEN; }
+  const art = zufaellig(pool);
+  benutzt.art.add(art.slug);
+  const falsche = shuffle(FOTO_ARTEN.filter(a => a.slug !== art.slug)).slice(0, 3);
+  return { typ: "art", art, optionen: shuffle([art, ...falsche]) };
+}
+
+function baueFamFrage(){
+  const mehrheit = zufaellig(MEHRHEITS_FAMILIEN);
+  const dreier = shuffle(ARTEN.filter(a => a.fam === mehrheit)).slice(0, 3);
+  const aussen = zufaellig(ARTEN.filter(a => a.fam !== mehrheit));
+  const karten = shuffle([...dreier, aussen]);
+  return { typ: "fam", mehrheit, aussen, karten };
+}
+
+function baueWissenFrage(){
+  let pool = WISSEN.map((_, i) => i).filter(i => !benutzt.wissen.has(i));
+  if (pool.length === 0) { benutzt.wissen.clear(); pool = WISSEN.map((_, i) => i); }
+  const idx = zufaellig(pool);
+  benutzt.wissen.add(idx);
+  return { typ: "wissen", frage: WISSEN[idx] };
+}
+
+const BAUER = { art: baueArtFrage, fam: baueFamFrage, wissen: baueWissenFrage };
+
+// Gewichtung: Schwerpunkt Naturwissen (Kreislauf, Fotosynthese & Co.),
+// dazu je ein kleinerer Anteil Fotos und Verwandte.
+const VERTEILUNG = {
+  9:  { art: 2, fam: 2, wissen: 5 },
+  15: { art: 3, fam: 3, wissen: 9 }
+};
+
+function baueFesteRunde(gesamt){
+  const plan = VERTEILUNG[gesamt] || { art: Math.round(gesamt * .2), fam: Math.round(gesamt * .2), wissen: 0 };
+  if (!VERTEILUNG[gesamt]) plan.wissen = gesamt - plan.art - plan.fam;
+  const typen = [];
+  Object.keys(plan).forEach(t => { for (let i = 0; i < plan[t]; i++) typen.push(t); });
+  return shuffle(typen).map(t => BAUER[t]());
+}
+
+// Blitz-Modus: gleiche Gewichtung als Ziehungs-Stapel (1× art, 1× fam, 3× wissen)
+let blitzTypen = [];
+function naechsteBlitzFrage(){
+  if (blitzTypen.length === 0) blitzTypen = shuffle(["art", "fam", "wissen", "wissen", "wissen"]);
+  return BAUER[blitzTypen.pop()]();
+}
+
+// ═══════════════════════════════════════════════════
+//  SPIELZUSTAND
+// ═══════════════════════════════════════════════════
+let modus = "standard";       // kurz | standard | blitz
+let fragen = [];              // feste Runde (kurz/standard)
+let aktuelleFrage = null;
+let aktuellerIndex = 0;
+let gesamtFragen = 15;
+let beantwortet = false;
+let punkte = 0;
+let stats = null;             // { art:{r,g}, fam:{r,g}, wissen:{r,g} }
+let restSekunden = 0;
+let timerId = null;
+let autoWeiterId = null;
+
+// ═══════════════════════════════════════════════════
+//  TEST STARTEN
+// ═══════════════════════════════════════════════════
+function startTest(m){
+  modus = m;
+  punkte = 0;
+  aktuellerIndex = 0;
+  stats = { art: {r:0, g:0}, fam: {r:0, g:0}, wissen: {r:0, g:0} };
+  benutzt.art.clear();
+  benutzt.wissen.clear();
+  blitzTypen = [];
+
+  document.getElementById('gt-start').style.display = 'none';
+  document.getElementById('gt-ergebnis').style.display = 'none';
+  document.getElementById('gt-frage').style.display = 'block';
+
+  if (modus === 'blitz') {
+    restSekunden = BLITZ_SEKUNDEN;
+    zeigeStatus();
+    timerId = setInterval(tick, 1000);
+    aktuelleFrage = naechsteBlitzFrage();
+  } else {
+    gesamtFragen = (modus === 'kurz') ? 9 : 15;
+    fragen = baueFesteRunde(gesamtFragen);
+    aktuelleFrage = fragen[0];
+  }
+  zeigeFrage();
+}
+
+function tick(){
+  restSekunden--;
+  zeigeStatus();
+  if (restSekunden <= 0) {
+    clearInterval(timerId); timerId = null;
+    if (autoWeiterId) { clearTimeout(autoWeiterId); autoWeiterId = null; }
+    zeigeErgebnis();
+  }
+}
+
+function zeigeStatus(){
+  const el = document.getElementById('gt-status');
+  if (modus === 'blitz') {
+    const m = Math.floor(Math.max(restSekunden, 0) / 60);
+    const s = Math.max(restSekunden, 0) % 60;
+    el.innerHTML = `✓ ${punkte} · <span class="gt-uhr${restSekunden <= 30 ? ' knapp' : ''}">${m}:${String(s).padStart(2,'0')}</span>`;
+  } else {
+    el.textContent = `Frage ${aktuellerIndex + 1} / ${gesamtFragen} · ✓ ${punkte}`;
+  }
+}
+
+// ═══════════════════════════════════════════════════
+//  FRAGE ANZEIGEN
+// ═══════════════════════════════════════════════════
+function zeigeFrage(){
+  beantwortet = false;
+  const f = aktuelleFrage;
+  zeigeStatus();
+
+  // Fortschritt (im Blitz-Modus zeigt der Balken die Restzeit)
+  const balken = document.getElementById('gt-fortschritt');
+  if (modus === 'blitz') {
+    balken.style.width = ((1 - restSekunden / BLITZ_SEKUNDEN) * 100) + '%';
+  } else {
+    balken.style.width = ((aktuellerIndex / gesamtFragen) * 100) + '%';
+  }
+
+  document.getElementById('gt-chip').textContent = BEREICHE[f.typ].name;
+  document.getElementById('gt-feedback').textContent = '';
+  document.getElementById('gt-feedback').className = '';
+  document.getElementById('gt-weiter').style.display = 'none';
+
+  const fotoWrap = document.getElementById('gt-foto-wrap');
+  const antworten = document.getElementById('gt-antworten');
+  antworten.innerHTML = '';
+
+  if (f.typ === 'art') {
+    document.getElementById('gt-fragetext').textContent = 'Wie heißt diese Pflanze?';
+    fotoWrap.style.display = 'block';
+    const img = document.getElementById('gt-foto');
+    img.style.opacity = 0;
+    document.getElementById('gt-foto-spinner').style.display = 'flex';
+    document.getElementById('gt-foto-spinner').textContent = 'Lädt …';
+    img.src = `../images/fotos/${f.art.slug}-1.jpg`;
+
+    antworten.className = 'zweispaltig';
+    f.optionen.forEach(opt => {
+      const btn = document.createElement('button');
+      btn.className = 'gt-antwort';
+      btn.innerHTML = `<strong>${opt.de}</strong><br><em>${opt.wiss}</em>`;
+      btn.onclick = () => pruefeAntwort(opt.slug === f.art.slug, btn,
+        `Es war: ${f.art.de}`, b => b.dataset.slug === f.art.slug);
+      btn.dataset.slug = opt.slug;
+      antworten.appendChild(btn);
+    });
+
+  } else if (f.typ === 'fam') {
+    document.getElementById('gt-fragetext').textContent =
+      'Drei dieser Pflanzen sind verwandt. Welche gehört nicht dazu?';
+    fotoWrap.style.display = 'none';
+
+    antworten.className = 'zweispaltig';
+    f.karten.forEach(art => {
+      const btn = document.createElement('button');
+      btn.className = 'gt-antwort mit-bild';
+      btn.innerHTML =
+        `<img src="../images/tafeln/${art.slug}.jpg" alt="${art.de}" loading="lazy">` +
+        `<span class="gt-bildname"><strong>${art.de}</strong></span>`;
+      btn.onclick = () => pruefeAntwort(art.slug === f.aussen.slug, btn,
+        `${f.aussen.de} (${f.aussen.fam}) tanzt aus der Reihe — die anderen sind ${f.mehrheit}.`,
+        b => b.dataset.slug === f.aussen.slug);
+      btn.dataset.slug = art.slug;
+      antworten.appendChild(btn);
+    });
+
+  } else {
+    document.getElementById('gt-fragetext').textContent = f.frage.q;
+    fotoWrap.style.display = 'none';
+
+    antworten.className = '';
+    f.frage.opts.forEach((opt, i) => {
+      const btn = document.createElement('button');
+      btn.className = 'gt-antwort';
+      btn.textContent = opt;
+      btn.onclick = () => pruefeAntwort(i === f.frage.ans, btn,
+        `Richtig wäre: ${f.frage.opts[f.frage.ans]}`, b => Number(b.dataset.idx) === f.frage.ans);
+      btn.dataset.idx = i;
+      antworten.appendChild(btn);
+    });
+  }
+}
+
+function fotoGeladen(){
+  document.getElementById('gt-foto-spinner').style.display = 'none';
+  document.getElementById('gt-foto').style.opacity = 1;
+}
+function fotoFehler(){
+  const img = document.getElementById('gt-foto');
+  if (aktuelleFrage && aktuelleFrage.typ === 'art' && !img.src.includes('tafeln')) {
+    img.src = `../images/tafeln/${aktuelleFrage.art.slug}.jpg`;
+  } else {
+    document.getElementById('gt-foto-spinner').textContent = '(kein Foto verfügbar)';
+  }
+}
+
+// ═══════════════════════════════════════════════════
+//  ANTWORT PRÜFEN
+// ═══════════════════════════════════════════════════
+function pruefeAntwort(istRichtig, geklickt, aufloesung, istRichtigerBtn){
+  if (beantwortet) return;
+  beantwortet = true;
+
+  const typ = aktuelleFrage.typ;
+  stats[typ].g++;
+
+  document.querySelectorAll('.gt-antwort').forEach(btn => {
+    btn.disabled = true;
+    if (istRichtigerBtn(btn)) btn.classList.add('richtig');
+  });
+
+  const fb = document.getElementById('gt-feedback');
+  if (istRichtig) {
+    punkte++;
+    stats[typ].r++;
+    fb.textContent = '✓ Richtig!';
+    fb.className = 'ok';
+  } else {
+    geklickt.classList.add('falsch');
+    fb.textContent = '✗ ' + aufloesung;
+    fb.className = 'fehler';
+  }
+  zeigeStatus();
+
+  if (modus === 'blitz') {
+    // automatisch weiter — bei Fehlern etwas mehr Zeit zum Lesen
+    autoWeiterId = setTimeout(naechsteFrage, istRichtig ? 900 : 2200);
+  } else {
+    document.getElementById('gt-weiter').style.display = 'block';
+  }
+}
+
+// ═══════════════════════════════════════════════════
+//  WEITER / ERGEBNIS
+// ═══════════════════════════════════════════════════
+function naechsteFrage(){
+  autoWeiterId = null;
+  if (modus === 'blitz') {
+    if (restSekunden <= 0) return;
+    aktuelleFrage = naechsteBlitzFrage();
+    zeigeFrage();
+    return;
+  }
+  aktuellerIndex++;
+  if (aktuellerIndex >= gesamtFragen) {
+    zeigeErgebnis();
+  } else {
+    aktuelleFrage = fragen[aktuellerIndex];
+    zeigeFrage();
+  }
+}
+
+// ── Feuerwerk & Fanfare (nur bei fehlerfreiem Test) ──
+function feuerwerk(){
+  const feld = document.getElementById('gt-feuerwerk');
+  feld.style.display = 'block';
+  feld.innerHTML = '';
+  const farben = ['#f4c430','#e8a020','#d4633e','#7d4a5a','#3a7a4a','#3498db','#9b59b6','#e74c3c'];
+  for (let rakete = 0; rakete < 5; rakete++) {
+    const cx = 12 + Math.random() * 76;
+    const cy = 15 + Math.random() * 55;
+    const start = rakete * 0.5;
+    for (let i = 0; i < 24; i++) {
+      const funke = document.createElement('span');
+      funke.className = 'gt-funke';
+      const winkel = (i / 24) * 2 * Math.PI + Math.random() * 0.25;
+      const weite = 32 + Math.random() * 48;
+      funke.style.cssText =
+        `left:${cx}%;top:${cy}%;` +
+        `background:${farben[(Math.random() * farben.length) | 0]};` +
+        `--dx:${(Math.cos(winkel) * weite).toFixed(1)}px;` +
+        `--dy:${(Math.sin(winkel) * weite).toFixed(1)}px;` +
+        `animation-delay:${(start + Math.random() * 0.12).toFixed(2)}s`;
+      feld.appendChild(funke);
+    }
+  }
+  setTimeout(() => { feld.style.display = 'none'; feld.innerHTML = ''; }, 4200);
+}
+
+function fanfare(){
+  try {
+    const Ctx = window.AudioContext || window.webkitAudioContext;
+    if (!Ctx) return;
+    const ctx = new Ctx();
+    if (ctx.state === 'suspended') ctx.resume();
+    const t0 = ctx.currentTime + 0.05;
+    // Tusch: c² – e² – g² – c³ (mit Quinte als zweiter Stimme im Schlussakkord)
+    const noten = [
+      [523.25, 0.00, 0.16, 0.20],
+      [659.25, 0.15, 0.16, 0.20],
+      [783.99, 0.30, 0.16, 0.20],
+      [1046.50, 0.46, 0.65, 0.22],
+      [783.99, 0.46, 0.65, 0.12]
+    ];
+    noten.forEach(([freq, start, dauer, vol]) => {
+      const o = ctx.createOscillator();
+      const g = ctx.createGain();
+      o.type = 'triangle';
+      o.frequency.value = freq;
+      g.gain.setValueAtTime(0, t0 + start);
+      g.gain.linearRampToValueAtTime(vol, t0 + start + 0.02);
+      g.gain.exponentialRampToValueAtTime(0.001, t0 + start + dauer);
+      o.connect(g).connect(ctx.destination);
+      o.start(t0 + start);
+      o.stop(t0 + start + dauer + 0.05);
+    });
+    setTimeout(() => ctx.close().catch(() => {}), 1800);
+  } catch (e) { /* kein Ton möglich — macht nichts */ }
+}
+
+function zeigeErgebnis(){
+  document.getElementById('gt-frage').style.display = 'none';
+  document.getElementById('gt-ergebnis').style.display = 'block';
+  document.getElementById('gt-fortschritt').style.width = '100%';
+  document.getElementById('gt-status').textContent = '';
+
+  const gesamt = stats.art.g + stats.fam.g + stats.wissen.g;
+  document.getElementById('gt-score').textContent = `${punkte} / ${gesamt}`;
+
+  // Perfektes Ergebnis: Feuerwerk, Fanfare und Sieger-Spruch
+  const siegerPlatz = document.getElementById('gt-sieger-platz');
+  if (gesamt > 0 && punkte === gesamt) {
+    const sprueche = [
+      "🎆 Fehlerfrei durch alle Themen — die ganze Wiese applaudiert!",
+      "🏆 Volltreffer auf ganzer Linie — du bist eine wandelnde Flora!",
+      "🎇 Alles richtig! Selbst der Löwenzahn zieht den Hut.",
+      "🌟 Perfekt! Quer durch die App — und kein einziger Patzer."
+    ];
+    siegerPlatz.innerHTML = `<div class="gt-sieger">${sprueche[(Math.random() * sprueche.length) | 0]}</div>`;
+    feuerwerk();
+    fanfare();
+  } else {
+    siegerPlatz.innerHTML = '';
+  }
+
+  const pct = gesamt > 0 ? punkte / gesamt : 0;
+  let msg;
+  if (gesamt === 0)      msg = 'Das ging schnell — diesmal kam keine Frage bis zur Antwort.';
+  else if (pct === 1)    msg = '';   // der Sieger-Spruch übernimmt
+  else if (pct >= 0.8)   msg = 'Sehr stark! Du kennst dich fast überall bestens aus.';
+  else if (pct >= 0.6)   msg = 'Gutes Fundament — unten siehst du, wo noch Luft ist.';
+  else if (pct >= 0.4)   msg = 'Solider Anfang. Die Übungs-Links unten helfen weiter.';
+  else                   msg = 'Noch viel zu entdecken — jede Kachel der App hilft beim Üben!';
+  document.getElementById('gt-ergebnis-msg').textContent = msg;
+
+  // Auswertung pro Bereich
+  const wrap = document.getElementById('gt-bereiche');
+  wrap.innerHTML = '';
+  Object.keys(BEREICHE).forEach(typ => {
+    const s = stats[typ];
+    if (s.g === 0 && modus === 'blitz') return; // Bereich kam nicht dran
+    const b = BEREICHE[typ];
+    const anteil = s.g > 0 ? (s.r / s.g) * 100 : 0;
+    const zeile = document.createElement('div');
+    zeile.className = 'gt-bereich-zeile';
+    zeile.innerHTML =
+      `<span class="gtb-name">${b.name}</span>` +
+      `<span class="gtb-wert">${s.r} / ${s.g}</span>` +
+      `<div class="gtb-balken-wrap"><div class="gtb-balken" style="width:${anteil}%"></div></div>` +
+      (s.r < s.g ? `<span class="gtb-ueben">Zum Üben: <a href="${b.ueben}">${b.uebenName} →</a></span>` : '');
+    wrap.appendChild(zeile);
+  });
+}
+
+function zurueckZumStart(){
+  if (timerId) { clearInterval(timerId); timerId = null; }
+  if (autoWeiterId) { clearTimeout(autoWeiterId); autoWeiterId = null; }
+  document.getElementById('gt-feuerwerk').style.display = 'none';
+  document.getElementById('gt-sieger-platz').innerHTML = '';
+  document.getElementById('gt-ergebnis').style.display = 'none';
+  document.getElementById('gt-frage').style.display = 'none';
+  document.getElementById('gt-start').style.display = 'block';
+  document.getElementById('gt-fortschritt').style.width = '0%';
+  document.getElementById('gt-status').textContent = '';
+}
+</script>
+
+<!-- GoatCounter: anonyme, cookie-freie Reichweiten-Statistik -->
+<script data-goatcounter="https://mibaso.goatcounter.com/count"
+        async src="//gc.zgo.at/count.js"></script>
+
+<!-- Service-Worker registrieren + „Neue Version verfügbar"-Banner -->
+<script>
+(function(){
+  if (!('serviceWorker' in navigator)) return;
+  let refreshing = false;
+  navigator.serviceWorker.addEventListener('controllerchange', () => {
+    if (refreshing) return;
+    refreshing = true;
+    window.location.reload();
+  });
+  function zeigeBanner(reg){
+    let b = document.getElementById('fl-update-banner');
+    if (!b) {
+      b = document.createElement('div');
+      b.id = 'fl-update-banner';
+      b.className = 'fl-update-banner';
+      b.innerHTML = '<span class="fl-update-text">🌿 Neue Version verfügbar.</span><button type="button">Jetzt aktualisieren</button>';
+      document.body.appendChild(b);
+      b.querySelector('button').addEventListener('click', () => {
+        if (reg.waiting) reg.waiting.postMessage({type:'SKIP_WAITING'});
+      });
+    }
+    b.classList.add('aktiv');
+  }
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('../sw.js').then((reg) => {
+      if (reg.waiting && navigator.serviceWorker.controller) zeigeBanner(reg);
+      reg.addEventListener('updatefound', () => {
+        const neu = reg.installing;
+        if (!neu) return;
+        neu.addEventListener('statechange', () => {
+          if (neu.state === 'installed' && navigator.serviceWorker.controller) {
+            zeigeBanner(reg);
+          }
+        });
+      });
+      reg.update();
+      document.addEventListener('visibilitychange', () => {
+        if (document.visibilityState === 'visible') reg.update();
+      });
+      setInterval(() => reg.update(), 60 * 60 * 1000);
+    }).catch(() => {});
+  });
+})();
+</script>
+
+</body>
+</html>
