@@ -692,3 +692,40 @@ footer.bottom .lizenz {
   font-size: 0.88rem;
   white-space: nowrap;
 }
+
+/* --- „Neue Version verfügbar"-Banner --- */
+.fl-update-banner {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  background: #5d6f7b;
+  color: #fff;
+  padding: max(8px, env(safe-area-inset-top)) 14px 8px;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  font-size: 0.92rem;
+  font-family: Georgia, serif;
+  z-index: 9999;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.18);
+}
+.fl-update-banner.aktiv { display: flex; flex-wrap: wrap; }
+.fl-update-banner .fl-update-text {
+  flex: 1 1 auto;
+  text-align: center;
+  min-width: 0;
+}
+.fl-update-banner button {
+  background: #fff;
+  color: #3f4d57;
+  border: none;
+  padding: 6px 14px;
+  border-radius: 7px;
+  font-family: inherit;
+  font-size: inherit;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.15);
+}
+.fl-update-banner button:hover { background: #f0f4f7; }

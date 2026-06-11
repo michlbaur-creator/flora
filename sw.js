@@ -9,7 +9,7 @@
    die alten Dateien automatisch auf.
 */
 
-const CACHE_NAME = 'mibaso-natur-v52';
+const CACHE_NAME = 'mibaso-natur-v53';
 
 // Wichtige Dateien, die für den App-Start gebraucht werden (Hub + Icons + Manifest).
 const APP_SHELL = [
@@ -24,11 +24,20 @@ const APP_SHELL = [
 ];
 
 // Installation: App-Shell vorab speichern.
+// Hinweis: skipWaiting() wird NICHT automatisch aufgerufen — die Seite zeigt
+// stattdessen einen „Neue Version verfügbar"-Banner und löst die Aktivierung
+// erst auf User-Klick aus (siehe Message-Listener unten).
 self.addEventListener('install', (event) => {
   event.waitUntil(
     caches.open(CACHE_NAME).then((cache) => cache.addAll(APP_SHELL))
   );
-  self.skipWaiting();
+});
+
+// Auf User-Wunsch (Klick auf Banner) sofort aktivieren.
+self.addEventListener('message', (event) => {
+  if (event.data && event.data.type === 'SKIP_WAITING') {
+    self.skipWaiting();
+  }
 });
 
 // Aktivierung: alte Caches aufräumen.
