@@ -100,7 +100,9 @@
     text-align:left;
     transition:border-color .15s, transform .1s;
   }
-  .gt-modus:hover{ border-color:var(--testen); transform:translateY(-1px); }
+  @media (hover: hover){
+    .gt-modus:hover{ border-color:var(--testen); transform:translateY(-1px); }
+  }
   .gt-modus strong{ color:var(--testen-tief); font-size:1.02rem; }
   .gt-modus span{ color:#7b6a72; font-size:.84rem; }
 
@@ -185,10 +187,15 @@
     line-height:1.3;
     transition:border-color .15s, background .15s, transform .1s;
   }
-  .gt-antwort:hover:not(:disabled){
-    border-color:var(--testen);
-    background:var(--testen-bg);
-    transform:translateY(-1px);
+  /* Hover nur auf Geräten mit Maus — auf Touchscreens „klebt" der
+     Hover-Zustand sonst an der zuletzt getippten Stelle und färbt
+     beim Weiterschalten die nächste Antwort ein */
+  @media (hover: hover){
+    .gt-antwort:hover:not(:disabled){
+      border-color:var(--testen);
+      background:var(--testen-bg);
+      transform:translateY(-1px);
+    }
   }
   .gt-antwort:disabled{ cursor:default; }
   .gt-antwort.richtig{
@@ -246,7 +253,9 @@
     cursor:pointer;
     transition:background .2s;
   }
-  #gt-weiter:hover{ background:var(--testen-tief); }
+  @media (hover: hover){
+    #gt-weiter:hover{ background:var(--testen-tief); }
+  }
 
   /* ── Ergebnis ── */
   #gt-ergebnis{ display:none; text-align:center; }
@@ -330,7 +339,9 @@
     text-decoration:none;
     transition:background .2s;
   }
-  .gt-btn:hover{ background:var(--testen-tief); }
+  @media (hover: hover){
+    .gt-btn:hover{ background:var(--testen-tief); }
+  }
 
   /* ── Feuerwerk bei perfektem Ergebnis ── */
   #gt-feuerwerk{
