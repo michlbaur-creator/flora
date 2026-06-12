@@ -295,6 +295,10 @@
     #pe-app .lt-slot { min-width: 78px; }
     #pe-app .lt-word { font-size: 0.9rem; padding: 7px 13px; }
   }
+  /* Einbett-Modus: nur ein Baustein zeigen (für den Lernpfad) */
+  body.eingebettet { background: transparent; }
+  body.eingebettet #pe-app { padding-top: 0; }
+  body.eingebettet .karte[data-teil]:not(.teil-sichtbar) { display: none !important; }
 </style>
 </head>
 <body>
@@ -302,7 +306,7 @@
 <div id="pe-app">
 
   <!-- 1) Photosynthese – anklickbar -->
-  <section class="karte">
+  <section class="karte" data-teil="photo">
     <h2 class="leitsatz">Pflanzen sind die Solarköche der Erde — sie verwandeln Licht in Leben.</h2>
 
     <div class="pe-interactive" data-steps="photo">
@@ -340,7 +344,7 @@
   </section>
 
   <!-- 2) Atmung – anklickbar -->
-  <section class="karte">
+  <section class="karte" data-teil="atmung">
     <h2 class="leitsatz">Tagsüber Solar-Küche, nachts Kraftwerk — Pflanzen sind echte Multitalente.</h2>
 
     <div class="pe-interactive" data-steps="atmung">
@@ -378,12 +382,12 @@
   </section>
 
   <!-- 3) Atmung – Zusatz-Grafik in voller Größe -->
-  <section class="karte karte-voll">
+  <section class="karte karte-voll" data-teil="atmung">
     <img src="../images/atmung_rest.jpg" alt="Atmung im Detail: Was passiert genau? – Warum atmen wir und Pflanzen? – die Küchen-Analogie und das Wichtigste in Kürze.">
   </section>
 
   <!-- 4) Lückentext-Quiz -->
-  <section class="karte" id="lt-app">
+  <section class="karte" id="lt-app" data-teil="lueckentext">
     <h2 class="leitsatz">Setze die richtigen Begriffe ein!</h2>
     <p class="lt-hinweis">Tippe ein Wort aus der Wortbank an – es springt in die nächste Lücke. Eine gefüllte Lücke kannst du durch Antippen wieder leeren. Zum Schluss auf „Prüfen“ tippen.</p>
     <div class="lt-saetze"></div>
@@ -418,6 +422,18 @@
 
   const app = document.getElementById('pe-app');
   let active = null;
+
+  // Einbett-Modus: Über ?teil=photo|atmung|lueckentext nur den gewünschten
+  // Baustein zeigen — so kann der Energie-Lernpfad die Teile einzeln einbetten.
+  (function einbetten(){
+    const params = new URLSearchParams(location.search);
+    const teil = params.get('teil');
+    if (!teil) return;
+    document.body.classList.add('eingebettet');
+    app.querySelectorAll('.karte[data-teil]').forEach(sek => {
+      sek.classList.toggle('teil-sichtbar', sek.dataset.teil === teil);
+    });
+  })();
 
   function initInteractive(root) {
     const steps   = STEPS[root.dataset.steps] || [];
