@@ -129,24 +129,29 @@
   .en-bridge .bridge-copy{ margin:18px 0 0; font-size:.78rem; color:#9a8d7c; }
   .en-bridge .bridge-copy a{ color:inherit; }
 
-  /* Untere Navigation — einheitliche Buttongröße */
+  /* Untere Navigation — schlanke Pill-Buttons */
   .en-nav-unten{
     display:flex; justify-content:space-between; align-items:center;
-    gap:10px; margin:14px 0 0;
+    gap:10px; margin:18px 0 0;
   }
   .en-nav-unten button{
-    background:var(--en); color:#fff; border:none; border-radius:10px;
-    padding:7px 14px; min-width:96px;
-    font-family:inherit; font-size:.88rem; font-weight:600; cursor:pointer;
-    box-shadow:0 2px 6px rgba(47,79,62,.22);
+    background:var(--en); color:#fff; border:1.5px solid var(--en);
+    border-radius:999px; padding:10px 24px; min-width:124px;
+    font-family:inherit; font-size:.94rem; font-weight:600; letter-spacing:.01em;
+    cursor:pointer; transition:background .15s ease, transform .08s ease, border-color .15s ease;
   }
-  .en-nav-unten button:hover{ background:#1f3a2a; }
-  .en-nav-unten button:disabled{ background:#cccccc; cursor:default; box-shadow:none; opacity:.6; }
+  .en-nav-unten button:hover{ background:#1f3a2a; border-color:#1f3a2a; }
+  .en-nav-unten button:active{ transform:translateY(1px); }
+  .en-nav-unten button:disabled{
+    background:transparent; color:#b8b0a2; border-color:#e0dacf;
+    cursor:default; transform:none;
+  }
   .en-nav-unten button.zurueck{
-    background:#fff; color:var(--en); border:1.5px solid var(--en-rand);
-    box-shadow:none; font-weight:500;
+    background:transparent; color:var(--en); border:1.5px solid var(--en-rand);
+    font-weight:500;
   }
-  .en-nav-unten button.zurueck:hover{ background:var(--en-bg); }
+  .en-nav-unten button.zurueck:hover{ background:var(--en-bg); border-color:var(--en); }
+  .en-nav-unten button.zurueck:disabled{ color:#cbc4b8; border-color:#ece7dd; background:transparent; }
 
   /* Poster-Lightbox */
   #en-lightbox{
@@ -229,7 +234,7 @@
     <div class="en-bridge">
       <div class="icon-gross">🧠</div>
       <h2>Wissen testen</h2>
-      <p>Du kennst jetzt Photosynthese, Atmung und ihren Kreislauf. Im Naturquiz warten Fragen genau zu diesen Themen — und im großen Flora-Test geht es quer durch alle Bereiche.</p>
+      <p>Du kennst jetzt Photosynthese, Atmung und ihren Kreislauf. Im Naturquiz warten Fragen auch zu diesen Themen — und im großen Flora-Test geht es quer durch alle Bereiche.</p>
       <a class="bridge-knopf" href="../quiz/naturquiz.html">Zum Naturquiz <span>›</span></a>
       <p class="bridge-copy">© 2026 <a href="../ueber/">Michael Baur</a> · Flora Mibaso</p>
     </div>
@@ -237,8 +242,8 @@
 
   <!-- Untere Navigation -->
   <div class="en-nav-unten">
-    <button class="zurueck" id="en-vor" disabled>‹ Zurück</button>
-    <button id="en-naechst">Nächster Schritt ›</button>
+    <button class="zurueck" id="en-vor" disabled>Zurück</button>
+    <button id="en-naechst">Weiter</button>
   </div>
 </main>
 
@@ -250,7 +255,6 @@
 
 <footer class="bottom" style="margin-top:32px;">
   <div class="wrap footer-text">
-    <p>Diese Sammlung ist das Ergebnis langjähriger Beobachtungen und meiner Leidenschaft für die Pflanzenwelt unserer Region. Hinweise, Korrekturen → <a href="mailto:mibaur@me.com">mibaur@me.com</a>. Meine Fotos dürfen gerne privat verwendet werden (Lizenz: CC BY-NC).</p>
     <p class="lizenz">© 2026 <a href="../ueber/">Michael Baur</a> · Flora Mibaso</p>
   </div>
 </footer>
@@ -281,7 +285,7 @@
     });
     btnVor.disabled = (aktuell === 1);
     btnNach.disabled = (aktuell === MAX);
-    btnNach.textContent = (aktuell === MAX) ? 'Geschafft!' : 'Nächster Schritt ›';
+    btnNach.textContent = (aktuell === MAX) ? 'Geschafft!' : 'Weiter';
     elZaehler.textContent = 'Schritt ' + aktuell + ' / ' + MAX;
     try { history.replaceState(null, '', '#schritt-' + aktuell); } catch(e){}
     window.scrollTo({ top: 0, behavior: 'smooth' });
