@@ -168,19 +168,28 @@
   }
   #pe-app .nav-group { display: flex; gap: 8px; }
   #pe-app .explain-nav-btn {
-    font-family: Georgia, serif;
-    font-size: 0.82rem;
-    font-weight: bold;
-    padding: 6px 12px;
-    border-radius: 16px;
+    font-family: inherit;
+    font-size: 0.9rem;
+    font-weight: 600;
+    padding: 8px 20px;
+    min-width: 92px;
+    border-radius: 999px;
     border: 1.5px solid #2F4F3E;
     cursor: pointer;
-    background: #fff;
-    color: #2F4F3E;
-    transition: background 0.14s, transform 0.1s;
+    background: #2F4F3E;
+    color: #fff;
+    transition: background 0.14s, border-color 0.14s, transform 0.08s;
   }
-  #pe-app .explain-nav-btn:hover { background: #f0f6f1; }
-  #pe-app .explain-nav-btn:active { transform: scale(0.97); }
+  #pe-app .explain-nav-btn.explain-prev {
+    background: transparent;
+    color: #2F4F3E;
+    border-color: #cdd9d0;
+    font-weight: 500;
+  }
+  #pe-app .explain-nav-btn:hover { background: #1f3a2a; border-color: #1f3a2a; color: #fff; }
+  #pe-app .explain-nav-btn.explain-prev:hover { background: #eef4ee; color: #2F4F3E; border-color: #2F4F3E; }
+  #pe-app .explain-nav-btn:active { transform: translateY(1px); }
+  #pe-app .explain-nav-btn:disabled { background: transparent; color: #b8c2ba; border-color: #e3e9e3; cursor: default; transform: none; }
   #pe-app .explain-close-btn {
     font-family: Georgia, serif;
     font-size: 1rem;
@@ -329,8 +338,8 @@
           <div class="explain-body">–</div>
           <div class="explain-footer">
             <div class="nav-group">
-              <button class="explain-nav-btn explain-prev">◀ zurück</button>
-              <button class="explain-nav-btn explain-next">weiter ▶</button>
+              <button class="explain-nav-btn explain-prev">Zurück</button>
+              <button class="explain-nav-btn explain-next">Weiter</button>
             </div>
             <button class="explain-close-btn">×</button>
           </div>
@@ -367,8 +376,8 @@
           <div class="explain-body">–</div>
           <div class="explain-footer">
             <div class="nav-group">
-              <button class="explain-nav-btn explain-prev">◀ zurück</button>
-              <button class="explain-nav-btn explain-next">weiter ▶</button>
+              <button class="explain-nav-btn explain-prev">Zurück</button>
+              <button class="explain-nav-btn explain-next">Weiter</button>
             </div>
             <button class="explain-close-btn">×</button>
           </div>

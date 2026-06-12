@@ -350,9 +350,9 @@
       </div>
 
       <div class="steuerung">
-        <button class="knopf zurueck" id="btn-zurueck">‹ Zurück</button>
+        <button class="knopf zurueck" id="btn-zurueck">Zurück</button>
         <div class="punkte" id="punkte" role="group" aria-label="Schritte"></div>
-        <button class="knopf" id="btn-weiter">Weiter ›</button>
+        <button class="knopf" id="btn-weiter">Weiter</button>
       </div>
     </div>
   </div>
@@ -408,7 +408,7 @@
     erkl.classList.add("wechsel");
 
     btnZ.disabled = (aktuell === 0);
-    btnW.textContent = (aktuell === schritte.length - 1) ? "Von vorn ↺" : "Weiter ›";
+    btnW.textContent = (aktuell === schritte.length - 1) ? "Von vorn" : "Weiter";
 
     var dots = punkte.children;
     for (var i = 0; i < dots.length; i++){

@@ -164,20 +164,28 @@
   }
   #bestaeubung1-app .nav-group { display: flex; gap: 8px; }
   #bestaeubung1-app .explain-nav-btn {
-    font-family: Georgia, serif;
-    font-size: 0.88rem;
-    font-weight: bold;
-    padding: 7px 14px;
-    min-width: 96px;
-    border-radius: 16px;
+    font-family: inherit;
+    font-size: 0.9rem;
+    font-weight: 600;
+    padding: 8px 20px;
+    min-width: 92px;
+    border-radius: 999px;
     border: 1.5px solid #3A5F4A;
     cursor: pointer;
-    background: white;
-    color: #3A5F4A;
-    transition: background 0.14s, transform 0.1s;
+    background: #3A5F4A;
+    color: #fff;
+    transition: background 0.14s, border-color 0.14s, transform 0.08s;
   }
-  #bestaeubung1-app .explain-nav-btn:hover { background: #f0f6f1; }
-  #bestaeubung1-app .explain-nav-btn:active { transform: scale(0.97); }
+  #bestaeubung1-app .explain-nav-btn#explain-prev {
+    background: transparent;
+    color: #3A5F4A;
+    border-color: #cdd9d0;
+    font-weight: 500;
+  }
+  #bestaeubung1-app .explain-nav-btn:hover { background: #2F4F3E; border-color: #2F4F3E; color: #fff; }
+  #bestaeubung1-app .explain-nav-btn#explain-prev:hover { background: #eef4ee; color: #3A5F4A; border-color: #3A5F4A; }
+  #bestaeubung1-app .explain-nav-btn:active { transform: translateY(1px); }
+  #bestaeubung1-app .explain-nav-btn:disabled { background: transparent; color: #b8c2ba; border-color: #e3e9e3; cursor: default; transform: none; }
   #bestaeubung1-app #explain-close-btn {
     font-family: Georgia, serif;
     font-size: 0.82rem;
@@ -512,8 +520,8 @@
       <div id="explain-body">–</div>
       <div id="explain-footer">
         <div class="nav-group">
-          <button class="explain-nav-btn" id="explain-prev">◀ zurück</button>
-          <button class="explain-nav-btn" id="explain-next">weiter ▶</button>
+          <button class="explain-nav-btn" id="explain-prev">Zurück</button>
+          <button class="explain-nav-btn" id="explain-next">Weiter</button>
         </div>
         <button id="explain-close-btn">×</button>
       </div>

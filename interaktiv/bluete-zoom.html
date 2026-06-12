@@ -232,9 +232,9 @@
       </div>
 
       <div class="steuerung">
-        <button class="knopf heraus" id="btn-heraus">‹ Heraus</button>
+        <button class="knopf heraus" id="btn-heraus">Heraus</button>
         <div class="punkte" id="punkte" role="group" aria-label="Zoomstufen"></div>
-        <button class="knopf" id="btn-hinein">Näher heran ›</button>
+        <button class="knopf" id="btn-hinein">Näher heran</button>
       </div>
     </div>
   </div>
@@ -324,7 +324,7 @@
     erkl.classList.add("wechsel");
 
     btnH.disabled = (n === 0);
-    btnR.textContent = (n === ebenen.length - 1) ? "Zur Übersicht ↺" : "Näher heran ›";
+    btnR.textContent = (n === ebenen.length - 1) ? "Zur Übersicht" : "Näher heran";
 
     var dots = punkte.children;
     for (var i = 0; i < dots.length; i++){
