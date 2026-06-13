@@ -380,13 +380,18 @@
   zeige(hashStart ? +hashStart : 1);
 
   // Höhe von iframes empfangen (kreislaufHoehe oder quizHeight)
+  // Mit Hysterese: winzige Schwankungen ignorieren, damit sich die
+  // Höhe nicht langsam „hochschaukelt".
   window.addEventListener('message', (e) => {
     const d = e.data || {};
     const h = (typeof d.kreislaufHoehe === 'number') ? d.kreislaufHoehe
             : (typeof d.quizHeight === 'number') ? d.quizHeight : null;
     if (h === null) return;
     frames.forEach(f => {
-      if (f.contentWindow === e.source) f.style.height = (h + 16) + 'px';
+      if (f.contentWindow !== e.source) return;
+      const neu = h + 16;
+      const alt = parseFloat(f.style.height) || 0;
+      if (Math.abs(neu - alt) > 4) f.style.height = neu + 'px';
     });
   });
 })();
