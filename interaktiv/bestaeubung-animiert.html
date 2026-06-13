@@ -440,12 +440,12 @@
   const isEmbed = params.get('embed') === '1' || window.self !== window.top;
   if (isEmbed) {
     document.body.classList.add('embed');
-    // Höhe regelmäßig an Parent posten
+    // Höhe regelmäßig an Parent posten — echte Inhaltshöhe (main),
+    // nicht die vom iframe vorgegebene Viewport-Höhe
     const sende = () => {
-      const h = Math.max(
-        document.documentElement.scrollHeight,
-        document.body.scrollHeight
-      );
+      const main = document.querySelector('main');
+      const h = main ? Math.ceil(main.getBoundingClientRect().bottom) + 8
+                     : document.body.scrollHeight;
       window.parent.postMessage({ kreislaufHoehe: h }, '*');
     };
     window.addEventListener('load', sende);
