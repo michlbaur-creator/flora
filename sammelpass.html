@@ -1,0 +1,204 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#2F4F3E">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="assets/icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Flora Mibaso">
+<title>Mein Sammelpass · Flora Mibaso</title>
+<link rel="stylesheet" href="assets/style.css">
+<meta name="description" content="Mein Sammelpass: Welche heimischen Arten hast du schon entdeckt? Lokal auf deinem Gerät, ganz ohne Konto.">
+<style>
+  .sp-main { max-width: 1000px; margin: 0 auto; padding: 0 16px 50px; }
+
+  /* Fortschritts-Karte */
+  .sp-fortschritt {
+    background: #fff;
+    border: 1px solid var(--beige-mittel);
+    border-radius: 16px;
+    padding: 18px 20px;
+    margin: 4px 0 22px;
+    box-shadow: 0 2px 8px rgba(90,58,36,.06);
+  }
+  .sp-zahl { font-size: 1.5rem; color: var(--gruen-dunkel); font-weight: 600; }
+  .sp-zahl small { font-size: .95rem; color: var(--text-leise); font-weight: normal; }
+  .sp-bar-wrap { height: 12px; background: var(--beige-mittel); border-radius: 6px; overflow: hidden; margin: 10px 0 8px; }
+  .sp-bar { height: 100%; width: 0; background: var(--gruen-akzent); border-radius: 6px; transition: width .5s ease; }
+  .sp-stufe { color: var(--gruen-mittel); font-weight: 600; }
+  .sp-reset { float: right; background: none; border: none; color: var(--text-leise); font-family: inherit; font-size: .85rem; cursor: pointer; text-decoration: underline; padding: 0; }
+  .sp-reset:hover { color: var(--braun-dunkel); }
+
+  /* „Heute draußen" */
+  .sp-heute { margin: 0 0 24px; display: none; }
+  .sp-heute h2 { font-size: 1.15rem; color: var(--gruen-mittel); margin: 0 0 4px; }
+  .sp-heute p { margin: 0 0 10px; color: var(--text-leise); font-size: .95rem; }
+  .sp-strip { display: flex; gap: 12px; overflow-x: auto; padding: 2px 2px 12px; -webkit-overflow-scrolling: touch; }
+  .sp-strip a { flex: 0 0 auto; width: 110px; text-decoration: none; color: var(--gruen-mittel); }
+  .sp-strip img { width: 100%; aspect-ratio: 2/3; object-fit: cover; object-position: center top; border-radius: 10px; border: 1px solid var(--beige-mittel); background: #fff; display: block; }
+  .sp-strip span { display: block; font-size: .82rem; font-weight: 600; margin-top: 4px; line-height: 1.2; }
+
+  /* Gesamt-Raster */
+  .sp-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 12px; }
+  .sp-karte { display: flex; flex-direction: column; }
+  .sp-bild {
+    position: relative;
+    padding: 0; border: 1px solid var(--beige-mittel); border-radius: 12px;
+    background: #fff; cursor: pointer; overflow: hidden; line-height: 0;
+  }
+  .sp-bild img { width: 100%; aspect-ratio: 2/3; object-fit: cover; object-position: center top; display: block; transition: filter .2s, opacity .2s; }
+  .sp-karte:not(.an) .sp-bild img { filter: grayscale(0.85); opacity: .55; }
+  .sp-check {
+    position: absolute; top: 6px; right: 6px;
+    width: 26px; height: 26px; border-radius: 50%;
+    background: var(--gruen-mittel); color: #fff;
+    display: flex; align-items: center; justify-content: center;
+    font-size: .95rem; opacity: 0; transform: scale(.6); transition: opacity .2s, transform .2s;
+  }
+  .sp-karte.an .sp-check { opacity: 1; transform: scale(1); }
+  .sp-bild:hover { border-color: var(--gruen-akzent); }
+  .sp-name { font-size: .9rem; font-weight: 600; color: var(--gruen-mittel); text-decoration: none; margin-top: 5px; line-height: 1.2; }
+  .sp-name:hover { text-decoration: underline; }
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="wrap top-inner">
+    <div class="titelblock">
+      <h1><a href="index.html">Mein Sammelpass</a></h1>
+      <div class="untertitel">Welche heimischen Arten hast du schon entdeckt?</div>
+    </div>
+  </div>
+</header>
+
+<main class="sp-main">
+  <a class="back-btn" href="index.html">‹ zur Startseite</a>
+
+  <div class="sp-fortschritt">
+    <button class="sp-reset" id="sp-reset" type="button">zurücksetzen</button>
+    <div class="sp-zahl"><span id="sp-anzahl">0</span> <small>von <span id="sp-gesamt">146</span> Arten gefunden</small></div>
+    <div class="sp-bar-wrap"><div class="sp-bar" id="sp-bar"></div></div>
+    <div class="sp-stufe" id="sp-stufe">Noch keine Art — leg los!</div>
+  </div>
+
+  <section class="sp-heute" id="sp-heute">
+    <h2 id="sp-heute-titel">Heute draußen</h2>
+    <p>Diese Arten blühen gerade und fehlen dir noch — halt die Augen offen:</p>
+    <div class="sp-strip" id="sp-heute-strip"></div>
+  </section>
+
+  <div class="sp-grid" id="sp-grid" aria-label="Alle Arten zum Abhaken"></div>
+</main>
+
+<footer class="bottom">
+  <div class="wrap footer-text">
+    <p class="lizenz">© 2026 <a href="ueber/">Michael Baur</a> · Flora Mibaso</p>
+  </div>
+</footer>
+
+<script src="assets/app.js" defer></script>
+<script>
+(function () {
+  var MONATE = ['Januar','Februar','März','April','Mai','Juni','Juli',
+                'August','September','Oktober','November','Dezember'];
+  var monat = new Date().getMonth() + 1;
+  var daten = [];
+
+  function stufe(n, gesamt) {
+    if (n >= gesamt) return '🏆 Alle Arten gefunden — Flora-Meister:in!';
+    if (n >= 100) return '🏅 Über 100 Arten — Expert:in';
+    if (n >= 50)  return '🌳 50+ Arten — Fortgeschritten';
+    if (n >= 25)  return '🌿 25+ Arten — Kenner:in';
+    if (n >= 10)  return '🌱 10+ Arten — guter Start';
+    if (n >= 1)   return '🍀 Frisch losgelegt';
+    return 'Noch keine Art — leg los!';
+  }
+
+  function aktualisiereFortschritt() {
+    var n = daten.filter(function (p) { return window.FloraSammel.hat(p.slug); }).length;
+    var g = daten.length;
+    document.getElementById('sp-anzahl').textContent = n;
+    document.getElementById('sp-gesamt').textContent = g;
+    document.getElementById('sp-bar').style.width = (g ? (n / g * 100) : 0) + '%';
+    document.getElementById('sp-stufe').textContent = stufe(n, g);
+  }
+
+  function rendereHeute() {
+    var sek = document.getElementById('sp-heute');
+    var strip = document.getElementById('sp-heute-strip');
+    var offen = daten.filter(function (p) {
+      return (p.monate || []).indexOf(monat) >= 0 && !window.FloraSammel.hat(p.slug);
+    });
+    if (!offen.length) { sek.style.display = 'none'; return; }
+    document.getElementById('sp-heute-titel').textContent = 'Heute draußen — ' + MONATE[monat - 1];
+    strip.innerHTML = '';
+    offen.slice(0, 12).forEach(function (p) {
+      var a = document.createElement('a');
+      a.href = 'arten/' + p.slug + '.html';
+      a.innerHTML = '<img src="images/tafeln/' + p.slug + '.jpg" alt="' + p.deutsch +
+                    '" loading="lazy" onerror="this.style.visibility=\'hidden\'"><span>' + p.deutsch + '</span>';
+      strip.appendChild(a);
+    });
+    sek.style.display = '';
+  }
+
+  function rendereGrid() {
+    var grid = document.getElementById('sp-grid');
+    var frag = document.createDocumentFragment();
+    daten.forEach(function (p) {
+      var karte = document.createElement('div');
+      karte.className = 'sp-karte' + (window.FloraSammel.hat(p.slug) ? ' an' : '');
+      var btn = document.createElement('button');
+      btn.className = 'sp-bild';
+      btn.type = 'button';
+      btn.setAttribute('aria-pressed', window.FloraSammel.hat(p.slug) ? 'true' : 'false');
+      btn.title = 'Als gefunden markieren';
+      btn.innerHTML = '<img src="images/tafeln/' + p.slug + '.jpg" alt="Tafel ' + p.deutsch +
+                      '" loading="lazy" onerror="this.style.visibility=\'hidden\'">' +
+                      '<span class="sp-check" aria-hidden="true">✓</span>';
+      btn.addEventListener('click', function () {
+        var jetzt = window.FloraSammel.toggle(p.slug);
+        karte.classList.toggle('an', jetzt);
+        btn.setAttribute('aria-pressed', jetzt ? 'true' : 'false');
+        aktualisiereFortschritt();
+        rendereHeute();
+      });
+      var name = document.createElement('a');
+      name.className = 'sp-name';
+      name.href = 'arten/' + p.slug + '.html';
+      name.textContent = p.deutsch;
+      karte.appendChild(btn);
+      karte.appendChild(name);
+      frag.appendChild(karte);
+    });
+    grid.innerHTML = '';
+    grid.appendChild(frag);
+  }
+
+  // Start erst, wenn app.js (defer) die FloraSammel-API bereitgestellt hat
+  document.addEventListener('DOMContentLoaded', function () {
+    document.getElementById('sp-reset').addEventListener('click', function () {
+      if (!confirm('Wirklich alle Markierungen zurücksetzen?')) return;
+      daten.forEach(function (p) { if (window.FloraSammel.hat(p.slug)) window.FloraSammel.toggle(p.slug); });
+      rendereGrid(); aktualisiereFortschritt(); rendereHeute();
+    });
+
+    fetch('pflanzen.json')
+      .then(function (r) { return r.json(); })
+      .then(function (d) {
+        daten = d;
+        rendereGrid();
+        aktualisiereFortschritt();
+        rendereHeute();
+      })
+      .catch(function () {
+        document.getElementById('sp-stufe').textContent = 'Daten konnten nicht geladen werden.';
+      });
+  });
+})();
+</script>
+</body>
+</html>

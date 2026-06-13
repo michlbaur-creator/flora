@@ -71,3 +71,35 @@
     }).catch(function () {});
   });
 })();
+
+/* ── Sammelpass: lokal gespeicherte „gefundene" Arten (localStorage) ──
+   Eigene Funktion, damit der return oben (kein Service-Worker) sie nicht überspringt. */
+(function () {
+  var KEY = 'flora-gefunden';
+  function liste() { try { return JSON.parse(localStorage.getItem(KEY)) || []; } catch (e) { return []; } }
+  function speichere(a) { try { localStorage.setItem(KEY, JSON.stringify(a)); } catch (e) {} }
+  function hat(slug) { return liste().indexOf(slug) >= 0; }
+  function toggle(slug) {
+    var a = liste(), i = a.indexOf(slug);
+    if (i >= 0) a.splice(i, 1); else a.push(slug);
+    speichere(a);
+    return i < 0; // true = jetzt gefunden
+  }
+  window.FloraSammel = { liste: liste, hat: hat, toggle: toggle };
+
+  // „Gefunden"-Button auf Artenseiten verkabeln (Slug aus dem Dateinamen)
+  document.addEventListener('DOMContentLoaded', function () {
+    var btn = document.getElementById('gefunden-btn');
+    if (!btn) return;
+    var slug = (location.pathname.split('/').pop() || '').replace(/\.html$/, '');
+    if (!slug) return;
+    function sync() {
+      var an = hat(slug);
+      btn.classList.toggle('an', an);
+      btn.setAttribute('aria-pressed', an ? 'true' : 'false');
+      btn.textContent = an ? '✓ Gefunden' : '＋ Als gefunden merken';
+    }
+    sync();
+    btn.addEventListener('click', function () { toggle(slug); sync(); });
+  });
+})();
