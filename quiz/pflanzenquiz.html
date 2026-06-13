@@ -199,6 +199,15 @@
     transition: background 0.2s;
   }
   #next-btn:hover { background: #2F4F3E; }
+  #mehr-link {
+    display: block;
+    text-align: center;
+    margin: 2px 12px 6px;
+    font-size: 0.88rem;
+    color: #3A5F4A;
+    text-decoration: none;
+  }
+  #mehr-link:hover { text-decoration: underline; }
 
   /* ── Result screen ── */
   #result-screen {
@@ -370,6 +379,7 @@
     <div id="question-text">Wie heißt diese Pflanze?</div>
     <div id="answers"></div>
     <div id="feedback"></div>
+    <a id="mehr-link" href="#" target="_blank" rel="noopener" style="display:none;">Mehr zu dieser Art →</a>
     <button id="next-btn" onclick="nextQuestion()">Weiter →</button>
   </div>
 
@@ -561,6 +571,7 @@ function showQuestion() {
   // Feedback zurücksetzen
   document.getElementById('feedback').textContent = '';
   document.getElementById('next-btn').style.display = 'none';
+  document.getElementById('mehr-link').style.display = 'none';
 
   // Foto laden
   const img = document.getElementById('plant-photo');
@@ -633,6 +644,10 @@ function checkAnswer(isCorrect, clickedBtn, art) {
       `✗ Es war: ${art.name}`;
     wrongAnswers.push({ art, given: clickedBtn.querySelector('strong').textContent });
   }
+
+  const ml = document.getElementById('mehr-link');
+  ml.href = '../arten/' + art.slug + '.html';
+  ml.style.display = 'block';
 
   document.getElementById('next-btn').style.display = 'block';
 }

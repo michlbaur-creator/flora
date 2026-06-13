@@ -6,6 +6,18 @@
 <title>Flora Mibaso — Pflanzen entdecken · Pflanzen verstehen</title>
 <meta name="description" content="Deine digitale Naturwerkstatt für die Hosentasche: über 100 Pflanzenarten bestimmen, Broschüren, Quiz und interaktive Lerntafeln zu Pflanzenbau und Bestäubung – funktioniert überall, auch ohne Netz.">
 <meta name="theme-color" content="#2F4F3E">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": "Flora Mibaso",
+  "url": "https://flora.mibaso.de/",
+  "inLanguage": "de",
+  "description": "Digitale Naturwerkstatt von Michael Baur: heimische Pflanzen entdecken, bestimmen und verstehen.",
+  "author": { "@type": "Person", "name": "Michael Baur" },
+  "license": "https://creativecommons.org/licenses/by-nc/4.0/"
+}
+</script>
 
 <!-- App-Installation -->
 <link rel="manifest" href="manifest.webmanifest">
@@ -911,6 +923,7 @@
         img.src = 'images/tafeln/' + p.slug + '.jpg';
         img.alt = p.deutsch;
         img.loading = 'lazy';
+        img.onerror = function(){ this.style.visibility = 'hidden'; };
         const name = document.createElement('span');
         name.className = 'jk-name';
         name.textContent = p.deutsch;

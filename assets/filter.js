@@ -203,6 +203,45 @@
     });
   }
 
+  // Baut die Pflanzenkarten dynamisch aus pflanzen.json (eine Datenquelle).
+  // Struktur identisch zur früheren statischen Karte, inkl. data-art für den Filter.
+  function bauKarten(daten) {
+    const grid = document.getElementById('grid');
+    if (!grid) return;
+    const frag = document.createDocumentFragment();
+    daten.forEach(p => {
+      const a = document.createElement('a');
+      a.className = 'card';
+      a.href = 'arten/' + p.slug + '.html';
+      a.dataset.art = JSON.stringify({
+        slug: p.slug, farben: p.farben || [], habitat: p.habitat,
+        monate: p.monate || [], familie_de: p.familie_de,
+        familie_lat: p.familie_lat, bluetenaufbau: p.bluetenaufbau || []
+      });
+      const farbe1 = (p.farben && p.farben[0]) || '';
+      const punkte = (p.farben || [])
+        .map(f => `<span class="farb-punkt" data-farbe="${f}" title="${f}"></span>`).join('');
+      a.innerHTML =
+        '<div class="tafel-wrap">' +
+          `<span class="ecke-farbpunkt" data-farbe="${farbe1}"></span>` +
+          `<img src="images/tafeln/${p.slug}.jpg" alt="Tafel ${p.deutsch}" loading="lazy" onerror="this.style.visibility='hidden'">` +
+        '</div>' +
+        '<div class="card-body">' +
+          `<div class="deutsch">${p.deutsch}</div>` +
+          `<div class="wiss">${p.wiss}</div>` +
+          `<div class="familie">${p.familie_de} · <span style="font-style:italic">${p.familie_lat}</span></div>` +
+          '<div class="meta">' +
+            `<span class="bluehzeit">${p.bluehzeit || ''}</span>` +
+            `<span class="farbenpunkte">${punkte}</span>` +
+            `<span style="margin-left:6px; color:var(--text-leise);">${p.habitat || ''}</span>` +
+          '</div>' +
+        '</div>';
+      frag.appendChild(a);
+    });
+    grid.innerHTML = '';
+    grid.appendChild(frag);
+  }
+
   document.addEventListener('DOMContentLoaded', () => {
     bindChips('.chip.farbe',    state.farben,   'farbe',    'string');
     bindChips('.chip.bereich',  state.bereiche, 'bereich',  'string');
@@ -229,25 +268,32 @@
       famSuche.addEventListener('input', e => filterFamilieListe(e.target.value));
     }
 
-    // Erlaubt direkte Sprünge per URL, z. B. aus der Systematik:
-    // bestimmen.html?familie=Korbblütler  → setzt den passenden Familien-Filter
-    try {
-      const params = new URLSearchParams(window.location.search);
-      const famParam = params.get('familie');
-      if (famParam) {
-        const ziel = document.querySelector(
-          `.chip.familie[data-familie="${famParam.replace(/"/g, '\\"')}"]`
-        );
-        if (ziel && !ziel.classList.contains('aktiv')) {
-          ziel.click();
-          // Filter-Bereich aufklappen + Familien-Box sichtbar machen, falls möglich
-          const det = ziel.closest('details');
-          if (det) det.open = true;
-          ziel.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    // Nach dem Aufbau der Karten: Direktsprung per URL + erstes Filtern
+    function nachStart() {
+      // Erlaubt direkte Sprünge per URL, z. B. aus der Systematik:
+      // bestimmen.html?familie=Korbblütler  → setzt den passenden Familien-Filter
+      try {
+        const params = new URLSearchParams(window.location.search);
+        const famParam = params.get('familie');
+        if (famParam) {
+          const ziel = document.querySelector(
+            `.chip.familie[data-familie="${famParam.replace(/"/g, '\\"')}"]`
+          );
+          if (ziel && !ziel.classList.contains('aktiv')) {
+            ziel.click();
+            const det = ziel.closest('details');
+            if (det) det.open = true;
+            ziel.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          }
         }
-      }
-    } catch (e) { /* ignorieren */ }
+      } catch (e) { /* ignorieren */ }
+      refresh();
+    }
 
-    refresh();
+    // Pflanzendaten laden und Karten erzeugen, danach filtern
+    fetch('pflanzen.json')
+      .then(r => r.json())
+      .then(daten => { bauKarten(daten); nachStart(); })
+      .catch(() => { nachStart(); });
   });
 })();
