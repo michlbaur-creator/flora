@@ -213,6 +213,33 @@
     font-style:italic;
     margin:0 0 10px;
   }
+  /* Hinweis oben: dieser Schritt hat zwei Teile */
+  .kr-teil-hinweis{
+    text-align:center;
+    color:#7a6d5c;
+    font-style:italic;
+    font-size:.9rem;
+    margin:0 0 12px;
+  }
+  /* Auffälliger Button zwischen Animation und Selbst-Entdecken */
+  .kr-teil2-btn{
+    display:block;
+    width:100%;
+    margin:0 0 14px;
+    padding:13px 16px;
+    background:var(--kr);
+    color:#fff;
+    border:none;
+    border-radius:12px;
+    font-family:inherit;
+    font-size:1rem;
+    font-weight:600;
+    cursor:pointer;
+    box-shadow:0 3px 8px rgba(47,79,62,.22);
+    transition:background .15s, transform .1s;
+  }
+  .kr-teil2-btn:hover{ background:#1f3a2a; }
+  .kr-teil2-btn:active{ transform:translateY(1px); }
 
   /* Schritt-Navigation unten */
   .kr-nav-unten{
@@ -302,11 +329,12 @@
 
   <!-- Schritt 3: Bestäubung & Befruchtung (Animation + selbst entdecken) -->
   <section class="kr-schritt" data-schritt="3">
+    <p class="kr-teil-hinweis">Zwei Teile: erst die Animation ansehen — dann unten selbst ausprobieren.</p>
     <div class="kr-frame-wrap">
       <iframe class="kr-frame" data-src="bestaeubung-animiert.html?embed=1" title="Bestäubung Schritt für Schritt" loading="lazy"></iframe>
     </div>
-    <p class="kr-zwischentitel">Und jetzt selbst entdecken — tippe auf die Zahlen:</p>
-    <div class="kr-frame-wrap">
+    <button class="kr-teil2-btn" type="button" id="kr-zu-teil2">👇 Jetzt selbst entdecken — tippe die Zahlen im Bild an</button>
+    <div class="kr-frame-wrap" id="kr-teil2">
       <iframe class="kr-frame" data-src="bestaeubung-erklaerung.html?embed=1" title="Bestäubung — jetzt selbst entdecken" loading="lazy"></iframe>
     </div>
   </section>
@@ -375,6 +403,13 @@
   stepper.forEach(s => s.addEventListener('click', () => zeige(+s.dataset.schritt)));
   btnVor.addEventListener('click', () => zeige(aktuell - 1));
   btnNach.addEventListener('click', () => zeige(aktuell + 1));
+
+  // Schritt 3: Button springt zum „Selbst entdecken"-Teil
+  const zuTeil2 = document.getElementById('kr-zu-teil2');
+  if (zuTeil2) zuTeil2.addEventListener('click', () => {
+    const ziel = document.getElementById('kr-teil2');
+    if (ziel) ziel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
 
   const hashStart = (location.hash.match(/schritt-(\d)/) || [])[1];
   zeige(hashStart ? +hashStart : 1);

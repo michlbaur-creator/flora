@@ -283,7 +283,13 @@
             ziel.click();
             const det = ziel.closest('details');
             if (det) det.open = true;
-            ziel.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          }
+          // Direkt zu den gefilterten Arten scrollen (Filtermaske überspringen)
+          const ergebnis = document.querySelector('.zaehler') || document.getElementById('grid');
+          if (ergebnis) {
+            setTimeout(function () {
+              ergebnis.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }, 120);
           }
         }
       } catch (e) { /* ignorieren */ }
