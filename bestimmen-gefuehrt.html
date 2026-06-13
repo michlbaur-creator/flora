@@ -354,55 +354,7 @@ function wieseIkon(){return `<svg viewBox="0 0 42 42"><g stroke="#7EA468" stroke
 render();
 </script>
 
-<!-- GoatCounter: anonyme, cookie-freie Reichweiten-Statistik -->
-<script data-goatcounter="https://mibaso.goatcounter.com/count"
-        async src="//gc.zgo.at/count.js"></script>
 
-<!-- Service-Worker registrieren + „Neue Version verfügbar"-Banner -->
-<script>
-(function(){
-  if (!('serviceWorker' in navigator)) return;
-  let refreshing = false;
-  navigator.serviceWorker.addEventListener('controllerchange', () => {
-    if (refreshing) return;
-    refreshing = true;
-    window.location.reload();
-  });
-  function zeigeBanner(reg){
-    let b = document.getElementById('fl-update-banner');
-    if (!b) {
-      b = document.createElement('div');
-      b.id = 'fl-update-banner';
-      b.className = 'fl-update-banner';
-      b.innerHTML = '<span class="fl-update-text">🌿 Neue Version verfügbar.</span><button type="button">Jetzt aktualisieren</button>';
-      document.body.appendChild(b);
-      b.querySelector('button').addEventListener('click', () => {
-        if (reg.waiting) reg.waiting.postMessage({type:'SKIP_WAITING'});
-      });
-    }
-    b.classList.add('aktiv');
-  }
-  window.addEventListener('load', () => {
-    navigator.serviceWorker.register('sw.js').then((reg) => {
-      if (reg.waiting && navigator.serviceWorker.controller) zeigeBanner(reg);
-      reg.addEventListener('updatefound', () => {
-        const neu = reg.installing;
-        if (!neu) return;
-        neu.addEventListener('statechange', () => {
-          if (neu.state === 'installed' && navigator.serviceWorker.controller) {
-            zeigeBanner(reg);
-          }
-        });
-      });
-      reg.update();
-      document.addEventListener('visibilitychange', () => {
-        if (document.visibilityState === 'visible') reg.update();
-      });
-      setInterval(() => reg.update(), 60 * 60 * 1000);
-    }).catch(() => {});
-  })();
-})();
-</script>
-
+<script src="assets/app.js" defer></script>
 </body>
 </html>
