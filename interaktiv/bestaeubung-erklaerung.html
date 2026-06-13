@@ -633,7 +633,7 @@
   });
 
   function sendHeight() {
-    const h = app.offsetHeight + 20;
+    const h = document.body.scrollHeight;
     try { window.parent.postMessage({ quizHeight: h }, '*'); } catch(_) {}
   }
   window.addEventListener('load', sendHeight);
@@ -894,7 +894,7 @@
   }
 
   function sendHeight() {
-    const h = app.offsetHeight + 20;
+    const h = document.body.scrollHeight;
     try { window.parent.postMessage({ quizHeight: h }, '*'); } catch(_) {}
   }
   window.addEventListener('load', sendHeight);
@@ -927,7 +927,7 @@
   if (isEmbed) {
     document.body.classList.add('embed');
     const sende = () => {
-      const h = Math.max(document.documentElement.scrollHeight, document.body.scrollHeight);
+      const h = document.body.scrollHeight;
       window.parent.postMessage({ kreislaufHoehe: h }, '*');
     };
     window.addEventListener('load', sende);

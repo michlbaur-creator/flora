@@ -359,10 +359,7 @@
     document.body.classList.add('embed');
     // Höhe regelmäßig an Parent posten
     const sende = () => {
-      const h = Math.max(
-        document.documentElement.scrollHeight,
-        document.body.scrollHeight
-      );
+      const h = document.body.scrollHeight;
       window.parent.postMessage({ kreislaufHoehe: h }, '*');
     };
     window.addEventListener('load', sende);

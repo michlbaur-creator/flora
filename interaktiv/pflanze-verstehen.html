@@ -1007,7 +1007,7 @@
   }
 
   function sendH() {
-    try { window.parent.postMessage({ quizHeight: document.documentElement.scrollHeight + 20 }, '*'); } catch (_) {}
+    try { window.parent.postMessage({ quizHeight: document.body.scrollHeight + 20 }, '*'); } catch (_) {}
   }
 
   pruefBtn.addEventListener('click', pruefen);
