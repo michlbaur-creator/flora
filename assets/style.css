@@ -454,6 +454,25 @@ header.top a:hover { color: #fff; }
 }
 .back:hover { color: var(--braun-dunkel); }
 
+/* Kleine Zurück-Buttons (Detailseiten) */
+.back-btn {
+  display: inline-block;
+  margin: 18px 10px 0 0;
+  padding: 7px 16px;
+  border: 1.5px solid var(--braun-hell);
+  border-radius: 999px;
+  background: #fff;
+  color: var(--braun-mittel);
+  text-decoration: none;
+  font-size: 0.88rem;
+  transition: background .14s, border-color .14s, color .14s;
+}
+.back-btn:hover {
+  background: var(--beige-hell);
+  border-color: var(--braun-mittel);
+  color: var(--braun-dunkel);
+}
+
 .art-kopf {
   text-align: center;
   padding: 30px 0 16px;
