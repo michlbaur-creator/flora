@@ -205,6 +205,15 @@
   }
   .kr-bridge .bridge-copy a{ color:inherit; }
 
+  .kr-zwischentitel{
+    text-align:center;
+    color:var(--kr);
+    font-family:Georgia, serif;
+    font-size:.95rem;
+    font-style:italic;
+    margin:0 0 10px;
+  }
+
   /* Schritt-Navigation unten */
   .kr-nav-unten{
     display:flex;
@@ -265,8 +274,8 @@
     <button class="kr-step" data-schritt="3" aria-label="Schritt 3: Bestäubung &amp; Befruchtung">
       <span class="nummer">3</span><span class="label">Bestäubung</span>
     </button>
-    <button class="kr-step" data-schritt="4" aria-label="Schritt 4: Selbst entdecken">
-      <span class="nummer">4</span><span class="label">Selbst entdecken</span>
+    <button class="kr-step" data-schritt="4" aria-label="Schritt 4: Strategien">
+      <span class="nummer">4</span><span class="label">Strategien</span>
     </button>
     <button class="kr-step" data-schritt="5" aria-label="Schritt 5: Ein Jahr im Apfelbaum">
       <span class="nummer">5</span><span class="label">Jahr im Apfelbaum</span>
@@ -291,17 +300,21 @@
     </div>
   </section>
 
-  <!-- Schritt 3: Bestäubung & Befruchtung (Animation) -->
+  <!-- Schritt 3: Bestäubung & Befruchtung (Animation + selbst entdecken) -->
   <section class="kr-schritt" data-schritt="3">
     <div class="kr-frame-wrap">
       <iframe class="kr-frame" data-src="bestaeubung-animiert.html?embed=1" title="Bestäubung Schritt für Schritt" loading="lazy"></iframe>
     </div>
-  </section>
-
-  <!-- Schritt 4: Bestäubung selbst entdecken (alte Seite, oberer Bereich ausgeblendet) -->
-  <section class="kr-schritt" data-schritt="4">
+    <p class="kr-zwischentitel">Und jetzt selbst entdecken — tippe auf die Zahlen:</p>
     <div class="kr-frame-wrap">
       <iframe class="kr-frame" data-src="bestaeubung-erklaerung.html?embed=1" title="Bestäubung — jetzt selbst entdecken" loading="lazy"></iframe>
+    </div>
+  </section>
+
+  <!-- Schritt 4: Strategien — anlocken & verbreiten -->
+  <section class="kr-schritt" data-schritt="4">
+    <div class="kr-frame-wrap">
+      <iframe class="kr-frame" data-src="pflanzenstrategien.html?embed=1" title="Strategien: Bestäuber anlocken und Samen verbreiten" loading="lazy"></iframe>
     </div>
   </section>
 
@@ -321,7 +334,6 @@
 
 <footer class="bottom" style="margin-top:32px;">
   <div class="wrap footer-text">
-    <p>Diese Sammlung ist das Ergebnis langjähriger Beobachtungen und meiner Leidenschaft für die Pflanzenwelt unserer Region. Hinweise, Korrekturen → <a href="mailto:mibaur@me.com">mibaur@me.com</a>. Meine Fotos dürfen gerne privat verwendet werden (Lizenz: CC BY-NC).</p>
     <p class="lizenz">© 2026 <a href="../ueber/">Michael Baur</a> · Flora Mibaso</p>
   </div>
 </footer>
@@ -367,15 +379,15 @@
   const hashStart = (location.hash.match(/schritt-(\d)/) || [])[1];
   zeige(hashStart ? +hashStart : 1);
 
-  // Höhe von iframes empfangen
+  // Höhe von iframes empfangen (kreislaufHoehe oder quizHeight)
   window.addEventListener('message', (e) => {
-    if (e.data && typeof e.data.kreislaufHoehe === 'number') {
-      frames.forEach(f => {
-        if (f.contentWindow === e.source) {
-          f.style.height = (e.data.kreislaufHoehe + 16) + 'px';
-        }
-      });
-    }
+    const d = e.data || {};
+    const h = (typeof d.kreislaufHoehe === 'number') ? d.kreislaufHoehe
+            : (typeof d.quizHeight === 'number') ? d.quizHeight : null;
+    if (h === null) return;
+    frames.forEach(f => {
+      if (f.contentWindow === e.source) f.style.height = (h + 16) + 'px';
+    });
   });
 })();
 </script>
