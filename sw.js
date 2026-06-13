@@ -9,12 +9,13 @@
    die alten Dateien automatisch auf.
 */
 
-const CACHE_NAME = 'mibaso-natur-v71';
+const CACHE_NAME = 'mibaso-natur-v74';
 
-// Wichtige Dateien, die für den App-Start gebraucht werden (Hub + Icons + Manifest).
+// Wichtige Dateien, die für den App-Start gebraucht werden (Hub + Icons + Manifest + Pflanzendaten).
 const APP_SHELL = [
   './',
   './index.html',
+  './pflanzen.json',
   './manifest.webmanifest',
   './assets/icon.svg',
   './assets/icon-192.png',

@@ -304,6 +304,82 @@
     line-height:1.45;
   }
 
+  /* „Was blüht gerade?" – saisonaler Streifen */
+  .jetzt-titel{ color:var(--ausprobieren); }
+  .jetzt-titel::after{
+    content:"";
+    display:block;
+    width:42px; height:3px;
+    border-radius:2px;
+    margin-top:8px;
+    background:var(--ausprobieren);
+  }
+  .jetzt-unter{
+    margin:-8px 0 14px 4px;
+    color:var(--text-leise);
+    font-style:italic;
+    font-size:1.02rem;
+  }
+  .jetzt-strip{
+    display:flex;
+    gap:14px;
+    overflow-x:auto;
+    padding:2px 4px 14px;
+    scroll-snap-type:x proximity;
+    -webkit-overflow-scrolling:touch;
+  }
+  .jetzt-karte{
+    flex:0 0 auto;
+    width:132px;
+    scroll-snap-align:start;
+    text-decoration:none;
+    color:var(--text);
+    background:#fff;
+    border:1px solid var(--beige-mittel);
+    border-radius:14px;
+    overflow:hidden;
+    box-shadow:0 2px 8px rgba(90,58,36,0.06);
+    transition:transform .15s ease, box-shadow .15s ease, border-color .15s ease;
+  }
+  .jetzt-karte:hover, .jetzt-karte:focus-visible{
+    transform:translateY(-3px);
+    box-shadow:0 8px 22px rgba(47,79,62,0.16);
+    border-color:var(--ausprobieren);
+    outline:none;
+  }
+  .jetzt-karte img{
+    width:100%;
+    aspect-ratio:1/1;
+    object-fit:cover;
+    display:block;
+    background:var(--beige-hell);
+  }
+  .jetzt-karte .jk-name{
+    display:block;
+    padding:8px 10px 10px;
+    font-size:0.92rem;
+    line-height:1.25;
+    font-weight:600;
+    color:var(--ausprobieren);
+  }
+  .jetzt-mehr{
+    flex:0 0 auto;
+    width:132px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    text-decoration:none;
+    border:1.5px dashed var(--beige-mittel);
+    border-radius:14px;
+    color:var(--ausprobieren);
+    font-size:0.95rem;
+    font-weight:600;
+    padding:10px;
+    scroll-snap-align:start;
+  }
+  .jetzt-mehr:hover{ border-color:var(--ausprobieren); background:var(--ausprobieren-bg); }
+
   /* Footer */
   footer.app-foot{
     text-align:center;
@@ -503,6 +579,13 @@
 </header>
 
 <main>
+
+  <!-- WAS BLÜHT GERADE? (dynamisch aus pflanzen.json) -->
+  <section class="sektion jetzt-sektion" id="jetzt-sektion" hidden>
+    <h2 class="sektion-titel jetzt-titel">Was blüht gerade?</h2>
+    <p class="jetzt-unter" id="jetzt-unter"></p>
+    <div class="jetzt-strip" id="jetzt-strip" aria-label="Aktuell blühende Pflanzen"></div>
+  </section>
 
   <!-- ENTDECKEN -->
   <section class="sektion" data-thema="entdecken">
@@ -782,6 +865,66 @@
   <p>Hinweise und Korrekturen sind willkommen: <a href="mailto:mibaur@me.com">mibaur@me.com</a></p>
   <p class="lizenz">© 2026 <a href="ueber/">Michael Baur</a> · Flora Mibaso</p>
 </footer>
+
+<!-- „Was blüht gerade?" – lädt pflanzen.json, filtert nach aktuellem Monat -->
+<script>
+(function(){
+  const MONATE = ['Januar','Februar','März','April','Mai','Juni','Juli',
+                  'August','September','Oktober','November','Dezember'];
+  const monat = new Date().getMonth() + 1;
+  const sektion = document.getElementById('jetzt-sektion');
+  const strip   = document.getElementById('jetzt-strip');
+  const unter   = document.getElementById('jetzt-unter');
+
+  function misch(arr){
+    const a = [...arr];
+    for (let i = a.length - 1; i > 0; i--){
+      const j = Math.floor(Math.random() * (i + 1));
+      [a[i], a[j]] = [a[j], a[i]];
+    }
+    return a;
+  }
+
+  fetch('pflanzen.json')
+    .then(r => r.json())
+    .then(daten => {
+      const bluehen = daten.filter(p => Array.isArray(p.monate) && p.monate.includes(monat));
+      if (!bluehen.length) {
+        unter.textContent = 'Gerade macht die Natur Pause — stöbere solange im Bestimmungstool.';
+        strip.innerHTML = '<a class="jetzt-mehr" href="bestimmen.html">Alle Pflanzen ansehen →</a>';
+        sektion.hidden = false;
+        return;
+      }
+      unter.textContent = bluehen.length + ' Arten blühen im ' + MONATE[monat - 1]
+        + ' — eine kleine Auswahl:';
+      const auswahl = misch(bluehen).slice(0, 14);
+      const frag = document.createDocumentFragment();
+      auswahl.forEach(p => {
+        const a = document.createElement('a');
+        a.className = 'jetzt-karte';
+        a.href = 'arten/' + p.slug + '.html';
+        const img = document.createElement('img');
+        img.src = 'images/tafeln/' + p.slug + '.jpg';
+        img.alt = p.deutsch;
+        img.loading = 'lazy';
+        const name = document.createElement('span');
+        name.className = 'jk-name';
+        name.textContent = p.deutsch;
+        a.appendChild(img);
+        a.appendChild(name);
+        frag.appendChild(a);
+      });
+      const mehr = document.createElement('a');
+      mehr.className = 'jetzt-mehr';
+      mehr.href = 'bestimmen.html';
+      mehr.textContent = 'Alle ansehen →';
+      frag.appendChild(mehr);
+      strip.appendChild(frag);
+      sektion.hidden = false;
+    })
+    .catch(() => { /* pflanzen.json nicht erreichbar — Sektion bleibt ausgeblendet */ });
+})();
+</script>
 
 <!-- Installations-Sprechblasen: passende Variante je nach Gerät einblenden -->
 <script>
