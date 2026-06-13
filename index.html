@@ -349,10 +349,11 @@
   }
   .jetzt-karte img{
     width:100%;
-    aspect-ratio:1/1;
+    aspect-ratio:2/3;
     object-fit:cover;
+    object-position:center top;
     display:block;
-    background:var(--beige-hell);
+    background:#fff;
   }
   .jetzt-karte .jk-name{
     display:block;
@@ -896,8 +897,11 @@
         return;
       }
       unter.textContent = bluehen.length + ' Arten blühen im ' + MONATE[monat - 1]
-        + ' — eine kleine Auswahl:';
-      const auswahl = misch(bluehen).slice(0, 14);
+        + ' — bekannte Arten zum Einstieg:';
+      // Wichtige (kuratierte) Arten zuerst, bei Bedarf mit weiteren auffüllen
+      const wichtige = misch(bluehen.filter(p => p.wichtig));
+      const weitere  = misch(bluehen.filter(p => !p.wichtig));
+      const auswahl  = wichtige.concat(weitere).slice(0, 10);
       const frag = document.createDocumentFragment();
       auswahl.forEach(p => {
         const a = document.createElement('a');
