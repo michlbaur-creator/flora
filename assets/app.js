@@ -87,19 +87,40 @@
   }
   window.FloraSammel = { liste: liste, hat: hat, toggle: toggle };
 
-  // „Gefunden"-Button auf Artenseiten verkabeln (Slug aus dem Dateinamen)
+  // Artenseiten: „Gefunden"-Button + Verwechslungshinweise (Slug aus Dateinamen)
   document.addEventListener('DOMContentLoaded', function () {
-    var btn = document.getElementById('gefunden-btn');
-    if (!btn) return;
     var slug = (location.pathname.split('/').pop() || '').replace(/\.html$/, '');
     if (!slug) return;
-    function sync() {
-      var an = hat(slug);
-      btn.classList.toggle('an', an);
-      btn.setAttribute('aria-pressed', an ? 'true' : 'false');
-      btn.textContent = an ? '✓ Gefunden' : '＋ Als gefunden merken';
+
+    // 1) „Gefunden"-Button
+    var btn = document.getElementById('gefunden-btn');
+    if (btn) {
+      var sync = function () {
+        var an = hat(slug);
+        btn.classList.toggle('an', an);
+        btn.setAttribute('aria-pressed', an ? 'true' : 'false');
+        btn.textContent = an ? '✓ Gefunden' : '＋ Als gefunden merken';
+      };
+      sync();
+      btn.addEventListener('click', function () { toggle(slug); sync(); });
     }
-    sync();
-    btn.addEventListener('click', function () { toggle(slug); sync(); });
+
+    // 2) Verwechslungshinweise aus pflanzen.json
+    var vw = document.getElementById('verwechslung');
+    if (vw) {
+      fetch('/pflanzen.json').then(function (r) { return r.json(); }).then(function (daten) {
+        var name = {};
+        daten.forEach(function (p) { name[p.slug] = p.deutsch; });
+        var me = daten.filter(function (p) { return p.slug === slug; })[0];
+        if (!me || !me.verwechslung || !me.verwechslung.length) return;
+        var links = me.verwechslung
+          .filter(function (s) { return name[s]; })
+          .map(function (s) { return '<a href="' + s + '.html">' + name[s] + '</a>'; })
+          .join(', ');
+        if (!links) return;
+        vw.innerHTML = '<h2>Leicht zu verwechseln mit</h2><p>' + links + '</p>';
+        vw.hidden = false;
+      }).catch(function () {});
+    }
   });
 })();

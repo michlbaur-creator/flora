@@ -413,15 +413,15 @@
     <div id="gt-start">
       <p>Einmal quer durch die ganze App: Pflanzen erkennen, Verwandte finden und Naturwissen — bunt gemischt. Wie viel bleibt hängen?</p>
       <div class="gt-modus-liste">
-        <button class="gt-modus" onclick="startTest('kurz')">
+        <button class="gt-modus" disabled onclick="startTest('kurz')">
           <strong>Kurzer Test</strong>
           <span>9 Fragen · ca. 3 Minuten · ohne Zeitdruck</span>
         </button>
-        <button class="gt-modus" onclick="startTest('standard')">
+        <button class="gt-modus" disabled onclick="startTest('standard')">
           <strong>Standard-Test</strong>
           <span>15 Fragen · ca. 5 Minuten · ohne Zeitdruck</span>
         </button>
-        <button class="gt-modus" onclick="startTest('blitz')">
+        <button class="gt-modus" disabled onclick="startTest('blitz')">
           <strong>Blitz-Test</strong>
           <span>5 Minuten Countdown · so viele Fragen wie möglich</span>
         </button>
@@ -469,156 +469,9 @@
 //  FOTO_SLUGS: Arten, zu denen ein Galerie-Foto existiert
 //  WISSEN: Multiple-Choice-Fragen aus dem Naturquiz
 // ═══════════════════════════════════════════════════
-const ARTEN = [
-{"slug":"galanthus-nivalis","fam":"Amaryllisgewächse","de":"Schneeglöckchen","wiss":"Galanthus nivalis"},
-{"slug":"anemone-nemorosa","fam":"Hahnenfußgewächse","de":"Buschwindröschen","wiss":"Anemone nemorosa"},
-{"slug":"ficaria-verna","fam":"Hahnenfußgewächse","de":"Scharbockskraut","wiss":"Ficaria verna"},
-{"slug":"allium-ursinum","fam":"Amaryllisgewächse","de":"Bärlauch","wiss":"Allium ursinum"},
-{"slug":"corydalis-cava","fam":"Mohngewächse","de":"Hohler Lerchensporn","wiss":"Corydalis cava"},
-{"slug":"corydalis-solida","fam":"Mohngewächse","de":"Gefingerter Lerchensporn","wiss":"Corydalis solida"},
-{"slug":"gagea-lutea","fam":"Liliengewächse","de":"Wald-Gelbstern","wiss":"Gagea lutea"},
-{"slug":"anemone-ranunculoides","fam":"Hahnenfußgewächse","de":"Gelbes Windröschen","wiss":"Anemone ranunculoides"},
-{"slug":"oxalis-acetosella","fam":"Sauerkleegewächse","de":"Wald-Sauerklee","wiss":"Oxalis acetosella"},
-{"slug":"pulmonaria-officinalis","fam":"Raublattgewächse","de":"Lungenkraut","wiss":"Pulmonaria officinalis"},
-{"slug":"hepatica-nobilis","fam":"Hahnenfußgewächse","de":"Leberblümchen","wiss":"Hepatica nobilis"},
-{"slug":"leucojum-vernum","fam":"Amaryllisgewächse","de":"Märzbecher","wiss":"Leucojum vernum"},
-{"slug":"lathyrus-vernus","fam":"Schmetterlingsblütler","de":"Frühlings-Platterbse","wiss":"Lathyrus vernus"},
-{"slug":"eranthis-hyemalis","fam":"Hahnenfußgewächse","de":"Winterling","wiss":"Eranthis hyemalis"},
-{"slug":"lamium-galeobdolon","fam":"Lippenblütler","de":"Goldnessel","wiss":"Lamium galeobdolon"},
-{"slug":"scilla-bifolia","fam":"Spargelgewächse","de":"Gewöhnliche Sternhyazinthe","wiss":"Scilla bifolia"},
-{"slug":"ranunculus-auricomus","fam":"Hahnenfußgewächse","de":"Gold-Hahnenfuß","wiss":"Ranunculus auricomus"},
-{"slug":"ajuga-reptans","fam":"Lippenblütler","de":"Kriechender Günsel","wiss":"Ajuga reptans"},
-{"slug":"viola-odorata","fam":"Veilchengewächse","de":"Wohlriechendes Veilchen","wiss":"Viola odorata"},
-{"slug":"alliaria-petiolata","fam":"Kreuzblütler","de":"Knoblauchsrauke","wiss":"Alliaria petiolata"},
-{"slug":"stellaria-holostea","fam":"Nelkengewächse","de":"Große Sternmiere","wiss":"Stellaria holostea"},
-{"slug":"bellis-perennis","fam":"Korbblütler","de":"Gänseblümchen","wiss":"Bellis perennis"},
-{"slug":"cardamine-pratensis","fam":"Kreuzblütler","de":"Wiesen-Schaumkraut","wiss":"Cardamine pratensis"},
-{"slug":"taraxacum-officinale","fam":"Korbblütler","de":"Löwenzahn","wiss":"Taraxacum officinale"},
-{"slug":"veronica-chamaedrys","fam":"Wegerichgewächse","de":"Gamander-Ehrenpreis","wiss":"Veronica chamaedrys"},
-{"slug":"viola-tricolor","fam":"Veilchengewächse","de":"Wildes Stiefmütterchen","wiss":"Viola tricolor"},
-{"slug":"thlaspi-arvense","fam":"Kreuzblütler","de":"Acker-Hellerkraut","wiss":"Thlaspi arvense"},
-{"slug":"stellaria-media","fam":"Nelkengewächse","de":"Vogelmiere","wiss":"Stellaria media"},
-{"slug":"lamium-purpureum","fam":"Lippenblütler","de":"Rote Taubnessel","wiss":"Lamium purpureum"},
-{"slug":"caltha-palustris","fam":"Hahnenfußgewächse","de":"Sumpfdotterblume","wiss":"Caltha palustris"},
-{"slug":"tussilago-farfara","fam":"Korbblütler","de":"Huflattich","wiss":"Tussilago farfara"},
-{"slug":"primula-veris","fam":"Primelgewächse","de":"Schlüsselblume","wiss":"Primula veris"},
-{"slug":"muscari-botryoides","fam":"Spargelgewächse","de":"Traubenhyazinthe","wiss":"Muscari botryoides"},
-{"slug":"scilla-siberica","fam":"Spargelgewächse","de":"Blaustern","wiss":"Scilla siberica"},
-{"slug":"potentilla-neumanniana","fam":"Rosengewächse","de":"Frühlings-Fingerkraut","wiss":"Potentilla neumanniana"},
-{"slug":"draba-verna","fam":"Kreuzblütler","de":"Frühlings-Hungerblümchen","wiss":"Erophila verna"},
-{"slug":"pulsatilla-vulgaris","fam":"Hahnenfußgewächse","de":"Küchenschelle","wiss":"Pulsatilla vulgaris"},
-{"slug":"veronica-persica","fam":"Wegerichgewächse","de":"Persischer Ehrenpreis","wiss":"Veronica persica"},
-{"slug":"cardamine-hirsuta","fam":"Kreuzblütler","de":"Viermänniges Schaumkraut","wiss":"Cardamine hirsuta"},
-{"slug":"lamium-album","fam":"Lippenblütler","de":"Weiße Taubnessel","wiss":"Lamium album"},
-{"slug":"campanula-rapunculus","fam":"Glockenblumengewächse","de":"Rapunzel-Glockenblume","wiss":"Campanula rapunculus"},
-{"slug":"campanula-trachelium","fam":"Glockenblumengewächse","de":"Nesselblättrige Glockenblume","wiss":"Campanula trachelium"},
-{"slug":"centaurea-jacea","fam":"Korbblütler","de":"Wiesen-Flockenblume","wiss":"Centaurea jacea"},
-{"slug":"cichorium-intybus","fam":"Korbblütler","de":"Gewöhnliche Wegwarte","wiss":"Cichorium intybus"},
-{"slug":"echium-vulgare","fam":"Raublattgewächse","de":"Gewöhnlicher Natternkopf","wiss":"Echium vulgare"},
-{"slug":"geranium-palustre","fam":"Storchschnabelgewächse","de":"Sumpf-Storchschnabel","wiss":"Geranium palustre"},
-{"slug":"geranium-pratense","fam":"Storchschnabelgewächse","de":"Wiesen-Storchschnabel","wiss":"Geranium pratense"},
-{"slug":"malva-moschata","fam":"Malvengewächse","de":"Moschus-Malve","wiss":"Malva moschata"},
-{"slug":"polemonium-caeruleum","fam":"Sperrkrautgewächse","de":"Jakobsleiter","wiss":"Polemonium caeruleum"},
-{"slug":"bistorta-officinalis","fam":"Knöterichgewächse","de":"Wiesen-Knöterich","wiss":"Bistorta officinalis"},
-{"slug":"centaurium-erythraea","fam":"Enziangewächse","de":"Echtes Tausendgüldenkraut","wiss":"Centaurium erythraea"},
-{"slug":"cirsium-arvense","fam":"Korbblütler","de":"Acker-Kratzdistel","wiss":"Cirsium arvense"},
-{"slug":"dianthus-deltoides","fam":"Nelkengewächse","de":"Heide-Nelke","wiss":"Dianthus deltoides"},
-{"slug":"digitalis-purpurea","fam":"Wegerichgewächse","de":"Roter Fingerhut","wiss":"Digitalis purpurea"},
-{"slug":"epilobium-hirsutum","fam":"Nachtkerzengewächse","de":"Zottiges Weidenröschen","wiss":"Epilobium hirsutum"},
-{"slug":"eupatorium-cannabinum","fam":"Korbblütler","de":"Gewöhnlicher Wasserdost","wiss":"Eupatorium cannabinum"},
-{"slug":"geranium-robertianum","fam":"Storchschnabelgewächse","de":"Ruprechtskraut","wiss":"Geranium robertianum"},
-{"slug":"impatiens-glandulifera","fam":"Balsaminengewächse","de":"Drüsiges Springkraut","wiss":"Impatiens glandulifera"},
-{"slug":"lythrum-salicaria","fam":"Weiderichgewächse","de":"Blut-Weiderich","wiss":"Lythrum salicaria"},
-{"slug":"sanguisorba-officinalis","fam":"Rosengewächse","de":"Großer Wiesenknopf","wiss":"Sanguisorba officinalis"},
-{"slug":"silene-dioica","fam":"Nelkengewächse","de":"Rote Lichtnelke","wiss":"Silene dioica"},
-{"slug":"stachys-palustris","fam":"Lippenblütler","de":"Sumpf-Ziest","wiss":"Stachys palustris"},
-{"slug":"trifolium-pratense","fam":"Schmetterlingsblütler","de":"Wiesen-Klee","wiss":"Trifolium pratense"},
-{"slug":"achillea-millefolium","fam":"Korbblütler","de":"Schafgarbe","wiss":"Achillea millefolium"},
-{"slug":"potentilla-anserina","fam":"Rosengewächse","de":"Gänsefingerkraut","wiss":"Potentilla anserina"},
-{"slug":"artemisia-vulgaris","fam":"Korbblütler","de":"Beifuß","wiss":"Artemisia vulgaris"},
-{"slug":"circaea-lutetiana","fam":"Nachtkerzengewächse","de":"Hexenkraut","wiss":"Circaea lutetiana"},
-{"slug":"crepis-biennis","fam":"Korbblütler","de":"Wiesen-Pippau","wiss":"Crepis biennis"},
-{"slug":"daucus-carota","fam":"Doldenblütler","de":"Wilde Möhre","wiss":"Daucus carota"},
-{"slug":"erigeron-annuus","fam":"Korbblütler","de":"Einjähriges Berufkraut","wiss":"Erigeron annuus"},
-{"slug":"filipendula-ulmaria","fam":"Rosengewächse","de":"Mädesüß","wiss":"Filipendula ulmaria"},
-{"slug":"galeopsis-tetrahit","fam":"Lippenblütler","de":"Stechender Hohlzahn","wiss":"Galeopsis tetrahit"},
-{"slug":"galium-verum","fam":"Rötegewächse","de":"Echtes Labkraut","wiss":"Galium verum"},
-{"slug":"geum-urbanum","fam":"Rosengewächse","de":"Echte Nelkenwurz","wiss":"Geum urbanum"},
-{"slug":"heracleum-sphondylium","fam":"Doldenblütler","de":"Wiesen-Bärenklau","wiss":"Heracleum sphondylium"},
-{"slug":"hypericum-perforatum","fam":"Hartheugewächse","de":"Echtes Johanniskraut","wiss":"Hypericum perforatum"},
-{"slug":"impatiens-nolitangere","fam":"Balsaminengewächse","de":"Großes Springkraut","wiss":"Impatiens noli-tangere"},
-{"slug":"impatiens-parviflora","fam":"Balsaminengewächse","de":"Kleinblütiges Springkraut","wiss":"Impatiens parviflora"},
-{"slug":"jacobaea-vulgaris","fam":"Korbblütler","de":"Jakobs-Greiskraut","wiss":"Jacobaea vulgaris"},
-{"slug":"lapsana-communis","fam":"Korbblütler","de":"Rainkohl","wiss":"Lapsana communis"},
-{"slug":"lathyrus-pratensis","fam":"Schmetterlingsblütler","de":"Wiesen-Platterbse","wiss":"Lathyrus pratensis"},
-{"slug":"linaria-vulgaris","fam":"Wegerichgewächse","de":"Echtes Leinkraut","wiss":"Linaria vulgaris"},
-{"slug":"lysimachia-vulgaris","fam":"Primelgewächse","de":"Gemeiner Gilbweiderich","wiss":"Lysimachia vulgaris"},
-{"slug":"pastinaca-sativa","fam":"Doldenblütler","de":"Pastinak","wiss":"Pastinaca sativa"},
-{"slug":"plantago-lanceolata","fam":"Wegerichgewächse","de":"Spitz-Wegerich","wiss":"Plantago lanceolata"},
-{"slug":"saponaria-officinalis","fam":"Nelkengewächse","de":"Gewöhnliches Seifenkraut","wiss":"Saponaria officinalis"},
-{"slug":"silene-vulgaris","fam":"Nelkengewächse","de":"Aufgeblasenes Leimkraut","wiss":"Silene vulgaris"},
-{"slug":"tanacetum-vulgare","fam":"Korbblütler","de":"Rainfarn","wiss":"Tanacetum vulgare"},
-{"slug":"torilis-japonica","fam":"Doldenblütler","de":"Klettenkerbel","wiss":"Torilis japonica"},
-{"slug":"trifolium-repens","fam":"Schmetterlingsblütler","de":"Weiß-Klee","wiss":"Trifolium repens"},
-{"slug":"cardamine-bulbifera","fam":"Kreuzblütler","de":"Zwiebel-Zahnwurz","wiss":"Cardamine bulbifera"},
-{"slug":"doronicum-pardalianches","fam":"Korbblütler","de":"Kriechende Gämswurz","wiss":"Doronicum pardalianches"},
-{"slug":"lunaria-annua","fam":"Kreuzblütler","de":"Einjähriges Silberblatt","wiss":"Lunaria annua"},
-{"slug":"silene-latifolia","fam":"Nelkengewächse","de":"Weiße Lichtnelke","wiss":"Silene latifolia"},
-{"slug":"tripleurospermum-inodorum","fam":"Korbblütler","de":"Geruchlose Kamille","wiss":"Tripleurospermum inodorum"},
-{"slug":"achillea-ptarmica","fam":"Korbblütler","de":"Sumpf-Schafgarbe","wiss":"Achillea ptarmica"},
-{"slug":"barbarea-vulgaris","fam":"Kreuzblütler","de":"Gewöhnliches Barbarakraut","wiss":"Barbarea vulgaris"},
-{"slug":"cerastium-fontanum","fam":"Nelkengewächse","de":"Gewöhnliches Hornkraut","wiss":"Cerastium fontanum"},
-{"slug":"chelidonium-majus","fam":"Mohngewächse","de":"Schöllkraut","wiss":"Chelidonium majus"},
-{"slug":"convolvulus-arvensis","fam":"Windengewächse","de":"Acker-Winde","wiss":"Convolvulus arvensis"},
-{"slug":"cytisus-scoparius","fam":"Schmetterlingsblütler","de":"Besenginster","wiss":"Cytisus scoparius"},
-{"slug":"euphorbia-cyparissias","fam":"Wolfsmilchgewächse","de":"Zypressen-Wolfsmilch","wiss":"Euphorbia cyparissias"},
-{"slug":"galium-odoratum","fam":"Rötegewächse","de":"Waldmeister","wiss":"Galium odoratum"},
-{"slug":"glechoma-hederacea","fam":"Lippenblütler","de":"Gundermann","wiss":"Glechoma hederacea"},
-{"slug":"hypochaeris-radicata","fam":"Korbblütler","de":"Gewöhnliches Ferkelkraut","wiss":"Hypochaeris radicata"},
-{"slug":"leucanthemum-vulgare","fam":"Korbblütler","de":"Wiesen-Margerite","wiss":"Leucanthemum vulgare"},
-{"slug":"lotus-corniculatus","fam":"Schmetterlingsblütler","de":"Gewöhnlicher Hornklee","wiss":"Lotus corniculatus"},
-{"slug":"lychnis-flos-cuculi","fam":"Nelkengewächse","de":"Kuckucks-Lichtnelke","wiss":"Lychnis flos-cuculi"},
-{"slug":"polygonatum-multiflorum","fam":"Spargelgewächse","de":"Vielblütige Weißwurz","wiss":"Polygonatum multiflorum"},
-{"slug":"rumex-acetosa","fam":"Knöterichgewächse","de":"Wiesen-Sauerampfer","wiss":"Rumex acetosa"},
-{"slug":"senecio-vulgaris","fam":"Korbblütler","de":"Gewöhnliches Greiskraut","wiss":"Senecio vulgaris"},
-{"slug":"solidago-canadensis","fam":"Korbblütler","de":"Kanadische Goldrute","wiss":"Solidago canadensis"},
-{"slug":"symphytum-officinale","fam":"Raublattgewächse","de":"Echter Beinwell","wiss":"Symphytum officinale"},
-{"slug":"viola-reichenbachiana","fam":"Veilchengewächse","de":"Wald-Veilchen","wiss":"Viola reichenbachiana"},
-{"slug":"aegopodium-podagraria","fam":"Doldenblütler","de":"Giersch","wiss":"Aegopodium podagraria"},
-{"slug":"alchemilla-vulgaris","fam":"Rosengewächse","de":"Gewöhnlicher Frauenmantel","wiss":"Alchemilla vulgaris"},
-{"slug":"chrysosplenium-alternifolium","fam":"Steinbrechgewächse","de":"Wechselblättriges Milzkraut","wiss":"Chrysosplenium alternifolium"},
-{"slug":"convallaria-majalis","fam":"Spargelgewächse","de":"Maiglöckchen","wiss":"Convallaria majalis"},
-{"slug":"fragaria-vesca","fam":"Rosengewächse","de":"Wald-Erdbeere","wiss":"Fragaria vesca"},
-{"slug":"hesperis-matronalis","fam":"Kreuzblütler","de":"Gewöhnliche Nachtviole","wiss":"Hesperis matronalis"},
-{"slug":"lonicera-periclymenum","fam":"Geißblattgewächse","de":"Wald-Geißblatt","wiss":"Lonicera periclymenum"},
-{"slug":"lupinus-polyphyllus","fam":"Schmetterlingsblütler","de":"Vielblättrige Lupine","wiss":"Lupinus polyphyllus"},
-{"slug":"matricaria-chamomilla","fam":"Korbblütler","de":"Echte Kamille","wiss":"Matricaria chamomilla"},
-{"slug":"menyanthes-trifoliata","fam":"Bitterkleegewächse","de":"Fieberklee","wiss":"Menyanthes trifoliata"},
-{"slug":"myosotis-arvensis","fam":"Raublattgewächse","de":"Acker-Vergissmeinnicht","wiss":"Myosotis arvensis"},
-{"slug":"prunella-vulgaris","fam":"Lippenblütler","de":"Gewöhnliche Braunelle","wiss":"Prunella vulgaris"},
-{"slug":"ranunculus-acris","fam":"Hahnenfußgewächse","de":"Scharfer Hahnenfuß","wiss":"Ranunculus acris"},
-{"slug":"stachys-sylvatica","fam":"Lippenblütler","de":"Wald-Ziest","wiss":"Stachys sylvatica"},
-{"slug":"stellaria-nemorum","fam":"Nelkengewächse","de":"Hain-Sternmiere","wiss":"Stellaria nemorum"},
-{"slug":"urtica-dioica","fam":"Brennnesselgewächse","de":"Große Brennnessel","wiss":"Urtica dioica"},
-{"slug":"vicia-sepium","fam":"Schmetterlingsblütler","de":"Zaun-Wicke","wiss":"Vicia sepium"},
-{"slug":"viola-arvensis","fam":"Veilchengewächse","de":"Acker-Stiefmütterchen","wiss":"Viola arvensis"},
-{"slug":"chamaenerion-angustifolium","fam":"Nachtkerzengewächse","de":"Schmalblättriges Weidenröschen","wiss":"Chamaenerion angustifolium"},
-{"slug":"geranium-dissectum","fam":"Storchschnabelgewächse","de":"Schlitzblättriger Storchschnabel","wiss":"Geranium dissectum"},
-{"slug":"geranium-sanguineum","fam":"Storchschnabelgewächse","de":"Blutroter Storchschnabel","wiss":"Geranium sanguineum"},
-{"slug":"ajuga-genevensis","fam":"Lippenblütler","de":"Genfer Günsel","wiss":"Ajuga genevensis"},
-{"slug":"capsella-bursa-pastoris","fam":"Kreuzblütler","de":"Hirtentäschel","wiss":"Capsella bursa-pastoris"},
-{"slug":"chaerophyllum-temulum","fam":"Doldenblütler","de":"Zierlicher Kälberkropf","wiss":"Chaerophyllum temulum"},
-{"slug":"cymbalaria-muralis","fam":"Wegerichgewächse","de":"Zimbelkraut","wiss":"Cymbalaria muralis"},
-{"slug":"galium-album","fam":"Rötegewächse","de":"Weißes Labkraut","wiss":"Galium album"},
-{"slug":"hippocrepis-comosa","fam":"Schmetterlingsblütler","de":"Hufeisenklee","wiss":"Hippocrepis comosa"},
-{"slug":"orobanche-vulgaris","fam":"Sommerwurzgewächse","de":"Gewöhnliche Sommerwurz","wiss":"Orobanche vulgaris"},
-{"slug":"polygala-vulgaris","fam":"Kreuzblümchengewächse","de":"Gewöhnliches Kreuzblümchen","wiss":"Polygala vulgaris"},
-{"slug":"polygonatum-odoratum","fam":"Spargelgewächse","de":"Salomonssiegel","wiss":"Polygonatum odoratum"},
-{"slug":"rhinanthus-alectorolophus","fam":"Sommerwurzgewächse","de":"Zottiger Klappertopf","wiss":"Rhinanthus alectorolophus"},
-{"slug":"salvia-pratensis","fam":"Lippenblütler","de":"Wiesen-Salbei","wiss":"Salvia pratensis"}
-];
+let ARTEN = [];  // aus pflanzen.json
 
-const FOTO_SLUGS = new Set(["galanthus-nivalis","anemone-nemorosa","ficaria-verna","corydalis-solida","gagea-lutea","anemone-ranunculoides","oxalis-acetosella","pulmonaria-officinalis","hepatica-nobilis","leucojum-vernum","lathyrus-vernus","eranthis-hyemalis","lamium-galeobdolon","scilla-bifolia","ranunculus-auricomus","ajuga-reptans","viola-odorata","alliaria-petiolata","stellaria-holostea","bellis-perennis","cardamine-pratensis","taraxacum-officinale","veronica-chamaedrys","viola-tricolor","thlaspi-arvense","stellaria-media","lamium-purpureum","caltha-palustris","tussilago-farfara","primula-veris","muscari-botryoides","potentilla-neumanniana","draba-verna","pulsatilla-vulgaris","veronica-persica","cardamine-hirsuta","lamium-album","campanula-rapunculus","campanula-trachelium","centaurea-jacea","cichorium-intybus","echium-vulgare","geranium-palustre","geranium-pratense","malva-moschata","polemonium-caeruleum","bistorta-officinalis","centaurium-erythraea","cirsium-arvense","dianthus-deltoides","digitalis-purpurea","epilobium-hirsutum","eupatorium-cannabinum","geranium-robertianum","impatiens-glandulifera","lythrum-salicaria","sanguisorba-officinalis","silene-dioica","stachys-palustris","trifolium-pratense","achillea-millefolium","potentilla-anserina","artemisia-vulgaris","circaea-lutetiana","crepis-biennis","daucus-carota","erigeron-annuus","filipendula-ulmaria","galeopsis-tetrahit","galium-verum","geum-urbanum","heracleum-sphondylium","hypericum-perforatum","impatiens-nolitangere","impatiens-parviflora","jacobaea-vulgaris","lapsana-communis","lathyrus-pratensis","linaria-vulgaris","lysimachia-vulgaris","pastinaca-sativa","plantago-lanceolata","saponaria-officinalis","silene-vulgaris","tanacetum-vulgare","torilis-japonica","trifolium-repens","cardamine-bulbifera","doronicum-pardalianches","lunaria-annua","silene-latifolia","tripleurospermum-inodorum"]);
+let FOTO_SLUGS = new Set();
 
 const WISSEN = [
 {"q":"Warum sind viele Nachtblüher weiß?","opts":["Weiß speichert Wärme","Nachtfalter sehen helle Blüten besser","Weiße Blüten enthalten mehr Nektar","Weiß schützt vor Regen"],"ans":1},
@@ -713,12 +566,11 @@ function shuffle(arr){
 }
 function zufaellig(arr){ return arr[Math.floor(Math.random() * arr.length)]; }
 
-const FOTO_ARTEN = ARTEN.filter(a => FOTO_SLUGS.has(a.slug));
+let FOTO_ARTEN = [];
 
 // Familien mit mindestens 3 Arten (für die Verwandten-Frage)
-const FAM_COUNT = {};
-ARTEN.forEach(a => { FAM_COUNT[a.fam] = (FAM_COUNT[a.fam] || 0) + 1; });
-const MEHRHEITS_FAMILIEN = Object.keys(FAM_COUNT).filter(f => FAM_COUNT[f] >= 3);
+let FAM_COUNT = {};
+let MEHRHEITS_FAMILIEN = [];
 
 // ═══════════════════════════════════════════════════
 //  FRAGEN BAUEN
@@ -795,6 +647,7 @@ let antwortZeit = 0;          // Zeitpunkt der letzten Antwort
 //  TEST STARTEN
 // ═══════════════════════════════════════════════════
 function startTest(m){
+  if (!ARTEN.length) return;
   modus = m;
   punkte = 0;
   aktuellerIndex = 0;
@@ -1127,6 +980,20 @@ function zurueckZumStart(){
   document.getElementById('gt-fortschritt').style.width = '0%';
   document.getElementById('gt-status').textContent = '';
 }
+
+// ── Pflanzendaten aus zentraler Quelle laden, dann Start freigeben ──
+fetch('../pflanzen.json')
+  .then(function (r) { return r.json(); })
+  .then(function (d) {
+    ARTEN = d.map(function (p) { return { slug: p.slug, fam: p.familie_de, de: p.deutsch, wiss: p.wiss }; });
+    FOTO_SLUGS = new Set(d.filter(function (p) { return p.foto; }).map(function (p) { return p.slug; }));
+    FOTO_ARTEN = ARTEN.filter(function (a) { return FOTO_SLUGS.has(a.slug); });
+    FAM_COUNT = {};
+    ARTEN.forEach(function (a) { FAM_COUNT[a.fam] = (FAM_COUNT[a.fam] || 0) + 1; });
+    MEHRHEITS_FAMILIEN = Object.keys(FAM_COUNT).filter(function (f) { return FAM_COUNT[f] >= 3; });
+    document.querySelectorAll('.gt-modus').forEach(function (b) { b.disabled = false; });
+  })
+  .catch(function () {});
 </script>
 
 

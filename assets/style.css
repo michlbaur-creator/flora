@@ -494,6 +494,22 @@ header.top a:hover { color: #fff; }
   color: #fff;
 }
 
+/* Verwechslungshinweise auf Artenseiten */
+.verwechslung {
+  margin: 28px 0 0;
+  padding: 14px 18px;
+  background: #fff6ee;
+  border: 1px solid var(--beige-mittel);
+  border-radius: 12px;
+}
+.verwechslung h2 {
+  margin: 0 0 6px;
+  font-size: 1.05rem;
+  color: var(--braun-mittel);
+}
+.verwechslung p { margin: 0; line-height: 1.8; }
+.verwechslung a { color: var(--gruen-mittel); font-weight: 600; }
+
 .art-kopf {
   text-align: center;
   padding: 30px 0 16px;
