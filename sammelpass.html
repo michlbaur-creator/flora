@@ -46,7 +46,7 @@
   .sp-karte { display: flex; flex-direction: column; }
   .sp-bild {
     position: relative;
-    padding: 0; border: 1px solid var(--beige-mittel); border-radius: 12px;
+    display: block; padding: 0; border: 1px solid var(--beige-mittel); border-radius: 12px;
     background: #fff; cursor: pointer; overflow: hidden; line-height: 0;
   }
   .sp-bild img { width: 100%; aspect-ratio: 2/3; object-fit: cover; object-position: center top; display: block; transition: filter .2s, opacity .2s; }
@@ -76,6 +76,7 @@
 
 <main class="sp-main">
   <a class="back-btn" href="index.html">‹ zur Startseite</a>
+  <p style="margin:14px 0 0;color:var(--text-leise);font-size:.9rem;font-style:italic;">Eine Art hakst du im <a href="bestimmen.html" style="color:var(--gruen-mittel);">Bestimmungstool</a> ab, sobald du sie gefunden hast (tippe dort auf das ✓).</p>
 
   <div class="sp-fortschritt">
     <button class="sp-reset" id="sp-reset" type="button">zurücksetzen</button>
@@ -145,32 +146,25 @@
     sek.style.display = '';
   }
 
+  // Übersicht ist NUR-ANZEIGE: Abhaken passiert ausschließlich im Bestimmungstool.
   function rendereGrid() {
     var grid = document.getElementById('sp-grid');
     var frag = document.createDocumentFragment();
     daten.forEach(function (p) {
       var karte = document.createElement('div');
       karte.className = 'sp-karte' + (window.FloraSammel.hat(p.slug) ? ' an' : '');
-      var btn = document.createElement('button');
-      btn.className = 'sp-bild';
-      btn.type = 'button';
-      btn.setAttribute('aria-pressed', window.FloraSammel.hat(p.slug) ? 'true' : 'false');
-      btn.title = 'Als gefunden markieren';
-      btn.innerHTML = '<img src="images/tafeln/' + p.slug + '.jpg" alt="Tafel ' + p.deutsch +
-                      '" loading="lazy" onerror="this.style.visibility=\'hidden\'">' +
-                      '<span class="sp-check" aria-hidden="true">✓</span>';
-      btn.addEventListener('click', function () {
-        var jetzt = window.FloraSammel.toggle(p.slug);
-        karte.classList.toggle('an', jetzt);
-        btn.setAttribute('aria-pressed', jetzt ? 'true' : 'false');
-        aktualisiereFortschritt();
-        rendereHeute();
-      });
+      var bild = document.createElement('a');
+      bild.className = 'sp-bild';
+      bild.href = 'arten/' + p.slug + '.html';
+      bild.title = p.deutsch + ' – zur Artenseite';
+      bild.innerHTML = '<img src="images/tafeln/' + p.slug + '.jpg" alt="Tafel ' + p.deutsch +
+                       '" loading="lazy" onerror="this.style.visibility=\'hidden\'">' +
+                       '<span class="sp-check" aria-hidden="true">✓</span>';
       var name = document.createElement('a');
       name.className = 'sp-name';
       name.href = 'arten/' + p.slug + '.html';
       name.textContent = p.deutsch;
-      karte.appendChild(btn);
+      karte.appendChild(bild);
       karte.appendChild(name);
       frag.appendChild(karte);
     });

@@ -209,9 +209,11 @@
     const grid = document.getElementById('grid');
     if (!grid) return;
     const frag = document.createDocumentFragment();
+    const sammel = window.FloraSammel;
     daten.forEach(p => {
       const a = document.createElement('a');
-      a.className = 'card';
+      const an = sammel ? sammel.hat(p.slug) : false;
+      a.className = 'card' + (an ? ' gefunden' : '');
       a.href = 'arten/' + p.slug + '.html';
       a.dataset.art = JSON.stringify({
         slug: p.slug, farben: p.farben || [], habitat: p.habitat,
@@ -225,6 +227,7 @@
         '<div class="tafel-wrap">' +
           `<span class="ecke-farbpunkt" data-farbe="${farbe1}"></span>` +
           `<img src="images/tafeln/${p.slug}.jpg" alt="Tafel ${p.deutsch}" loading="lazy" onerror="this.style.visibility='hidden'">` +
+          `<span class="merk-btn" role="button" tabindex="0" data-slug="${p.slug}" aria-pressed="${an ? 'true' : 'false'}" title="In die Sammelmappe eintragen">✓</span>` +
         '</div>' +
         '<div class="card-body">' +
           `<div class="deutsch">${p.deutsch}</div>` +
@@ -240,6 +243,35 @@
     });
     grid.innerHTML = '';
     grid.appendChild(frag);
+
+    // „In die Sammelmappe eintragen": nur hier (im Bestimmungstool) möglich
+    if (!grid._merkGebunden) {
+      grid._merkGebunden = true;
+      const markiere = function (mb) {
+        if (!window.FloraSammel) return;
+        const slug = mb.dataset.slug;
+        const jetzt = window.FloraSammel.toggle(slug);
+        const karte = mb.closest('.card');
+        if (karte) karte.classList.toggle('gefunden', jetzt);
+        mb.setAttribute('aria-pressed', jetzt ? 'true' : 'false');
+        if (jetzt && window.FloraSammel.istMeilenstein(window.FloraSammel.anzahl())) {
+          window.FloraSammel.feiere(window.FloraSammel.anzahl());
+        }
+      };
+      grid.addEventListener('click', function (e) {
+        const mb = e.target.closest('.merk-btn');
+        if (!mb) return;
+        e.preventDefault();    // Karten-Navigation unterbinden
+        e.stopPropagation();
+        markiere(mb);
+      });
+      grid.addEventListener('keydown', function (e) {
+        const mb = e.target.closest('.merk-btn');
+        if (!mb || (e.key !== 'Enter' && e.key !== ' ')) return;
+        e.preventDefault();
+        markiere(mb);
+      });
+    }
   }
 
   document.addEventListener('DOMContentLoaded', () => {

@@ -5,3 +5,7 @@
 # Backup-Dateien
 *~
 *.bak
+
+# Staging-Ordner für Roh-PNGs (werden von Claude zu JPG konvertiert; nie ins Repo)
+tafeln_neu/
+fotos_neu/

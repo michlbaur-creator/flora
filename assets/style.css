@@ -388,6 +388,30 @@ header.top a:hover { color: #fff; }
   box-shadow: 0 1px 3px rgba(0,0,0,0.25);
   z-index: 2;
 }
+
+/* „In die Sammelmappe eintragen"-Badge (oben links, nur im Bestimmungstool) */
+.card .merk-btn {
+  position: absolute;
+  top: 8px; left: 8px;
+  width: 32px; height: 32px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.92);
+  border: 2px solid var(--gruen-akzent);
+  color: var(--gruen-akzent);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1rem; font-weight: bold; line-height: 1;
+  cursor: pointer;
+  z-index: 3;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.2);
+  transition: background .15s, color .15s, transform .12s;
+}
+.card .merk-btn:hover { transform: scale(1.1); }
+.card.gefunden .merk-btn {
+  background: var(--gruen-mittel);
+  border-color: var(--gruen-mittel);
+  color: #fff;
+}
+.card.gefunden { box-shadow: 0 0 0 2px var(--gruen-blass) inset; }
 .card .card-body {
   padding: 12px 14px 14px;
   border-top: 1px solid var(--beige-dunkel);
