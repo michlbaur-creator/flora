@@ -48,7 +48,15 @@
                     '<button type="button">Jetzt aktualisieren</button>';
       document.body.appendChild(b);
       b.querySelector('button').addEventListener('click', function () {
+        this.disabled = true;
+        this.textContent = 'Aktualisiere …';
         if (reg.waiting) reg.waiting.postMessage({ type: 'SKIP_WAITING' });
+        // Failsafe für iPhone/iPad: dort feuert „controllerchange" im
+        // installierten App-Modus oft nicht — darum nach kurzer Wartezeit
+        // selbst neu laden. Das holt (online) ohnehin die frische Version.
+        setTimeout(function () {
+          if (!refreshing) { refreshing = true; window.location.reload(); }
+        }, 1200);
       });
     }
     b.classList.add('aktiv');
