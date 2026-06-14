@@ -1,0 +1,227 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#2F4F3E">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="assets/icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Flora Mibaso">
+<title>So funktioniert's · Flora Mibaso</title>
+<link rel="stylesheet" href="assets/style.css">
+<meta name="description" content="Anleitung für Flora Mibaso: eine einfache Kurzanleitung für Einsteiger und eine didaktische Fassung für Lehrkräfte.">
+<style>
+  .an-main { max-width: 820px; margin: 0 auto; padding: 0 18px 60px; }
+
+  /* Umschalter */
+  .an-tabs { display: flex; gap: 8px; margin: 18px 0 6px; }
+  .an-tab {
+    flex: 1; padding: 12px 10px; border: 1px solid var(--beige-mittel);
+    background: #fff; border-radius: 12px; font: inherit; font-size: 1rem;
+    color: var(--text-leise); cursor: pointer; text-align: center; line-height: 1.25;
+    transition: background .15s, color .15s, border-color .15s;
+  }
+  .an-tab .klein { display: block; font-size: .82rem; opacity: .8; margin-top: 2px; }
+  .an-tab[aria-selected="true"] {
+    background: var(--gruen-mittel); color: #fff; border-color: var(--gruen-mittel);
+  }
+  .an-panel { display: none; }
+  .an-panel.aktiv { display: block; }
+
+  .an-intro { color: var(--text-leise); font-style: italic; margin: 16px 0 8px; }
+
+  /* Schritt-Karten */
+  .schritt {
+    display: flex; gap: 14px; align-items: flex-start;
+    background: #fff; border: 1px solid var(--beige-mittel); border-radius: 14px;
+    padding: 16px 18px; margin: 12px 0;
+  }
+  .schritt .nr {
+    flex: 0 0 auto; width: 38px; height: 38px; border-radius: 50%;
+    background: var(--gruen-blass); color: var(--gruen-dunkel);
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 700; font-size: 1.15rem;
+  }
+  .schritt .inh { flex: 1; }
+  .schritt h3 { margin: 2px 0 5px; font-size: 1.12rem; color: var(--gruen-dunkel); }
+  .schritt p { margin: 0; color: var(--text); line-height: 1.5; }
+  .schritt p + p { margin-top: 7px; }
+  .gross .schritt h3 { font-size: 1.25rem; }
+  .gross .schritt p { font-size: 1.1rem; }
+  .gross .schritt .nr { width: 44px; height: 44px; font-size: 1.3rem; }
+
+  h2.an-h2 { color: var(--gruen-mittel); font-size: 1.4rem; margin: 30px 0 6px; }
+  h2.an-h2:first-of-type { margin-top: 16px; }
+  .an-panel p.fliess { line-height: 1.6; }
+  .an-bereich {
+    background: #fff; border: 1px solid var(--beige-mittel); border-left: 4px solid var(--gruen-akzent);
+    border-radius: 10px; padding: 12px 16px; margin: 10px 0;
+  }
+  .an-bereich h4 { margin: 0 0 4px; color: var(--gruen-dunkel); font-size: 1.05rem; }
+  .an-bereich p { margin: 0; color: var(--text-leise); font-size: .98rem; line-height: 1.5; }
+  .tipp {
+    background: var(--beige-hell); border: 1px solid var(--beige-mittel);
+    border-radius: 10px; padding: 12px 16px; margin: 14px 0; font-size: .98rem; color: var(--text);
+  }
+  .tipp strong { color: var(--gruen-dunkel); }
+
+  /* PDF-Download-Karten */
+  .pdf-box { display: grid; gap: 12px; grid-template-columns: repeat(auto-fit, minmax(240px,1fr)); margin: 14px 0 4px; }
+  .pdf-karte {
+    display: flex; gap: 12px; align-items: center; text-decoration: none;
+    background: #fff; border: 1px solid var(--beige-mittel); border-radius: 12px; padding: 14px 16px;
+    color: var(--text); transition: border-color .15s, transform .12s;
+  }
+  .pdf-karte:hover { border-color: var(--gruen-akzent); transform: translateY(-2px); }
+  .pdf-karte .pdf-ico {
+    flex: 0 0 auto; width: 40px; height: 40px; border-radius: 9px;
+    background: #f3e4e9; color: #7d4a5a; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: .8rem;
+  }
+  .pdf-karte b { display: block; color: var(--gruen-dunkel); font-size: 1rem; }
+  .pdf-karte span { font-size: .88rem; color: var(--text-leise); }
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="wrap top-inner">
+    <div class="titelblock">
+      <h1><a href="index.html">So funktioniert's</a></h1>
+      <div class="untertitel">Eine kleine Anleitung für Flora Mibaso</div>
+    </div>
+  </div>
+</header>
+
+<main class="an-main">
+  <a class="back-btn" href="index.html">‹ zur Startseite</a>
+
+  <div class="an-tabs" role="tablist" aria-label="Anleitung wählen">
+    <button class="an-tab" id="tab-einsteiger" role="tab" aria-selected="true" aria-controls="panel-einsteiger">
+      Für Einsteiger<span class="klein">Schnell & einfach</span>
+    </button>
+    <button class="an-tab" id="tab-lehrkraft" role="tab" aria-selected="false" aria-controls="panel-lehrkraft">
+      Für Lehrkräfte<span class="klein">Didaktischer Überblick</span>
+    </button>
+  </div>
+
+  <!-- ===================== EINSTEIGER ===================== -->
+  <section class="an-panel aktiv gross" id="panel-einsteiger" role="tabpanel" aria-labelledby="tab-einsteiger">
+    <p class="an-intro">In fünf Schritten durch die App — ganz ohne Anmeldung, ohne Konto, ohne Werbung.</p>
+
+    <div class="schritt">
+      <div class="nr">1</div>
+      <div class="inh">
+        <h3>App öffnen</h3>
+        <p>Im Browser <strong>flora.mibaso.de</strong> eingeben — fertig. Du landest auf der Startseite mit den großen Kacheln.</p>
+      </div>
+    </div>
+
+    <div class="schritt">
+      <div class="nr">2</div>
+      <div class="inh">
+        <h3>Aufs Handy legen (einmalig)</h3>
+        <p>Oben auf der Startseite erscheint ein Knopf <strong>„Als App aufs Handy“</strong>. Antippen und der Anleitung folgen — danach hast du ein eigenes Symbol auf dem Bildschirm, wie bei jeder anderen App. Funktioniert dann auch <strong>ohne Internet</strong>, etwa draußen im Wald.</p>
+      </div>
+    </div>
+
+    <div class="schritt">
+      <div class="nr">3</div>
+      <div class="inh">
+        <h3>Eine Pflanze finden</h3>
+        <p><strong>„Frag dich durch“</strong> stellt dir ein paar einfache Fragen (Farbe, wo gefunden …) und führt dich zur passenden Pflanze.</p>
+        <p>Oder <strong>„Was blüht denn hier?“</strong>: Hier kannst du nach Blütenfarbe, Monat und Lebensraum filtern und stöbern.</p>
+      </div>
+    </div>
+
+    <div class="schritt">
+      <div class="nr">4</div>
+      <div class="inh">
+        <h3>Pflanze ansehen</h3>
+        <p>Tippe eine Pflanze an. Du siehst die <strong>Tafel</strong>, oft ein <strong>Foto</strong> und einen kurzen, unterhaltsamen Text mit Wissenswertem und Verwechslungs-Tipps.</p>
+      </div>
+    </div>
+
+    <div class="schritt">
+      <div class="nr">5</div>
+      <div class="inh">
+        <h3>Gefundenes abhaken</h3>
+        <p>Im Tool <strong>„Was blüht denn hier?“</strong> sitzt links oben auf jeder Pflanzenkarte ein rundes <strong>grünes ✓</strong>. Tippst du es an, wandert die Pflanze in deinen <strong>Sammelpass</strong> — und bei 5, 10, 20 … gesammelten Arten gibt's ein kleines Feuerwerk.</p>
+      </div>
+    </div>
+
+    <div class="tipp">
+      <strong>Verlaufen?</strong> Oben links führt dich auf jeder Seite ein „‹ zur Startseite“ wieder zurück. Du kannst nichts kaputt machen — einfach ausprobieren.
+    </div>
+  </section>
+
+  <!-- ===================== LEHRKRÄFTE ===================== -->
+  <section class="an-panel" id="panel-lehrkraft" role="tabpanel" aria-labelledby="tab-lehrkraft">
+    <p class="an-intro">Flora Mibaso ist eine werbefreie, kostenlose Web-App (PWA) zu den heimischen Wild­pflanzen einer Region — gedacht für den Einsatz im Unterricht, auf Exkursionen und zum selbstständigen Lernen.</p>
+
+    <h2 class="an-h2">Idee &amp; Zielgruppe</h2>
+    <p class="fliess">Die App verbindet <strong>Bestimmen</strong>, <strong>Ordnen</strong> und <strong>Verstehen</strong>: Lernende sollen Arten nicht nur erkennen, sondern Zusammenhänge (Familien, Blütenbau, Stoffkreisläufe) begreifen und Freude am genauen Hinsehen entwickeln. Die Texte sind bewusst laienverständlich gehalten — mit historischen, medizinischen und anekdotischen Häppchen statt Fachjargon. Geeignet ab etwa Klasse 5 bis zur Oberstufe, je nach gewähltem Baustein.</p>
+
+    <h2 class="an-h2">Die sechs Bereiche der Startseite</h2>
+    <div class="an-bereich"><h4>Entdecken</h4><p>Zwei Wege zur Art: die geführte Bestimmung („Frag dich durch“) und das freie Filter-Werkzeug („Was blüht denn hier?“). Dazu Broschüren-PDFs und der Sammelpass.</p></div>
+    <div class="an-bereich"><h4>Ordnen</h4><p>Interaktiver Stammbaum (Systematik) und das Familien-Quiz „Verwandte finden“ — Schulung des systematischen Blicks.</p></div>
+    <div class="an-bereich"><h4>Knobeln</h4><p>Pflanzenquiz (Arten erkennen) und Naturquiz (Zusammenhänge) — kurze Selbsttests mit sofortiger Rückmeldung.</p></div>
+    <div class="an-bereich"><h4>Verstehen</h4><p>Zwei Lernpfade in je fünf Schritten: „Der ewige Kreislauf“ (Blüte → Samen) und „Pflanzen &amp; Energie“ (Photosynthese &amp; Atmung).</p></div>
+    <div class="an-bereich"><h4>Staunen</h4><p>Kurze Phänomen-Erklärungen (Kletten, Schlafbewegungen, Sonnenblumen, Schaumzikaden) — ideal als Einstieg oder Stundenabschluss.</p></div>
+    <div class="an-bereich"><h4>Testen</h4><p>„Der große Flora-Test“ mischt Fragen aus allen Bereichen — rund fünf Minuten quer durch die App.</p></div>
+
+    <h2 class="an-h2">Der Sammelpass (Lernmotivation)</h2>
+    <p class="fliess">Jede Lerngruppe sammelt selbst: Eine Art wird <strong>nur</strong> dann als „gefunden“ markiert, wenn sie im Bestimmungstool über das grüne ✓ aktiv eingetragen wird — nicht durch bloßes Anklicken in der Übersicht. So bleibt das Sammeln an echtes Bestimmen gekoppelt. Bei Meilensteinen (5, 10, 20 … bis alle Arten) gibt es Konfetti, eine kleine Fanfare und einen Spruch. Der Fortschritt liegt lokal auf dem Gerät — gut für Wettbewerbe innerhalb einer Klasse.</p>
+
+    <h2 class="an-h2">Einsatzszenarien</h2>
+    <div class="an-bereich"><h4>Exkursion / Wandertag</h4><p>App vorab als Symbol ablegen (offline-fähig). Aufgabe: 10 Arten finden, bestimmen und im Sammelpass abhaken. „Was blüht gerade?“ auf der Startseite liefert saisonale Vorschläge.</p></div>
+    <div class="an-bereich"><h4>Stationenlernen</h4><p>Station 1 Bestimmen, Station 2 Stammbaum/Familien, Station 3 ein Lernpfad, Station 4 Quiz — die Bereiche lassen sich einzeln zuweisen.</p></div>
+    <div class="an-bereich"><h4>Hausaufgabe / Differenzierung</h4><p>Schwächere: geführte Bestimmung + Pflanzenquiz. Stärkere: Systematik, Lernpfade, Naturquiz, großer Flora-Test.</p></div>
+    <div class="an-bereich"><h4>Stundeneinstieg</h4><p>Ein „Staunen“-Phänomen als 3-Minuten-Impuls an der Projektion.</p></div>
+
+    <h2 class="an-h2">Technik &amp; Datenschutz</h2>
+    <p class="fliess">Reine Web-App, läuft auf Smartphone, Tablet und am Beamer. <strong>Kein Konto, keine Anmeldung, keine personenbezogene Datenerhebung, keine Werbung.</strong> Der Sammelstand wird ausschließlich lokal im Browser gespeichert (kein Server). Nach dem ersten Besuch funktioniert die App <strong>offline</strong> — praktisch ohne Empfang im Gelände. Lizenz der Inhalte: CC&nbsp;BY-NC.</p>
+
+    <div class="tipp"><strong>Tipp für die Klasse:</strong> Bei vielen Geräten gleichzeitig kann die Fanfare des Sammelpasses zum kleinen Konzert werden — vorab kurz ansprechen oder die Lautstärke regeln.</div>
+  </section>
+
+  <!-- PDFs -->
+  <h2 class="an-h2">Zum Ausdrucken &amp; Austeilen</h2>
+  <div class="pdf-box">
+    <a class="pdf-karte" href="anleitung/kurzanleitung.pdf">
+      <span class="pdf-ico">PDF</span>
+      <span><b>Kurzanleitung</b><span>1 Seite, große Schrift — für Einsteiger &amp; Senioren</span></span>
+    </a>
+    <a class="pdf-karte" href="anleitung/anleitung-lehrkraefte.pdf">
+      <span class="pdf-ico">PDF</span>
+      <span><b>Handout für Lehrkräfte</b><span>Didaktischer Überblick &amp; Einsatzideen</span></span>
+    </a>
+  </div>
+</main>
+
+<footer class="bottom">
+  <div class="wrap footer-text">
+    <p>Fragen, Hinweise, Korrekturen → <a href="mailto:mibaur@me.com">mibaur@me.com</a></p>
+    <p class="lizenz">© 2026 <a href="ueber/">Michael Baur</a> · Flora Mibaso</p>
+  </div>
+</footer>
+
+<script>
+(function () {
+  var tabs = [
+    { t: document.getElementById('tab-einsteiger'), p: document.getElementById('panel-einsteiger') },
+    { t: document.getElementById('tab-lehrkraft'),  p: document.getElementById('panel-lehrkraft') }
+  ];
+  function waehle(i) {
+    tabs.forEach(function (x, j) {
+      var on = (i === j);
+      x.t.setAttribute('aria-selected', on ? 'true' : 'false');
+      x.p.classList.toggle('aktiv', on);
+    });
+  }
+  tabs.forEach(function (x, i) { x.t.addEventListener('click', function () { waehle(i); }); });
+})();
+</script>
+<script src="assets/app.js" defer></script>
+</body>
+</html>
