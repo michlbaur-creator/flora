@@ -70,17 +70,27 @@
   /* PDF-Download-Karten */
   .pdf-box { display: grid; gap: 12px; grid-template-columns: repeat(auto-fit, minmax(240px,1fr)); margin: 14px 0 4px; }
   .pdf-karte {
-    display: flex; gap: 12px; align-items: center; text-decoration: none;
+    display: flex; gap: 12px; align-items: flex-start;
     background: #fff; border: 1px solid var(--beige-mittel); border-radius: 12px; padding: 14px 16px;
-    color: var(--text); transition: border-color .15s, transform .12s;
+    color: var(--text);
   }
-  .pdf-karte:hover { border-color: var(--gruen-akzent); transform: translateY(-2px); }
   .pdf-karte .pdf-ico {
     flex: 0 0 auto; width: 40px; height: 40px; border-radius: 9px;
     background: #f3e4e9; color: #7d4a5a; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: .8rem;
   }
-  .pdf-karte b { display: block; color: var(--gruen-dunkel); font-size: 1rem; }
-  .pdf-karte span { font-size: .88rem; color: var(--text-leise); }
+  .pdf-txt b { display: block; color: var(--gruen-dunkel); font-size: 1rem; }
+  .pdf-txt > span { font-size: .88rem; color: var(--text-leise); display: block; line-height: 1.4; }
+  .pdf-akt { display: flex; gap: 8px; margin-top: 10px; flex-wrap: wrap; }
+  .pdf-akt a, .pdf-akt button {
+    font: inherit; font-size: .9rem; cursor: pointer; text-decoration: none;
+    border-radius: 8px; padding: 7px 14px; border: 1px solid var(--gruen-akzent); line-height: 1.1;
+    transition: background .15s, filter .15s;
+  }
+  .pdf-akt a { color: var(--gruen-mittel); background: #fff; }
+  .pdf-akt a:hover { background: var(--beige-hell); }
+  .pdf-akt button { color: #fff; background: var(--gruen-mittel); border-color: var(--gruen-mittel); }
+  .pdf-akt button:hover { filter: brightness(.94); }
+  .pdf-hinweis { font-size: .85rem; color: var(--text-leise); margin: 8px 2px 0; }
 </style>
 </head>
 <body>
@@ -189,15 +199,30 @@
   <!-- PDFs -->
   <h2 class="an-h2">Zum Ausdrucken &amp; Austeilen</h2>
   <div class="pdf-box">
-    <a class="pdf-karte" href="anleitung/kurzanleitung.pdf">
+    <div class="pdf-karte">
       <span class="pdf-ico">PDF</span>
-      <span><b>Kurzanleitung</b><span>1 Seite, große Schrift — für Einsteiger &amp; Senioren</span></span>
-    </a>
-    <a class="pdf-karte" href="anleitung/anleitung-lehrkraefte.pdf">
+      <div class="pdf-txt">
+        <b>Kurzanleitung</b>
+        <span>1 Seite, große Schrift — für Einsteiger &amp; Senioren</span>
+        <div class="pdf-akt">
+          <a href="anleitung/kurzanleitung.pdf" target="_blank" rel="noopener">Öffnen</a>
+          <button type="button" data-pdf="anleitung/kurzanleitung.pdf">🖨 Drucken</button>
+        </div>
+      </div>
+    </div>
+    <div class="pdf-karte">
       <span class="pdf-ico">PDF</span>
-      <span><b>Handout für Lehrkräfte</b><span>Didaktischer Überblick &amp; Einsatzideen</span></span>
-    </a>
+      <div class="pdf-txt">
+        <b>Handout für Lehrkräfte</b>
+        <span>Didaktischer Überblick &amp; Einsatzideen</span>
+        <div class="pdf-akt">
+          <a href="anleitung/anleitung-lehrkraefte.pdf" target="_blank" rel="noopener">Öffnen</a>
+          <button type="button" data-pdf="anleitung/anleitung-lehrkraefte.pdf">🖨 Drucken</button>
+        </div>
+      </div>
+    </div>
   </div>
+  <p class="pdf-hinweis">Tipp: Erscheint kein Druckdialog (z. B. am Handy), öffnet sich das PDF — dann über das Drucker-Symbol des Anzeigeprogramms drucken.</p>
 </main>
 
 <footer class="bottom">
@@ -221,6 +246,28 @@
     });
   }
   tabs.forEach(function (x, i) { x.t.addEventListener('click', function () { waehle(i); }); });
+})();
+</script>
+<script>
+// „Drucken“: PDF in unsichtbarem Rahmen laden und Druckdialog öffnen; sonst PDF anzeigen.
+(function () {
+  document.querySelectorAll('.pdf-akt button[data-pdf]').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var url = btn.getAttribute('data-pdf');
+      var ifr = document.createElement('iframe');
+      ifr.setAttribute('aria-hidden', 'true');
+      ifr.style.cssText = 'position:fixed;right:0;bottom:0;width:0;height:0;border:0;';
+      ifr.onload = function () {
+        setTimeout(function () {
+          try { ifr.contentWindow.focus(); ifr.contentWindow.print(); }
+          catch (e) { window.open(url, '_blank'); }
+        }, 600);
+      };
+      ifr.onerror = function () { window.open(url, '_blank'); };
+      ifr.src = url;
+      document.body.appendChild(ifr);
+    });
+  });
 })();
 </script>
 <script src="assets/app.js" defer></script>
