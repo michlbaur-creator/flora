@@ -599,6 +599,21 @@
     <span><strong>Neu hier? So funktioniert die App</strong> — kurze Anleitung für Einsteiger und Lehrkräfte</span>
   </a>
 
+  <!-- Offline speichern -->
+  <div id="offline-box" style="background:#fff;border:1px solid var(--beige-mittel);border-radius:14px;padding:14px 18px;margin:0 0 26px;box-shadow:0 2px 8px rgba(90,58,36,0.06);">
+    <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;">
+      <span aria-hidden="true" style="font-size:1.4rem;flex-shrink:0;">📥</span>
+      <div style="flex:1;min-width:180px;">
+        <strong style="color:var(--gruen-dunkel);">Für unterwegs speichern</strong>
+        <div id="offline-info" style="font-size:0.92rem;color:var(--text-leise);line-height:1.4;margin-top:2px;">Alle Pflanzen und Bilder aufs Gerät laden (rund 125 MB) — dann läuft die App vollständig offline, auch ohne Empfang im Gelände. Am besten im WLAN.</div>
+      </div>
+      <button id="offline-btn" type="button" style="flex-shrink:0;background:var(--gruen-dunkel);color:var(--beige-hell);border:none;border-radius:999px;padding:10px 20px;font-family:inherit;font-size:0.95rem;cursor:pointer;">Speichern</button>
+    </div>
+    <div id="offline-bar-wrap" style="display:none;height:10px;background:var(--beige-mittel);border-radius:5px;margin-top:12px;overflow:hidden;">
+      <div id="offline-bar" style="height:100%;width:0;background:var(--ausprobieren);transition:width .25s;"></div>
+    </div>
+  </div>
+
   <!-- WAS BLÜHT GERADE? (dynamisch aus pflanzen.json) -->
   <section class="sektion jetzt-sektion" id="jetzt-sektion" hidden>
     <h2 class="sektion-titel jetzt-titel">Was blüht gerade?</h2>
@@ -1067,6 +1082,56 @@
       setTimeout(starte, 600);
     }
   } catch(e) {}
+})();
+</script>
+
+<!-- Offline-Paket: Knopf „Für unterwegs speichern" -->
+<script>
+(function(){
+  var box=document.getElementById('offline-box');
+  if(!box) return;
+  if(!('serviceWorker' in navigator)){ box.style.display='none'; return; }
+  var btn=document.getElementById('offline-btn');
+  var info=document.getElementById('offline-info');
+  var barWrap=document.getElementById('offline-bar-wrap');
+  var bar=document.getElementById('offline-bar');
+  var laeuft=false;
+
+  function sende(msg){
+    if(navigator.serviceWorker.controller){ navigator.serviceWorker.controller.postMessage(msg); return; }
+    navigator.serviceWorker.ready.then(function(reg){ if(reg.active) reg.active.postMessage(msg); });
+  }
+  function fertigZustand(){
+    info.textContent='✓ Vollständig offline gespeichert — läuft jetzt auch ohne Internet.';
+    btn.textContent='Aktualisieren';
+    barWrap.style.display='none';
+  }
+
+  navigator.serviceWorker.addEventListener('message', function(e){
+    var d=e.data||{};
+    if(d.type==='OFFLINE_STATUS_ANTWORT'){
+      if(d.gesamt>0 && d.da>=d.gesamt) fertigZustand();
+    } else if(d.type==='PRECACHE_FORTSCHRITT'){
+      var pct=d.total? Math.round(d.done/d.total*100):0;
+      bar.style.width=pct+'%';
+      info.textContent='Wird gespeichert … '+pct+' %  (bitte die Seite geöffnet lassen)';
+    } else if(d.type==='PRECACHE_FERTIG'){
+      laeuft=false; btn.disabled=false; bar.style.width='100%'; fertigZustand();
+    } else if(d.type==='PRECACHE_FEHLER'){
+      laeuft=false; btn.disabled=false; barWrap.style.display='none';
+      info.textContent='Speichern hat nicht geklappt — bitte Internetverbindung prüfen und erneut versuchen.';
+    }
+  });
+
+  btn.addEventListener('click', function(){
+    if(laeuft) return;
+    laeuft=true; btn.disabled=true;
+    barWrap.style.display='block'; bar.style.width='0%';
+    info.textContent='Wird gespeichert … 0 %  (bitte die Seite geöffnet lassen)';
+    sende({type:'PRECACHE_ALL'});
+  });
+
+  navigator.serviceWorker.ready.then(function(){ setTimeout(function(){ sende({type:'OFFLINE_STATUS'}); }, 400); });
 })();
 </script>
 
