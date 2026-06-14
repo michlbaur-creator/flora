@@ -17,7 +17,7 @@
    Nur wenn sich Bilder ändern, zusätzlich die MEDIA-Version erhöhen.
 */
 
-const SHELL_CACHE = 'mibaso-shell-v96';
+const SHELL_CACHE = 'mibaso-shell-v97';
 const MEDIA_CACHE = 'mibaso-media-v1';
 const MANIFEST_URL = './offline-manifest.json';
 
@@ -72,9 +72,12 @@ self.addEventListener('activate', (event) => {
 // ---- Nachrichten von der Seite
 self.addEventListener('message', (event) => {
   const data = event.data || {};
+  // Antwort bevorzugt über den MessageChannel-Port (zuverlässig auf iOS),
+  // sonst an den sendenden Client.
+  const reply = (event.ports && event.ports[0]) ? event.ports[0] : event.source;
   if (data.type === 'SKIP_WAITING') { self.skipWaiting(); return; }
-  if (data.type === 'PRECACHE_ALL') { event.waitUntil(precacheAll(event.source)); return; }
-  if (data.type === 'OFFLINE_STATUS') { event.waitUntil(berichteStatus(event.source)); return; }
+  if (data.type === 'PRECACHE_ALL') { event.waitUntil(precacheAll(reply)); return; }
+  if (data.type === 'OFFLINE_STATUS') { event.waitUntil(berichteStatus(reply)); return; }
 });
 
 // Alles aus dem Manifest laden und melden, wie weit es ist.
