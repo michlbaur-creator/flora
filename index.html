@@ -548,6 +548,23 @@
   .off-btn{background:var(--gruen-dunkel);color:var(--beige-hell);border:none;border-radius:999px;
     padding:9px 22px;font-family:inherit;font-size:0.95rem;cursor:pointer;}
   .off-btn:disabled{opacity:.6;cursor:default;}
+
+  /* ===== Staunen-Akkordeon (4 Themen in einer Kachel) ===== */
+  .kachel-akkordeon{background:#fff;border:1px solid var(--beige-mittel);border-radius:18px;box-shadow:0 2px 8px rgba(90,58,36,0.06);overflow:hidden;transition:border-color .15s;}
+  .kachel-akkordeon:hover{border-color:var(--phaenomene);}
+  .akk-kopf{display:flex;align-items:center;gap:14px;width:100%;background:none;border:none;font-family:inherit;text-align:left;cursor:pointer;padding:22px;}
+  .akk-kopf .icon{width:54px;height:54px;border-radius:14px;background:var(--phaenomene-bg);color:var(--phaenomene);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+  .akk-kopf .icon svg{width:34px;height:34px;}
+  .akk-titel{flex:1;display:flex;flex-direction:column;gap:3px;}
+  .akk-h3{font-size:1.22rem;font-weight:600;color:var(--phaenomene);letter-spacing:.01em;}
+  .akk-sub{font-size:0.97rem;color:var(--text-leise);font-style:italic;}
+  .akk-pfeil{color:var(--phaenomene);font-size:1.2rem;transition:transform .25s;flex-shrink:0;}
+  .kachel-akkordeon.offen .akk-pfeil{transform:rotate(180deg);}
+  .akk-inhalt{max-height:0;overflow:hidden;transition:max-height .3s ease;padding:0 22px;}
+  .kachel-akkordeon.offen .akk-inhalt{max-height:430px;padding-bottom:8px;}
+  .akk-inhalt a{display:block;padding:14px 2px;border-top:1px solid var(--beige-hell);color:var(--gruen-mittel);text-decoration:none;font-size:1.02rem;}
+  .akk-inhalt a:first-child{border-top-color:var(--beige-mittel);}
+  .akk-inhalt a:hover{color:var(--phaenomene);}
 </style>
 </head>
 <body>
@@ -837,66 +854,28 @@
     </div>
   </section>
 
-  <!-- NATURPHÄNOMENE -->
+    <!-- NATURPHÄNOMENE (Akkordeon: 4 Themen in einer Kachel) -->
   <section class="sektion" data-thema="phaenomene">
-    <h2 class="sektion-titel">Staunen</h2>
-    <p style="margin:-8px 0 18px 4px;color:var(--text-leise);font-style:italic;font-size:1.02rem;">Warum ist das eigentlich so?</p>
-    <div class="kacheln">
-
-      <a class="kachel" href="interaktiv/kletten.html">
-        <div class="icon" aria-hidden="true">
-          <!-- Klette mit Widerhaken -->
+    <div class="kachel-akkordeon" id="staunen-akk">
+      <button class="akk-kopf" id="staunen-toggle" type="button" aria-expanded="false" aria-controls="staunen-inhalt">
+        <span class="icon" aria-hidden="true">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-            <circle cx="12" cy="12" r="4"/>
-            <path d="M12 4v2.5 M12 17.5V20 M4 12h2.5 M17.5 12H20 M6.3 6.3l1.8 1.8 M15.9 15.9l1.8 1.8 M17.7 6.3l-1.8 1.8 M8.1 15.9l-1.8 1.8"/>
-            <path d="M12 6.5l-.7-.9 M12 6.5l.7-.9 M12 17.5l-.7.9 M12 17.5l.7.9"/>
+            <path d="M11 3l1.7 4.6L17 9l-4.3 1.4L11 15l-1.7-4.6L5 9l4.3-1.4z"/>
+            <path d="M18 14.5l.6 1.7 1.9.6-1.9.6-.6 1.7-.6-1.7-1.9-.6 1.9-.6z"/>
           </svg>
-        </div>
-        <h3>Warum kleben Kletten?</h3>
-        <p>Die Mitfahr-Profis der Natur.</p>
-      </a>
-
-      <a class="kachel" href="interaktiv/blumen-nachts.html">
-        <div class="icon" aria-hidden="true">
-          <!-- Blüte mit Mond: Nachtschluss -->
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M12 21c-3 0-5-2-5-5 0-3 2.5-5 5-9 2.5 4 5 6 5 9 0 3-2 5-5 5z"/>
-            <path d="M12 12v9"/>
-            <path d="M19 4.5a2.5 2.5 0 1 0 .8 4.4 3 3 0 0 1-.8-4.4z"/>
-          </svg>
-        </div>
-        <h3>Warum schließen Blumen nachts?</h3>
-        <p>Kleine Blüten – große Strategie.</p>
-      </a>
-
-      <a class="kachel" href="interaktiv/sonnenblumen.html">
-        <div class="icon" aria-hidden="true">
-          <!-- Sonne mit Strahlen -->
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-            <circle cx="12" cy="12" r="4"/>
-            <path d="M12 2v3 M12 19v3 M2 12h3 M19 12h3 M4.9 4.9l2.1 2.1 M17 17l2.1 2.1 M19.1 4.9 17 7 M7 17l-2.1 2.1"/>
-          </svg>
-        </div>
-        <h3>Warum drehen Sonnenblumen?</h3>
-        <p>Die Sonnen-Tracker der Natur.</p>
-      </a>
-
-      <a class="kachel" href="interaktiv/schaumzikaden.html">
-        <div class="icon" aria-hidden="true">
-          <!-- Tropfen/Regen: „Regen" unter Weiden -->
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M5 4c4 0 7 2.5 7 7"/>
-            <path d="M19 4c-4 0-7 2.5-7 7"/>
-            <path d="M12 11v3"/>
-            <path d="M8 17c0 1.1-.9 2-2 2s-2-.9-2-2c0-1.2 2-3 2-3s2 1.8 2 3z"/>
-            <path d="M14 19c0 .8-.7 1.5-1.5 1.5S11 19.8 11 19c0-.9 1.5-2.3 1.5-2.3s1.5 1.4 1.5 2.3z"/>
-            <path d="M20 17c0 1.1-.9 2-2 2s-2-.9-2-2c0-1.2 2-3 2-3s2 1.8 2 3z"/>
-          </svg>
-        </div>
-        <h3>Warum „regnet" es unter Weiden?</h3>
-        <p>Die heimlichen Regenmacher.</p>
-      </a>
-
+        </span>
+        <span class="akk-titel">
+          <span class="akk-h3">Staunen</span>
+          <span class="akk-sub">Warum ist das eigentlich so?</span>
+        </span>
+        <span class="akk-pfeil" aria-hidden="true">▾</span>
+      </button>
+      <div class="akk-inhalt" id="staunen-inhalt">
+        <a href="interaktiv/kletten.html">Warum kleben Kletten?</a>
+        <a href="interaktiv/blumen-nachts.html">Warum schließen Blumen nachts?</a>
+        <a href="interaktiv/sonnenblumen.html">Warum drehen Sonnenblumen?</a>
+        <a href="interaktiv/schaumzikaden.html">Warum „regnet“ es unter Weiden?</a>
+      </div>
     </div>
   </section>
 
@@ -1192,6 +1171,19 @@
         if(d.type==='OFFLINE_STATUS_ANTWORT' && d.gesamt>0 && d.da>=d.gesamt) zeigeFertig();
       });
     }, 400);
+  });
+})();
+</script>
+
+<!-- Staunen-Akkordeon -->
+<script>
+(function(){
+  var akk=document.getElementById('staunen-akk');
+  if(!akk) return;
+  var btn=document.getElementById('staunen-toggle');
+  btn.addEventListener('click', function(){
+    var offen=akk.classList.toggle('offen');
+    btn.setAttribute('aria-expanded', offen ? 'true' : 'false');
   });
 })();
 </script>
