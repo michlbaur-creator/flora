@@ -199,7 +199,9 @@
 "./quiz/naturquiz.html",
 "./quiz/pflanzenquiz.html",
 "./sammelpass.html",
-"./ueber/index.html"
+"./ueber/index.html",
+"./impressum/",
+"./impressum/index.html"
 ],
 "media": [
 "./assets/apple-touch-icon.png",
