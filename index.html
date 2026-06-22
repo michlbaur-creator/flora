@@ -426,7 +426,7 @@
   /* App-Modus (installierte PWA): mehr Luft unter dem Notch */
   @media (display-mode:standalone){
     header.app-head{
-      padding-top:max(42px, calc(env(safe-area-inset-top) + 10px));
+      padding-top:max(54px, calc(env(safe-area-inset-top) + 28px));
     }
   }
 
@@ -645,7 +645,7 @@
       <button class="chip-x" id="chip-anleitung-zu" type="button" aria-label="Hinweis ausblenden">✕</button>
     </span>
     <a class="start-chip" href="https://fauna.mibaso.de/" style="text-decoration:none;">🦋 Fauna Mibaso</a>
-    <button class="start-chip" id="chip-offline" type="button" aria-haspopup="dialog">📥 <span id="chip-offline-text">Offline</span></button>
+    <button class="start-chip" id="chip-offline" type="button" aria-haspopup="dialog" title="Für unterwegs speichern" aria-label="Für unterwegs speichern">📥<span id="chip-offline-text"></span></button>
   </div>
 
   <!-- WAS BLÜHT GERADE? (dynamisch aus pflanzen.json) -->
@@ -1139,7 +1139,7 @@
     info.textContent='✓ Vollständig offline gespeichert — läuft jetzt auch ohne Internet.';
     barWrap.style.display='none';
     aktion.style.display='none';
-    if(chipOffText) chipOffText.textContent='Offline ✓';
+    if(chipOffText) chipOffText.textContent=' ✓';
   }
 
   chipOff.addEventListener('click', function(){ overlay.classList.add('aktiv'); });
