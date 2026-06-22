@@ -10,7 +10,7 @@
   //    auch auf Seiten ohne das große style.css.
   var css =
     '.fl-update-banner{position:fixed;top:0;left:0;right:0;background:#5d6f7b;color:#fff;' +
-    'padding:max(8px,env(safe-area-inset-top)) 14px 8px;display:none;align-items:center;' +
+    'padding:max(50px,calc(env(safe-area-inset-top) + 6px)) 14px 8px;display:none;align-items:center;' +
     'justify-content:center;gap:12px;font-size:.92rem;font-family:Georgia,serif;z-index:9999;' +
     'box-shadow:0 2px 8px rgba(0,0,0,.18)}' +
     '.fl-update-banner.aktiv{display:flex;flex-wrap:wrap}' +
