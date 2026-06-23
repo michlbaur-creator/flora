@@ -201,7 +201,10 @@
 "./sammelpass.html",
 "./ueber/index.html",
 "./impressum/",
-"./impressum/index.html"
+"./impressum/index.html",
+"./interaktiv/staunen-ahorn.html",
+"./interaktiv/staunen-brennnessel.html",
+"./interaktiv/staunen-loewenzahn.html"
 ],
 "media": [
 "./assets/apple-touch-icon.png",
@@ -602,6 +605,9 @@
 "./images/tafeln/viola-arvensis.jpg",
 "./images/tafeln/viola-odorata.jpg",
 "./images/tafeln/viola-reichenbachiana.jpg",
-"./images/tafeln/viola-tricolor.jpg"
+"./images/tafeln/viola-tricolor.jpg",
+"./images/ahorn-fluegel.jpg",
+"./images/brennnessel.jpg",
+"./images/loewenzahn-fallschirm.jpg"
 ]
 }
