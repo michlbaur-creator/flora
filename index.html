@@ -904,10 +904,28 @@
   </section>
 </main>
 
-<footer class="app-foot">
-  <p>Hinweise und Korrekturen sind willkommen: <a href="mailto:mibaur@me.com">mibaur@me.com</a></p>
-  <p class="lizenz">© 2026 Michael Baur · <a href="ueber/">About me</a> · <a href="impressum/">Impressum &amp; Datenschutz</a></p>
-</footer>
+<style>
+footer.fuss-neu{background:linear-gradient(135deg,#26402F,#3A5F4A);color:#F7F3E8;padding:26px 18px 30px;margin-top:30px;font-family:Georgia,'Times New Roman',serif}
+footer.fuss-neu .fin{max-width:720px;margin:0 auto}
+footer.fuss-neu h4{font-weight:normal;font-size:17px;margin:0 0 10px;color:rgba(247,243,232,.78)}
+footer.fuss-neu .entdecken{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:18px}
+footer.fuss-neu .echip{background:rgba(247,243,232,.12);border:1px solid rgba(247,243,232,.35);border-radius:18px;padding:4px 11px;font-size:13px;color:#F7F3E8;text-decoration:none}
+footer.fuss-neu .klein{font-size:13.5px;color:rgba(247,243,232,.85);line-height:2}
+footer.fuss-neu a{color:#F7F3E8}
+</style>
+<footer class="fuss-neu"><div class="fin">
+  <h4>Entdecken</h4>
+  <div class="entdecken">
+    <a class="echip" href="https://fauna.mibaso.de">🦋 Fauna</a>
+    <a class="echip" href="https://media.mibaso.de">📱 Media</a>
+    <a class="echip" href="https://kochen.mibaso.de">🍳 Kochen</a>
+    <a class="echip" href="https://mibaso.de">🌻 mibaso.de</a>
+  </div>
+  <div class="klein">
+    Kontakt: <a href="mailto:mibaur@me.com">mibaur@me.com</a><br>
+    © Michael Baur · <a href="ueber/">Über mich</a> · <a href="impressum/">Impressum &amp; Datenschutz</a>
+  </div>
+</div></footer>
 
 <!-- „Was blüht gerade?" – lädt pflanzen.json, filtert nach aktuellem Monat -->
 <script>
