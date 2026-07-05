@@ -39,8 +39,13 @@ html{background:#26402F}
     --braun-warm:#a67952;
     --braun-mittel:#8b5a3c;
     --beige-hell:#f7f0e4;
-    --beige-mittel:#efe4cf;
-    --papier:#fbf6ed;
+    --beige-mittel:#d7cfba;   /* feine Linie (aus Fauna übernommen) */
+    --papier:#F7F3E8;         /* Haus-Creme wie Fauna */
+    --creme-tief:#EEE7D5;
+    --honig:#C28A3A;
+    --linie:#d7cfba;
+    --icon-bg:#e7ede6;
+    --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
     --text:#3b2a1c;
     --text-leise:#6b5340;
 
@@ -198,47 +203,24 @@ html{background:#26402F}
   }
 
   /* Sektionen */
-  .sektion{margin-bottom:42px}
+  .sektion{margin-bottom:34px}
+  /* Rubriken-Überschrift im Fauna-Stil: Kapitälchen in Honiggold, feine durchgezogene Linie */
   .sektion-titel{
-    font-size:2rem;
-    margin:0 0 16px 4px;
-    font-weight:normal;
-    letter-spacing:0.005em;
-    line-height:1.1;
+    font-family:var(--sans);
+    font-size:12px;
+    letter-spacing:.16em;
+    text-transform:uppercase;
+    color:var(--honig);
+    font-weight:700;
+    margin:0 0 12px;
+    padding-bottom:8px;
+    border-bottom:1px solid var(--linie);
   }
-  .sektion[data-thema="entdecken"]    .sektion-titel{color:var(--entdecken)}
-  .sektion[data-thema="foto"]         .sektion-titel{color:var(--foto)}
-  .sektion[data-thema="ordnen"]       .sektion-titel{color:var(--ordnen)}
-  .sektion[data-thema="ausprobieren"] .sektion-titel{color:var(--ausprobieren)}
-  .sektion[data-thema="verstehen"]    .sektion-titel{color:var(--verstehen)}
-  .sektion[data-thema="phaenomene"]   .sektion-titel{color:var(--phaenomene)}
-  .sektion[data-thema="testen"]       .sektion-titel{color:var(--testen)}
-
-  .sektion[data-thema="entdecken"]    .sektion-titel::after,
-  .sektion[data-thema="foto"]         .sektion-titel::after,
-  .sektion[data-thema="ordnen"]       .sektion-titel::after,
-  .sektion[data-thema="ausprobieren"] .sektion-titel::after,
-  .sektion[data-thema="verstehen"]    .sektion-titel::after,
-  .sektion[data-thema="phaenomene"]   .sektion-titel::after,
-  .sektion[data-thema="testen"]       .sektion-titel::after{
-    content:"";
-    display:block;
-    width:42px;height:3px;
-    border-radius:2px;
-    margin-top:8px;
-  }
-  .sektion[data-thema="entdecken"]    .sektion-titel::after{background:var(--entdecken)}
-  .sektion[data-thema="foto"]         .sektion-titel::after{background:var(--foto)}
-  .sektion[data-thema="ordnen"]       .sektion-titel::after{background:var(--ordnen)}
-  .sektion[data-thema="ausprobieren"] .sektion-titel::after{background:var(--ausprobieren)}
-  .sektion[data-thema="verstehen"]    .sektion-titel::after{background:var(--verstehen)}
-  .sektion[data-thema="phaenomene"]   .sektion-titel::after{background:var(--phaenomene)}
-  .sektion[data-thema="testen"]       .sektion-titel::after{background:var(--testen)}
 
   /* Kachel-Raster */
   .kacheln{
     display:grid;
-    gap:16px;
+    gap:12px;
     grid-template-columns:repeat(auto-fill,minmax(280px,1fr));
   }
 
@@ -246,96 +228,65 @@ html{background:#26402F}
     display:flex;
     flex-direction:column;
     background:#fff;
-    border:1px solid var(--beige-mittel);
-    border-radius:18px;
-    padding:22px 22px 20px;
+    border:1px solid var(--linie);
+    border-radius:14px;
+    padding:18px 18px 16px;
     text-decoration:none;
     color:var(--text);
-    box-shadow:0 2px 8px rgba(90,58,36,0.06);
-    transition:transform .15s ease, box-shadow .15s ease, border-color .15s ease;
-    min-height:170px;
+    transition:transform .14s ease, box-shadow .14s ease, border-color .14s ease;
   }
   .kachel:hover, .kachel:focus-visible{
-    transform:translateY(-3px);
-    box-shadow:0 8px 22px rgba(47,79,62,0.16);
+    transform:translateY(-2px);
+    box-shadow:0 6px 16px rgba(47,79,62,.10);
+    border-color:#a3b5a6;
     outline:none;
   }
   .kachel:active{transform:translateY(-1px)}
 
-  /* Themenspezifisches Hover (Border) */
-  .sektion[data-thema="entdecken"]    .kachel:hover{border-color:var(--entdecken)}
-  .sektion[data-thema="foto"]         .kachel:hover{border-color:var(--foto)}
-  .sektion[data-thema="ordnen"]       .kachel:hover{border-color:var(--ordnen)}
-  .sektion[data-thema="ausprobieren"] .kachel:hover{border-color:var(--ausprobieren)}
-  .sektion[data-thema="verstehen"]    .kachel:hover{border-color:var(--verstehen)}
-  .sektion[data-thema="phaenomene"]   .kachel:hover{border-color:var(--phaenomene)}
-  .sektion[data-thema="testen"]       .kachel:hover{border-color:var(--testen)}
-
   .kachel .icon{
-    width:54px;height:54px;
+    width:46px;height:46px;
     display:flex;align-items:center;justify-content:center;
-    border-radius:14px;
-    margin-bottom:14px;
+    border-radius:12px;
+    margin-bottom:12px;
     flex-shrink:0;
+    background:var(--icon-bg);
+    color:var(--gruen-dunkel);
   }
-  .kachel .icon svg{width:34px;height:34px}
-
-  /* Icon-Farben je Sektion */
-  .sektion[data-thema="entdecken"]    .icon{background:var(--entdecken-bg);    color:var(--entdecken)}
-  .sektion[data-thema="foto"]         .icon{background:var(--foto-bg);         color:var(--foto)}
-  .sektion[data-thema="ordnen"]       .icon{background:var(--ordnen-bg);       color:var(--ordnen)}
-  .sektion[data-thema="ausprobieren"] .icon{background:var(--ausprobieren-bg); color:var(--ausprobieren)}
-  .sektion[data-thema="verstehen"]    .icon{background:var(--verstehen-bg);    color:var(--verstehen)}
-  .sektion[data-thema="phaenomene"]   .icon{background:var(--phaenomene-bg);   color:var(--phaenomene)}
-  .sektion[data-thema="testen"]       .icon{background:var(--testen-bg);       color:var(--testen)}
+  .kachel .icon svg{width:27px;height:27px}
 
   .kachel h3{
-    margin:0 0 6px;
-    font-size:1.22rem;
-    font-weight:600;
-    letter-spacing:0.01em;
+    margin:0 0 5px;
+    font-size:18px;
+    font-weight:normal;
+    line-height:1.2;
+    color:var(--gruen-dunkel);
   }
-  .sektion[data-thema="entdecken"]    .kachel h3{color:var(--entdecken)}
-  .sektion[data-thema="foto"]         .kachel h3{color:var(--foto)}
-  .sektion[data-thema="ordnen"]       .kachel h3{color:var(--ordnen)}
-  .sektion[data-thema="ausprobieren"] .kachel h3{color:var(--ausprobieren)}
-  .sektion[data-thema="verstehen"]    .kachel h3{color:var(--verstehen)}
-  .sektion[data-thema="phaenomene"]   .kachel h3{color:var(--phaenomene)}
-  .sektion[data-thema="testen"]       .kachel h3{color:var(--testen)}
 
   /* Foto-Apps-Kacheln: App-Logo statt SVG-Icon */
   .sektion[data-thema="foto"] .kachel .app-icon{
-    width:54px; height:54px;
-    border-radius:14px;
+    width:46px; height:46px;
+    border-radius:12px;
     object-fit:cover;
-    margin-bottom:14px;
+    margin-bottom:12px;
     flex-shrink:0;
     background:#fff;
-    border:1px solid var(--foto-bg);
+    box-shadow:0 1px 5px rgba(47,79,62,.18);
   }
 
   .kachel p{
     margin:0;
-    color:var(--text-leise);
-    font-size:0.97rem;
+    font-family:var(--sans);
+    color:#6b6152;
+    font-size:13px;
     line-height:1.45;
   }
 
   /* „Was blüht gerade?" – saisonaler Streifen */
-  .jetzt-titel{ color:var(--ausprobieren); }
-  .jetzt-titel::after{
-    content:"";
-    display:block;
-    width:42px; height:3px;
-    border-radius:2px;
-    margin-top:8px;
-    background:var(--ausprobieren);
-  }
   .jetzt-unter{
-    margin:-8px 0 14px 4px;
-    color:var(--text-leise);
-    font-style:italic;
-    font-size:1.02rem;
+    margin:-4px 0 12px;
+    font-family:var(--sans);
+    color:#6b6152;
+    font-size:12.5px;
   }
   .jetzt-strip{
     display:flex;
@@ -361,7 +312,7 @@ html{background:#26402F}
   .jetzt-karte:hover, .jetzt-karte:focus-visible{
     transform:translateY(-3px);
     box-shadow:0 8px 22px rgba(47,79,62,0.16);
-    border-color:var(--ausprobieren);
+    border-color:#a3b5a6;
     outline:none;
   }
   .jetzt-karte img{
@@ -375,10 +326,11 @@ html{background:#26402F}
   .jetzt-karte .jk-name{
     display:block;
     padding:8px 10px 10px;
-    font-size:0.92rem;
+    font-family:var(--sans);
+    font-size:0.8rem;
     line-height:1.25;
     font-weight:600;
-    color:var(--ausprobieren);
+    color:var(--gruen-dunkel);
   }
   .jetzt-mehr{
     flex:0 0 auto;
@@ -388,15 +340,16 @@ html{background:#26402F}
     justify-content:center;
     text-align:center;
     text-decoration:none;
-    border:1.5px dashed var(--beige-mittel);
+    border:1.5px dashed var(--linie);
     border-radius:14px;
-    color:var(--ausprobieren);
-    font-size:0.95rem;
+    color:var(--gruen-dunkel);
+    font-family:var(--sans);
+    font-size:0.92rem;
     font-weight:600;
     padding:10px;
     scroll-snap-align:start;
   }
-  .jetzt-mehr:hover{ border-color:var(--ausprobieren); background:var(--ausprobieren-bg); }
+  .jetzt-mehr:hover{ border-color:#a3b5a6; background:var(--creme-tief); }
 
   /* Footer */
   footer.app-foot{
@@ -423,9 +376,7 @@ html{background:#26402F}
     header.app-head h1{font-size:1.65rem}
     header.app-head .untertitel{font-size:0.92rem}
     main{padding:24px 16px 50px}
-    .sektion-titel{font-size:1.7rem}
-    .kachel{padding:18px 18px 16px;min-height:150px}
-    .kachel h3{font-size:1.12rem}
+    .kachel{padding:16px 16px 15px}
   }
 
   /* App-Modus (installierte PWA): mehr Luft unter dem Notch */
@@ -466,7 +417,7 @@ html{background:#26402F}
   }
   .tour-titel{
     font-family:Georgia, serif;
-    color:var(--ordnen,#5d6f7b);
+    color:var(--gruen-dunkel,#2F4F3E);
     font-size:1.25rem;
     margin:0 0 6px;
     line-height:1.2;
@@ -491,16 +442,16 @@ html{background:#26402F}
   }
   .tour-skip:hover{ color:#3f4d57; }
   .tour-weiter{
-    background:var(--ordnen,#5d6f7b);
+    background:var(--gruen-dunkel,#2F4F3E);
     color:#fff;
     border:none;
-    border-radius:8px;
+    border-radius:999px;
     padding:10px 20px;
     font:inherit; font-weight:600;
     cursor:pointer;
-    box-shadow:0 2px 6px rgba(93,111,123,.3);
+    box-shadow:0 2px 6px rgba(47,79,62,.3);
   }
-  .tour-weiter:hover{ background:var(--ordnen,#5d6f7b); filter:brightness(.92); }
+  .tour-weiter:hover{ background:var(--gruen-dunkel,#2F4F3E); filter:brightness(.92); }
 
   /* Schwebender ?-Knopf — jederzeit Tour neu aufrufen */
   .tour-help{
@@ -510,8 +461,8 @@ html{background:#26402F}
     width:44px; height:44px;
     border-radius:50%;
     background:#fff;
-    color:var(--ordnen,#5d6f7b);
-    border:1px solid #cdd6dd;
+    color:var(--gruen-dunkel,#2F4F3E);
+    border:1px solid var(--linie);
     font-family:Georgia, serif;
     font-size:1.35rem;
     font-weight:700;
@@ -522,16 +473,16 @@ html{background:#26402F}
     transition:transform .12s ease, background .12s ease;
   }
   .tour-help:hover{
-    background:var(--ordnen,#5d6f7b); color:#fff;
+    background:var(--gruen-dunkel,#2F4F3E); color:#fff;
     transform:translateY(-2px);
   }
 
   /* ===== Start-Chips (Anleitung + Offline) ===== */
   .start-chips{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin:0 0 24px;}
-  .start-chip{display:inline-flex;align-items:center;gap:6px;background:#fff;border:1px solid var(--beige-mittel);
-    border-radius:999px;padding:5px 11px;font-size:0.82rem;color:var(--gruen-mittel);font-family:inherit;
-    cursor:pointer;text-decoration:none;line-height:1;box-shadow:0 1px 4px rgba(90,58,36,0.05);transition:border-color .15s;}
-  .start-chip:hover{border-color:var(--gruen-akzent);}
+  .start-chip{display:inline-flex;align-items:center;gap:6px;background:#fff;border:1px solid var(--linie);
+    border-radius:999px;padding:5px 11px;font-size:12.5px;color:var(--gruen-dunkel);font-family:var(--sans);
+    cursor:pointer;text-decoration:none;line-height:1;box-shadow:0 1px 4px rgba(47,79,62,.06);transition:border-color .15s;}
+  .start-chip:hover{border-color:#a3b5a6;}
   .start-chip .chip-link{color:inherit;text-decoration:none;display:inline-flex;align-items:center;gap:6px;}
   .chip-x{background:none;border:none;color:var(--text-leise);font-size:0.95rem;cursor:pointer;
     padding:0 0 0 3px;line-height:1;font-family:inherit;}
@@ -548,28 +499,27 @@ html{background:#26402F}
   .off-x{background:none;border:none;font-size:1.1rem;color:var(--text-leise);cursor:pointer;font-family:inherit;line-height:1;}
   .off-info{font-size:0.92rem;color:var(--text-leise);line-height:1.5;}
   .off-bar-wrap{display:none;height:8px;background:var(--beige-mittel);border-radius:4px;margin-top:13px;overflow:hidden;}
-  .off-bar{height:100%;width:0;background:var(--ausprobieren);transition:width .25s;}
+  .off-bar{height:100%;width:0;background:var(--honig);transition:width .25s;}
   .off-aktion{display:flex;justify-content:flex-end;margin-top:14px;}
   .off-btn{background:var(--gruen-dunkel);color:var(--beige-hell);border:none;border-radius:999px;
     padding:9px 22px;font-family:inherit;font-size:0.95rem;cursor:pointer;}
   .off-btn:disabled{opacity:.6;cursor:default;}
 
   /* ===== Staunen-Akkordeon (4 Themen in einer Kachel) ===== */
-  .kachel-akkordeon{background:#fff;border:1px solid var(--beige-mittel);border-radius:18px;box-shadow:0 2px 8px rgba(90,58,36,0.06);overflow:hidden;transition:border-color .15s;}
-  .kachel-akkordeon:hover{border-color:var(--phaenomene);}
-  .akk-kopf{display:flex;align-items:center;gap:14px;width:100%;background:none;border:none;font-family:inherit;text-align:left;cursor:pointer;padding:22px;}
-  .akk-kopf .icon{width:54px;height:54px;border-radius:14px;background:var(--phaenomene-bg);color:var(--phaenomene);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
-  .akk-kopf .icon svg{width:34px;height:34px;}
+  .kachel-akkordeon{background:#fff;border:1px solid var(--linie);border-radius:14px;overflow:hidden;transition:border-color .15s;}
+  .kachel-akkordeon:hover{border-color:#a3b5a6;}
+  .akk-kopf{display:flex;align-items:center;gap:14px;width:100%;background:none;border:none;font-family:inherit;text-align:left;cursor:pointer;padding:18px;}
+  .akk-kopf .icon{width:46px;height:46px;border-radius:12px;background:var(--icon-bg);color:var(--gruen-dunkel);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+  .akk-kopf .icon svg{width:27px;height:27px;}
   .akk-titel{flex:1;display:flex;flex-direction:column;gap:3px;}
-  .akk-h3{font-size:1.22rem;font-weight:600;color:var(--phaenomene);letter-spacing:.01em;}
-  .akk-sub{font-size:0.97rem;color:var(--text-leise);font-style:italic;}
-  .akk-pfeil{color:var(--phaenomene);font-size:1.2rem;transition:transform .25s;flex-shrink:0;}
+  .akk-h3{font-size:18px;font-weight:normal;color:var(--gruen-dunkel);line-height:1.2;}
+  .akk-sub{font-family:var(--sans);font-size:13px;color:#6b6152;}
+  .akk-pfeil{color:var(--honig);font-size:1.2rem;transition:transform .25s;flex-shrink:0;}
   .kachel-akkordeon.offen .akk-pfeil{transform:rotate(180deg);}
-  .akk-inhalt{max-height:0;overflow:hidden;transition:max-height .3s ease;padding:0 22px;}
+  .akk-inhalt{max-height:0;overflow:hidden;transition:max-height .3s ease;padding:0 18px;}
   .kachel-akkordeon.offen .akk-inhalt{max-height:620px;padding-bottom:8px;}
-  .akk-inhalt a{display:block;padding:14px 2px;border-top:1px solid var(--beige-hell);color:var(--gruen-mittel);text-decoration:none;font-size:1.02rem;}
-  .akk-inhalt a:first-child{border-top-color:var(--beige-mittel);}
-  .akk-inhalt a:hover{color:var(--phaenomene);}
+  .akk-inhalt a{display:block;padding:14px 2px;border-top:1px solid var(--linie);color:var(--gruen-mittel);text-decoration:none;font-size:1.02rem;}
+  .akk-inhalt a:hover{color:var(--honig);}
 </style>
 </head>
 <body>
@@ -829,13 +779,13 @@ html{background:#26402F}
       background:#fff;border:1px solid var(--beige-mittel);border-left:4px solid #C28A3A;border-radius:14px;
       padding:12px 14px;color:var(--gruen-dunkel);box-shadow:0 2px 10px rgba(90,58,36,.07);
       transition:transform .12s,border-color .15s;}
-    .exp-banner:hover{transform:translateY(-2px);border-color:var(--gruen-akzent);}
+    .exp-banner:hover{transform:translateY(-2px);border-color:#a3b5a6;}
     .exp-banner img{flex:0 0 auto;width:62px;height:84px;object-fit:cover;border-radius:8px;
       border:1px solid var(--beige-mittel);background:var(--beige-mittel);}
     .exp-banner .eb-tx{flex:1;min-width:0;}
-    .eb-eyebrow{display:block;font-family:inherit;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:#a8772a;font-weight:700;}
+    .eb-eyebrow{display:block;font-family:var(--sans);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--honig);font-weight:700;}
     .exp-banner strong{display:block;font-size:1.12rem;font-weight:normal;margin:2px 0;line-height:1.15;color:var(--gruen-dunkel);}
-    .eb-sub{display:block;font-size:12.5px;color:var(--text-leise);line-height:1.35;}
+    .eb-sub{display:block;font-family:var(--sans);font-size:12.5px;color:#6b6152;line-height:1.35;}
     .eb-pf{margin-left:auto;color:#C28A3A;font-size:20px;flex:0 0 auto;}
   </style>
   <section class="sektion" data-thema="verstehen">
