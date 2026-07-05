@@ -254,6 +254,16 @@ html{background:#26402F}
   }
   .kachel .icon svg{width:27px;height:27px}
 
+  /* Farbige Icon-Kacheln je Sektion (wie im Original) – die Überschriften
+     bleiben in Gold-Kapitälchen, nur die Icons tragen wieder ihre Sektionsfarbe. */
+  .sektion[data-thema="entdecken"]    .icon{background:var(--entdecken-bg);    color:var(--entdecken)}
+  .sektion[data-thema="foto"]         .icon{background:var(--foto-bg);         color:var(--foto)}
+  .sektion[data-thema="ordnen"]       .icon{background:var(--ordnen-bg);       color:var(--ordnen)}
+  .sektion[data-thema="ausprobieren"] .icon{background:var(--ausprobieren-bg); color:var(--ausprobieren)}
+  .sektion[data-thema="verstehen"]    .icon{background:var(--verstehen-bg);    color:var(--verstehen)}
+  .sektion[data-thema="phaenomene"]   .icon{background:var(--phaenomene-bg);   color:var(--phaenomene)}
+  .sektion[data-thema="testen"]       .icon{background:var(--testen-bg);       color:var(--testen)}
+
   .kachel h3{
     margin:0 0 5px;
     font-size:18px;
@@ -509,7 +519,7 @@ html{background:#26402F}
   .kachel-akkordeon{background:#fff;border:1px solid var(--linie);border-radius:14px;overflow:hidden;transition:border-color .15s;}
   .kachel-akkordeon:hover{border-color:#a3b5a6;}
   .akk-kopf{display:flex;align-items:center;gap:14px;width:100%;background:none;border:none;font-family:inherit;text-align:left;cursor:pointer;padding:18px;}
-  .akk-kopf .icon{width:46px;height:46px;border-radius:12px;background:var(--icon-bg);color:var(--gruen-dunkel);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+  .akk-kopf .icon{width:46px;height:46px;border-radius:12px;background:var(--phaenomene-bg);color:var(--phaenomene);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
   .akk-kopf .icon svg{width:27px;height:27px;}
   .akk-titel{flex:1;display:flex;flex-direction:column;gap:3px;}
   .akk-h3{font-size:18px;font-weight:normal;color:var(--gruen-dunkel);line-height:1.2;}
