@@ -541,29 +541,16 @@ html{background:#26402F}
       <rect x="5" y="2" width="14" height="20" rx="3"/>
       <line x1="12" y1="18" x2="12" y2="18"/>
     </svg>
-    <span>Als App aufs iPhone</span>
+    <span>Als App aufs iPhone / iPad</span>
     <span class="chevron" aria-hidden="true">▾</span>
   </button>
   <div class="bubble-content" id="bubble-content-ios" role="region" aria-label="Installations-Anleitung iPhone">
     <h4>So legst du Flora Mibaso als App ab</h4>
-
-    <p><strong>Variante A – wenn du in Safari bist (am einfachsten):</strong></p>
     <ol>
-      <li>Unten auf das <em>Teilen-Symbol</em> (Kästchen mit Pfeil nach oben)</li>
-      <li><em>„Zum Home-Bildschirm"</em> antippen (eventuell vorher <em>„Mehr anzeigen"</em>)</li>
-      <li>Oben rechts auf <em>„Hinzufügen"</em></li>
+      <li>Im Browser oben rechts auf das <em>Teilen-Symbol</em></li>
+      <li><em>„In Chrome (alternativ Safari) öffnen"</em></li>
+      <li>Dort noch einmal auf das <em>Teilen-Symbol</em> (evtl. vorher <em>„Mehr anzeigen"</em>) → <em>„Zum Home-Bildschirm"</em> → <em>„Hinzufügen"</em></li>
     </ol>
-
-    <p><strong>Variante B – wenn du in einem anderen Browser bist (Chrome, Google-App, Instagram &amp; Co.):</strong></p>
-    <ol>
-      <li>Oben rechts auf das <em>Teilen-Symbol</em></li>
-      <li><em>„In Safari öffnen"</em> oder <em>„In Chrome öffnen"</em></li>
-      <li>Dort nochmal das <em>Teilen-Symbol</em></li>
-      <li><em>„Zum Home-Bildschirm"</em> antippen (eventuell vorher <em>„Mehr anzeigen"</em>)</li>
-      <li>Oben rechts auf <em>„Hinzufügen"</em></li>
-    </ol>
-
-    <p style="margin-top:10px;font-size:0.88rem;color:#6b5340;">Tipp: Den Link findest du auch, wenn du <strong>flora.mibaso.de</strong> in die Google-Suchmaske eingibst – das öffnet dieselbe Seite und der Weg über Chrome funktioniert ebenfalls.</p>
 
     <a class="schliessen" id="bubble-schliessen-ios">Nicht mehr anzeigen</a>
   </div>
@@ -944,7 +931,7 @@ footer.fuss-neu a{color:#F7F3E8}
 <script>
   (function(){
     var ua = navigator.userAgent || '';
-    var istIOS = /iPhone|iPod/.test(ua) || (/Macintosh/.test(ua) && 'ontouchend' in document);
+    var istIOS = /iPhone|iPad|iPod/.test(ua) || (/Macintosh/.test(ua) && 'ontouchend' in document);
     var istAndroid = /Android/i.test(ua) && !istIOS;
     var schonInstalliert = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone;
     var ausgeblendet = false;
