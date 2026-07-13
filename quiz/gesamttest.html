@@ -820,7 +820,7 @@ function pruefeAntwort(istRichtig, geklickt, aufloesung, istRichtigerBtn){
 
   if (modus === 'blitz') {
     // automatisch weiter — bei Fehlern etwas mehr Zeit zum Lesen
-    autoWeiterId = setTimeout(naechsteFrage, istRichtig ? 1800 : 4400);
+    autoWeiterId = setTimeout(naechsteFrage, istRichtig ? 3600 : 8800);
   } else {
     document.getElementById('gt-weiter').style.display = 'block';
   }
