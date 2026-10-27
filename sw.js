@@ -17,7 +17,7 @@
    Nur wenn sich Bilder ändern, zusätzlich die MEDIA-Version erhöhen.
 */
 
-const SHELL_CACHE = 'mibaso-shell-v108';
+const SHELL_CACHE = 'mibaso-shell-v109';
 const MEDIA_CACHE = 'mibaso-media-v1';
 const MANIFEST_URL = './offline-manifest.json';
 
